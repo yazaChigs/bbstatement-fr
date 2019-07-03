@@ -1,0 +1,280 @@
+@import "~@angular/material/theming";
+@include mat-core();
+//@import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import "themes/black-theme.scss";
+@import "themes/dashboard-theme.scss";
+@import "themes/default-theme.scss";
+@import "themes/light-theme.scss";
+@import "themes/nature-theme.scss";
+@import "themes/blue-light-theme.scss";
+@import "assets/custom/css/radio-button.scss";
+
+@import "app/layout/nav/side-nav/side-nav.component.scss";
+
+/*
+all the available colors
+*/
+$teal-theme: mat-light-theme(
+  mat-palette($mat-teal, 700),
+  mat-palette($mat-teal, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$purple-theme: mat-light-theme(
+  mat-palette($mat-purple, 600),
+  mat-palette($mat-purple, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$deep-purple-theme: mat-light-theme(
+  mat-palette($mat-deep-purple, 700),
+  mat-palette($mat-purple, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$red-theme: mat-light-theme(
+  mat-palette($mat-red, 900),
+  mat-palette($mat-red, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$orange-theme: mat-light-theme(
+  mat-palette($mat-orange, 800),
+  mat-palette($mat-orange, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$gray-theme: mat-light-theme(
+  mat-palette($mat-gray, 500),
+  mat-palette($mat-gray, 200),
+  mat-palette($mat-deep-orange, 500)
+);
+$blue-theme: mat-light-theme(
+  mat-palette($mat-blue, 600),
+  mat-palette($mat-blue, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$green-theme: mat-light-theme(
+  mat-palette($mat-green, 500),
+  mat-palette($mat-green, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$pink-theme: mat-light-theme(
+  mat-palette($mat-pink, 500),
+  mat-palette($mat-pink, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$yellow-theme: mat-light-theme(
+  mat-palette($mat-yellow, 500),
+  mat-palette($mat-yellow, 200),
+  mat-palette($mat-deep-orange, 500)
+);
+$indigo-theme: mat-light-theme(
+  mat-palette($mat-indigo, 600),
+  mat-palette($mat-indigo, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$light-blue-theme: mat-light-theme(
+  mat-palette($mat-light-blue, 400),
+  mat-palette($mat-light-blue, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$cyan-theme: mat-light-theme(
+  mat-palette($mat-cyan, 800),
+  mat-palette($mat-cyan, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$light-green-theme: mat-light-theme(
+  mat-palette($mat-light-green, 500),
+  mat-palette($mat-light-green, A700),
+  mat-palette($mat-deep-orange, 500)
+);
+$lime-theme: mat-light-theme(
+  mat-palette($mat-lime, 500),
+  mat-palette($mat-lime, A200),
+  mat-palette($mat-deep-orange, 500)
+);
+$amber-theme: mat-light-theme(
+  mat-palette($mat-amber, 700),
+  mat-palette($mat-amber, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$deep-orange-theme: mat-light-theme(
+  mat-palette($mat-deep-orange, 600),
+  mat-palette($mat-deep-orange, A400),
+  mat-palette($mat-deep-orange, 500)
+);
+$brown-theme: mat-light-theme(
+  mat-palette($mat-brown),
+  mat-palette($mat-light-green),
+  mat-palette($mat-deep-orange, 500)
+);
+$blue-gray-theme: mat-light-theme(
+  mat-palette($mat-blue-gray, 700),
+  mat-palette($mat-blue-gray, 300),
+  mat-palette($mat-deep-orange, 500)
+);
+
+@include angular-material-theme($red-theme);
+
+@mixin global-theme-component($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .border {
+    border: 2px solid mat-color($primary);
+  }
+  .border_accent {
+    border: 2px solid mat-color($accent);
+  }
+  .border_radius {
+    border-radius: 5px;
+  }
+  .border_right {
+    border-right: 2px solid mat-color($primary);
+  }
+  .color-primary {
+    color: mat-color($primary);
+  }
+  .accent-color{
+    color: mat-color($accent);
+  }
+  .accent-bg{
+    background: mat-color($accent);
+  }
+  .primary-bg{
+    background: mat-color($primary);
+  }
+  .color-accent {
+    color: mat-color($accent);
+    border-right: 2px solid mat-color($accent);
+  }
+  .color-warn {
+    color: mat-color($warn);
+  }
+  .color-red {
+    color: red;
+  }
+  .color-green {
+    color: green;
+  }
+  .action_btn{
+    margin:5px;
+  }
+  .card-padding{
+    padding: 0px;
+  }
+  .primary-font-color {
+    color: mat-color($primary);
+  }
+  .accent-font-color {
+    color: mat-color($accent);
+  }
+  .active-link{
+    background: mat-color($accent) !important;
+  }
+  .active-link:hover{
+    background: mat-color($accent) !important;
+  }
+}
+
+@mixin custom-components-theme($theme) {
+  @include sidenav-component-theme($theme);
+  @include global-theme-component($theme);
+  @include dashboard-theme($theme);
+  @include radio-check-theme($theme);
+}
+@include custom-components-theme($red-theme);
+.mat_teal {
+  @include angular-material-theme($teal-theme);
+  @include custom-components-theme($teal-theme);
+}
+
+.mat_deep_purple {
+  @include angular-material-theme($deep-purple-theme);
+  @include custom-components-theme($deep-purple-theme);
+}
+.mat_red {
+  @include angular-material-theme($red-theme);
+  @include custom-components-theme($red-theme);
+}
+.mat_orange {
+  @include angular-material-theme($orange-theme);
+  @include custom-components-theme($orange-theme);
+}
+.mat_gray {
+  @include angular-material-theme($gray-theme);
+  @include custom-components-theme($gray-theme);
+}
+.mat_blue {
+  @include angular-material-theme($blue-theme);
+  @include custom-components-theme($blue-theme);
+}
+.mat_green {
+  @include angular-material-theme($green-theme);
+  @include custom-components-theme($green-theme);
+}
+.mat_pink {
+  @include angular-material-theme($pink-theme);
+  @include custom-components-theme($pink-theme);
+}
+.mat_yellow {
+  @include angular-material-theme($yellow-theme);
+  @include custom-components-theme($yellow-theme);
+}
+.mat_purple {
+  @include angular-material-theme($purple-theme);
+  @include custom-components-theme($purple-theme);
+}
+.mat_indigo {
+  @include angular-material-theme($indigo-theme);
+  @include custom-components-theme($indigo-theme);
+}
+.mat_light_blue {
+  @include angular-material-theme($light-blue-theme);
+  @include custom-components-theme($light-blue-theme);
+}
+.mat_cyan {
+  @include angular-material-theme($cyan-theme);
+  @include custom-components-theme($cyan-theme);
+}
+.mat_light_green {
+  @include angular-material-theme($light-green-theme);
+  @include custom-components-theme($light-green-theme);
+}
+.mat_lime {
+  @include angular-material-theme($lime-theme);
+  @include custom-components-theme($lime-theme);
+}
+.mat_amber {
+  @include angular-material-theme($amber-theme);
+  @include custom-components-theme($amber-theme);
+}
+.mat_deep_orange {
+  @include angular-material-theme($deep-orange-theme);
+  @include custom-components-theme($deep-orange-theme);
+}
+.mat_brown {
+  @include angular-material-theme($brown-theme);
+  @include custom-components-theme($brown-theme);
+}
+.mat_blue_gray {
+  @include angular-material-theme($blue-gray-theme);
+  @include custom-components-theme($blue-gray-theme);
+}
+
+.default-theme {
+  @include angular-material-theme($mhr-theme);
+  @include custom-components-theme($mhr-theme);
+}
+
+.light-theme {
+  @include angular-material-theme($mhr-light-theme);
+  @include custom-components-theme($mhr-light-theme);
+}
+
+.black-theme {
+  @include angular-material-theme($mhr-black-theme);
+  @include custom-components-theme($mhr-black-theme);
+}
+
+.nature-theme {
+  @include angular-material-theme($mhr-nature-theme);
+  @include custom-components-theme($mhr-nature-theme);
+}

@@ -1,0 +1,526 @@
+<mat-card class="border_accent">
+  <mat-toolbar color="primary">
+    <!-- <a routerLink="/admin/user/list" mat-icon-button>
+        <mat-icon aria-label="Back">arrow_back</mat-icon>
+    </a> -->
+    <span class="fill-remaining-space"></span>
+    <span>QUARANTINED STOCK</span>
+    <span class="fill-remaining-space"></span>
+    <!-- <button mat-raised-button [routerLink]="['/admin/user/list']" routerLinkActive="router-link-active" color="primary">
+      <mat-icon aria-label="Add">list</mat-icon>&nbsp; Users
+    </button> -->
+  </mat-toolbar>
+
+<form [formGroup]="quarantinedStockForm">
+<input type="hidden" formControlName="id">
+
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="25%">
+      <p>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Branch</mat-label>
+          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch">
+              <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="getInitvalues(branch.id)">
+                {{branch.branchName}}
+              </mat-option>
+            </mat-select>
+          <mat-icon matSuffix>home</mat-icon>
+        </mat-form-field>
+      </p>
+<p>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput formControlName="todaysDate" placeholder="Date">
+          <mat-icon matSuffix>date_range</mat-icon>
+          <mat-hint>yesterday's date</mat-hint>
+        </mat-form-field>
+      </p>
+    </div>
+  <div fxFlex="15%"><mat-card class="infor-card"><p>Collections</p></mat-card></div>
+  <div fxFlex="15%"><mat-card class="infor-card"><p>Quarantine Stock <strong>{{QuarantineStock(quarantinedStockForm.value)}}</strong></p></mat-card></div>
+  <div fxFlex="15%"><mat-card class="infor-card">
+    <p>Opening: <strong>{{OpeningStock(quarantinedStockForm.value)}} </strong></p>
+    <p>Receipts <strong>{{sumReceived(quarantinedStockForm.value)}} </strong></p>
+    <p>Issues <strong>{{sumIssues(quarantinedStockForm.value)}} </strong></p>
+    <p> Discards <strong>{{sumDiscards(quarantinedStockForm.value)}} </strong></p>
+  </mat-card>
+</div>
+</div>
+
+
+  <mat-accordion [multi]="true">
+    <!-- start collections panel -->
+    <mat-expansion-panel [expanded]="true" class="border">
+      <mat-expansion-panel-header class="primary-bg">
+        <mat-panel-title>
+          Self aware panel
+        </mat-panel-title>
+        <mat-panel-description>
+          COLLECTIONS
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Opening Stock</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+          <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Opening Stock</mat-label>
+              <input type="number" matInput formControlName="openingStock" placeholder="Opening Stock" (keyup)="sumCollections(quarantinedStockForm.value)">
+            </mat-form-field>
+      </div>
+      <div fxFlex="6%">
+        <!-- <mat-chip color="primary">100%</mat-chip> -->
+      </div>
+      <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Harare CBD 03</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Harare CBD 03</mat-label>
+                <input matInput formControlName="harareCbd03" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
+              </mat-form-field>
+        </div>
+        <div fxFlex="6%"><mat-chip color="primary" >{{harareCbd}}%</mat-chip></div>
+      </div>
+
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Static/HQ 01</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+          <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Static/HQ 01</mat-label>
+              <input matInput formControlName="staticHq01" type="number" placeholder="Static/HQ 01" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
+            </mat-form-field>
+      </div>
+      <div fxFlex="6%"><mat-chip color="primary">{{staticHq}}%</mat-chip></div>
+      <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Mobile 04</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Mobile 04</mat-label>
+                <input matInput formControlName="mobile04" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="mobPercentage()">
+              </mat-form-field>
+        </div>
+        <div fxFlex="6%"><mat-chip color="primary">{{mobile04}}%</mat-chip></div>
+      </div>
+
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Mobile 02</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+          <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Mobile 02</mat-label>
+              <input matInput formControlName="mobile02" type="number" placeholder="Mobile 02" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
+            </mat-form-field>
+      </div>
+      <div fxFlex="6%"><mat-chip color="primary">{{mobile02}}%</mat-chip></div>
+          <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Mobile 06</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Mobile 06</mat-label>
+                <input matInput formControlName="mobile06" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
+              </mat-form-field>
+        </div>
+        <div fxFlex="6%"><mat-chip color="primary">{{mobile06}}%</mat-chip></div>
+      </div>
+
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="50%"></div>
+              <div fxFlex="30%">
+              <h2>
+                <mat-label class="full-width">Total Collections</mat-label>
+              </h2>
+            </div>
+            <div fxFlex="10%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <input matInput formControlName="totalCollections" type="number" placeholder="total">
+                  </mat-form-field>
+            </div>
+          </div>
+
+    </mat-expansion-panel>
+    <!-- end collections panel -->
+
+    <!-- start receipts panel -->
+    <mat-expansion-panel [expanded]="true" class="border">
+      <mat-expansion-panel-header class="primary-bg">
+        <mat-panel-title>
+          Self aware panel
+        </mat-panel-title>
+        <mat-panel-description>
+          RECEIPTS FROM BRANCHES
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+
+      <div formArrayName="stockReceivedFrom">
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
+        *ngFor="let item of branches index as i; last as isLast"
+      [formGroupName]="i">
+        <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Received from {{item.branchName}}</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>{{item.branchName}}</mat-label>
+                <input matInput formControlName="receivedFrom" type="number" placeholder="Bulawayo" (keyup)="sumReceived(quarantinedStockForm.value)">
+              </mat-form-field>
+        </div>
+        </div>
+      </div>
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">Reference Laboratory</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Reference Laboratory</mat-label>
+                  <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived(quarantinedStockForm.value)">
+                </mat-form-field>
+          </div>
+          <div fxFlex="12%"></div>
+          </div>
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="50%"></div>
+                  <div fxFlex="30%">
+                  <h2>
+                    <mat-label class="full-width">Total Receipts from branches</mat-label>
+                  </h2>
+                </div>
+                <div fxFlex="10%">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input matInput formControlName="totalReceiptsFromBranches" type="number" placeholder="total">
+                      </mat-form-field>
+                </div>
+              </div>
+
+    </mat-expansion-panel>
+    <!-- start receipts panel -->
+
+    <!-- start discards panel -->
+    <mat-expansion-panel [expanded]="true" class="border">
+      <mat-expansion-panel-header class="primary-bg">
+        <mat-panel-title>
+          Self aware panel
+        </mat-panel-title>
+        <mat-panel-description>
+          DISCARDS
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">P1</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>P1</mat-label>
+                  <input type="number" matInput formControlName="p1" placeholder="P1" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                </mat-form-field>
+          </div>
+          <div fxFlex="12%"></div>
+          <div fxFlex="12%">
+              <p>
+                <mat-label class="full-width">Serum (Dry Packs, D3/D4)</mat-label>
+              </p>
+            </div>
+            <div fxFlex="25%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Serum (Dry Packs, D3/D4)</mat-label>
+                    <input matInput formControlName="dryPacksD3D4" type="number" placeholder="Serum (Dry Packs, D3/D4)" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                  </mat-form-field>
+            </div>
+          </div>
+
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">P2</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>P2</mat-label>
+                  <input matInput formControlName="p2" type="number" placeholder="P2" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                </mat-form-field>
+          </div>
+          <div fxFlex="12%"></div>
+          <div fxFlex="12%">
+              <p>
+                <mat-label class="full-width">Serum (Dry Packs, DI)</mat-label>
+              </p>
+            </div>
+            <div fxFlex="25%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Serum (Dry Packs, DI)</mat-label>
+                    <input matInput formControlName="dryPacksD1" type="number" placeholder="Serum (Dry Packs, DI)" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                  </mat-form-field>
+            </div>
+          </div>
+
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">P3</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>P3</mat-label>
+                  <input matInput formControlName="p3" type="number" placeholder="P3" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                </mat-form-field>
+          </div>
+          <div fxFlex="12%"></div>
+              <div fxFlex="12%">
+              <p>
+                <mat-label class="full-width">Samples only</mat-label>
+              </p>
+            </div>
+            <div fxFlex="25%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Samples only</mat-label>
+                    <input matInput formControlName="samplesOnly" type="number" placeholder="Samples only" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                  </mat-form-field>
+            </div>
+          </div>
+
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="12%">
+                <p>
+                  <mat-label class="full-width">C11</mat-label>
+                </p>
+              </div>
+              <div fxFlex="25%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>C11</mat-label>
+                      <input type="number" matInput formControlName="c11" placeholder="C11" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                    </mat-form-field>
+              </div>
+              <div fxFlex="12%"></div>
+              <div fxFlex="12%">
+                  <p>
+                    <mat-label class="full-width">Expired</mat-label>
+                  </p>
+                </div>
+                <div fxFlex="25%">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Expired</mat-label>
+                        <input matInput formControlName="expired" type="number" placeholder="Expired" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                      </mat-form-field>
+                </div>
+              </div>
+
+              <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="12%">
+                <p>
+                  <mat-label class="full-width">Wrong Pack</mat-label>
+                </p>
+              </div>
+              <div fxFlex="25%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Wrong Pack</mat-label>
+                      <input matInput formControlName="wrongPack" type="number" placeholder="Wrong Pack" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                    </mat-form-field>
+              </div>
+              <div fxFlex="12%"></div>
+              <div fxFlex="12%">
+                  <p>
+                    <mat-label class="full-width">Other</mat-label>
+                  </p>
+                </div>
+                <div fxFlex="25%">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Other</mat-label>
+                        <input matInput formControlName="other" type="number" placeholder="Other" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                      </mat-form-field>
+                </div>
+              </div>
+
+              <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="12%">
+                <p>
+                  <mat-label class="full-width">Serological discards</mat-label>
+                </p>
+              </div>
+              <div fxFlex="25%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Serological discards</mat-label>
+                      <input matInput formControlName="serologicalDiscards" type="number" placeholder="Serological discards" (keyup)="sumDiscards(quarantinedStockForm.value)">
+                    </mat-form-field>
+              </div>
+              <div fxFlex="12%"></div>
+              </div>
+
+              <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+                  <div fxFlex="50%"></div>
+                      <div fxFlex="30%">
+                      <h2>
+                        <mat-label class="full-width">Total Issues</mat-label>
+                      </h2>
+                    </div>
+                    <div fxFlex="10%">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <input matInput formControlName="totalIssuesDiscards" type="number" placeholder="total">
+                          </mat-form-field>
+                    </div>
+                  </div>
+
+    </mat-expansion-panel>
+    <!-- end discards panel -->
+
+    <!-- start issues panel -->
+    <mat-expansion-panel [expanded]="true" class="border">
+      <mat-expansion-panel-header class="primary-bg">
+        <mat-panel-title>
+          Self aware panel
+        </mat-panel-title>
+        <mat-panel-description>
+          ISSUES
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div formArrayName="stockIssuedTo">
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
+        *ngFor="let item of branches index as j; last as isLast"
+      [formGroupName]="j">
+        <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Issued to {{item.branchName}}</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>{{item.branchName}}</mat-label>
+                <input matInput formControlName="issuedTo" type="number" placeholder="" (keyup)="sumIssues(quarantinedStockForm.value)">
+              </mat-form-field>
+        </div>
+        </div>
+      </div>
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">Group mismatches to Ref Labs</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Group mismatches to Ref Labs</mat-label>
+                <input matInput formControlName="issueTogroupMismatchesToRefLab" type="number" placeholder="Group mismatches to Ref Labs" (keyup)="sumIssues(quarantinedStockForm.value)">
+              </mat-form-field>
+        </div>
+        <div fxFlex="12%"></div>
+        </div>
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="50%"></div>
+                  <div fxFlex="30%">
+                  <h2>
+                    <mat-label class="full-width">Total Issues</mat-label>
+                  </h2>
+                </div>
+                <div fxFlex="10%">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <input matInput formControlName="totalIssues" type="number" placeholder="total">
+                      </mat-form-field>
+                </div>
+              </div>
+
+    </mat-expansion-panel>
+    <!-- end issues panel -->
+
+    <!-- start other panel -->
+    <mat-expansion-panel [expanded]="true" class="border">
+    <mat-expansion-panel-header class="primary-bg">
+      <mat-panel-title>
+        Self aware panel
+      </mat-panel-title>
+      <mat-panel-description>
+        OTHER QUARANTINE PRODUCTS
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">FFP 1</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>FFP 1</mat-label>
+                <input type="number" matInput formControlName="ffp1" placeholder="FFP 1">
+              </mat-form-field>
+        </div>
+        <div fxFlex="12%"></div>
+        <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">PLT 1</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>PLT 1</mat-label>
+                  <input matInput formControlName="plt1" type="number" placeholder="PLT 1">
+                </mat-form-field>
+          </div>
+        </div>
+
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="12%">
+          <p>
+            <mat-label class="full-width">PLT 2</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>PLT 2</mat-label>
+                <input matInput formControlName="plt2" type="number" placeholder="PLT 2">
+              </mat-form-field>
+        </div>
+        <div fxFlex="12%"></div>
+        <div fxFlex="12%">
+            <p>
+              <mat-label class="full-width">CRYO</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>CRYO</mat-label>
+                  <input matInput formControlName="cryo" type="number" placeholder="CRYO">
+                </mat-form-field>
+          </div>
+        </div>
+
+  </mat-expansion-panel>
+    <!-- start other panel -->
+  </mat-accordion>
+  <button mat-raised-button color="primary" class="save-btn" (click)="saveAQuarantinedStock(quarantinedStockForm.value)">Save</button>
+
+</form>
+
+</mat-card>
+{{quarantinedStockForm.value | json}}

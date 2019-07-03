@@ -1,0 +1,61 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div fxFlex="98%">
+      <mat-toolbar class="border" style="border-radius:5px;">
+        <span>Administration</span>
+      </mat-toolbar>
+    </div>
+  </div>
+
+  <div class="grid-container">
+      <mat-grid-list cols={{column}} rowHeight="200px">
+  <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
+      <mat-grid-tile  colspan="1" rowspan="1">
+          <mat-card role="region" (click)="redirect('/admin/user/')"  class="dashboard-card">
+            <div class="card-padding">
+            <mat-card-content class="dashboard-card-content">
+              <div>
+                <span><mat-icon [ngClass]="iconSize">supervisor_account</mat-icon></span>
+                <h2 [ngClass]="fontSize" >Users</h2>
+              </div>
+            </mat-card-content>
+            </div>
+          </mat-card>
+        </mat-grid-tile>
+      </ng-template>
+      </mat-grid-list>
+
+      <mat-grid-list cols={{column}} rowHeight="200px">
+          <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
+              <mat-grid-tile  colspan="1" rowspan="1">
+                  <mat-card role="region" (click)="redirect('/admin/data')"  class="dashboard-card">
+                    <div class="card-padding">
+                    <mat-card-content class="dashboard-card-content">
+                      <div>
+                        <span><mat-icon [ngClass]="iconSize">supervisor_account</mat-icon></span>
+                        <h2 [ngClass]="fontSize" >Data Management</h2>
+                      </div>
+                    </mat-card-content>
+                    </div>
+                  </mat-card>
+                </mat-grid-tile>
+              </ng-template>
+              </mat-grid-list>
+
+              <mat-grid-list cols={{column}} rowHeight="200px">
+                <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
+                    <mat-grid-tile  colspan="1" rowspan="1">
+                        <mat-card role="region" (click)="redirect('/admin/branch')"  class="dashboard-card">
+                          <div class="card-padding">
+                          <mat-card-content class="dashboard-card-content">
+                            <div>
+                              <span><mat-icon [ngClass]="iconSize">supervisor_account</mat-icon></span>
+                              <h2 [ngClass]="fontSize" >Branch</h2>
+                            </div>
+                          </mat-card-content>
+                          </div>
+                        </mat-card>
+                      </mat-grid-tile>
+                    </ng-template>
+                    </mat-grid-list>
+      </div>
+bbb

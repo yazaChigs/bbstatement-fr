@@ -1,0 +1,45 @@
+.full-width {
+  width: 100%;
+}
+.form-width {
+  min-width: 150px;
+  max-width: 700px;
+  width: 100%;
+}
+.main-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+.smart-image{
+  width: 50%
+}
+.img-logo{
+  width: 50%;
+  height: auto;
+}
+.login-card{
+  padding: 0px;
+  box-shadow: 10px 10px 5px grey;
+}
+.login-toolbar{
+  margin: 0px;
+}
+.login-btn{
+  margin-bottom: 10px;
+  bottom: 10px;
+  left: 12px;
+}
+.field{
+  width: 90%;
+  margin-left: 10px;
+  margin-right: 10px;
+}

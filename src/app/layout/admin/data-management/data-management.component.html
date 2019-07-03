@@ -1,0 +1,848 @@
+<mat-card class="border card-padding">
+    <mat-toolbar color="primary">
+      <a routerLink="/admin" mat-icon-button>
+          <mat-icon aria-label="Back">arrow_back</mat-icon>
+      </a>
+      <span class="fill-remaining-space"></span>
+      <span>Data Management</span>
+      <span class="fill-remaining-space"></span>
+      <!-- <button mat-raised-button [routerLink]="['/admin/user/list']" routerLinkActive="router-link-active" color="primary">
+        <mat-icon aria-label="Add">list</mat-icon>&nbsp; Users
+      </button> -->
+    </mat-toolbar>
+    <form [formGroup]="noDaysRequirementsForm">
+      <input type="hidden" formControlName="id">
+      <input type="hidden" formControlName="dateCreated">
+      <input type="hidden" formControlName="version">
+      <input type="hidden" formControlName="createdById">
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+
+        <div fxFlex="80%">
+    <mat-grid-list cols="7" rowHeight="25px">
+
+        <mat-grid-tile [colspan]="7" class="border">No-Days Requirements</mat-grid-tile>
+
+        <mat-grid-tile class="border">Branch</mat-grid-tile>
+        <mat-grid-tile class="border">O+</mat-grid-tile>
+        <mat-grid-tile class="border">O-</mat-grid-tile>
+        <mat-grid-tile class="border">A+</mat-grid-tile>
+        <mat-grid-tile class="border">B+</mat-grid-tile>
+        <mat-grid-tile class="border">Total</mat-grid-tile>
+        <mat-grid-tile class="border">% of National</mat-grid-tile>
+
+        <mat-grid-tile class="border">Harare</mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareOplus" placeholder="" (keyup)="sumDaysReqHarare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOplus(noDaysRequirementsForm.value)">
+                          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareOminus" placeholder="" (keyup)="sumDaysReqHarare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOminus(noDaysRequirementsForm.value)">
+                          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareAplus" placeholder="" (keyup)="sumDaysReqHarare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqAplus(noDaysRequirementsForm.value)">
+                          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareBplus" placeholder="" (keyup)="sumDaysReqHarare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqBplus(noDaysRequirementsForm.value)">
+                          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareTotal" placeholder="" readonly (keyup)="sumDaysReqHarare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqTotal(noDaysRequirementsForm.value)">
+                          </mat-form-field></mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareNationalPercentage" readonly placeholder="">
+                            <span matSuffix>%</span>
+                          </mat-form-field></mat-grid-tile>
+
+        <mat-grid-tile class="border">Bulawayo</mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoOplus" placeholder="" (keyup)="sumDaysReqBulawayo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoOminus" placeholder="" (keyup)="sumDaysReqBulawayo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOminus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoAplus" placeholder="" (keyup)="sumDaysReqBulawayo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqAplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoBplus" placeholder="" (keyup)="sumDaysReqBulawayo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqBplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoTotal" placeholder="" readonly (keyup)="sumDaysReqBulawayo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqTotal(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border"><mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoNationalPercentage" readonly placeholder="">
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+                        </mat-grid-tile>
+
+        <mat-grid-tile class="border">Gweru</mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruOplus" placeholder="" (keyup)="sumDaysReqGweru(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruOminus" placeholder="" (keyup)="sumDaysReqGweru(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOminus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruAplus" placeholder="" (keyup)="sumDaysReqGweru(noDaysRequirementsForm.value)" (keyup)="sumDaysReqAplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruBplus" placeholder="" (keyup)="sumDaysReqGweru(noDaysRequirementsForm.value)" (keyup)="sumDaysReqBplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruTotal" placeholder="" readonly (keyup)="sumDaysReqGweru(noDaysRequirementsForm.value)" (keyup)="sumDaysReqTotal(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+                        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruNationalPercentage" readonly placeholder="">
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+                        </mat-grid-tile>
+
+        <mat-grid-tile class="border">Mutare</mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareOplus" placeholder="" (keyup)="sumDaysReqMutare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareOminus" placeholder="" (keyup)="sumDaysReqMutare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOminus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareAplus" placeholder="" (keyup)="sumDaysReqMutare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqAplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareBplus" placeholder="" (keyup)="sumDaysReqMutare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqBplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareTotal" placeholder="" readonly (keyup)="sumDaysReqMutare(noDaysRequirementsForm.value)" (keyup)="sumDaysReqTotal(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareNationalPercentage" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile class="border">Masvingo</mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoOplus" placeholder="" (keyup)="sumDaysReqMasvingo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoOminus" placeholder="" (keyup)="sumDaysReqMasvingo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqOminus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoAplus" placeholder="" (keyup)="sumDaysReqMasvingo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqAplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoBplus" placeholder="" (keyup)="sumDaysReqMasvingo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqBplus(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoTotal" placeholder="" readonly (keyup)="sumDaysReqMasvingo(noDaysRequirementsForm.value)" (keyup)="sumDaysReqTotal(noDaysRequirementsForm.value)">
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoNationalPercentage" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile class="border" [rowspan]="2">National Requirements</mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsOplus" placeholder="" readonly>
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsOminus" placeholder="" readonly>
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsAplus" placeholder="" readonly>
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsBplus" placeholder="" readonly>
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsTotal" placeholder="" readonly>
+                          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile class="border" [rowspan]="2">
+          <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="nationalRequirementsNationalPercentage" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile class="border" [colspan]="3">Adjusted For collections factors </mat-grid-tile>
+
+      </mat-grid-list>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" type="reset">Clear</button>
+    <button mat-raised-button color="primary" type="button" (click)="saveNoDaysRequirements(noDaysRequirementsForm.value)">Save</button>
+  </form>
+    <mat-divider></mat-divider>
+      <ul>
+        <li>1. These daily requirements relates to the actuals for the distribution</li>
+        <li>2. Based on the current settings excluding AB's 296 units are needed daily, on effective operational days of 264, 78250 units are needed annually or 108,186 annually if we consider 365 days (annual)        </li>
+        <li>3. There is needed for BCTs and NCT to deliberate on these current projections</li>
+        <li>4. Of the total national requirements, Harare contribution is 47%, Bulawayo 29%, Gweru 9%, Mutare 8%, Masvingo 7%. This has implications on the overal management strategies to meet these requirements</li>
+        <li>5. A differentiated approach may be needed for the branches to meet their expected requirements</li>
+        <li>6. Other factors highlighted for considerations include the geographical spread, terrain etc. This may aid in appropriate resources allocations</li>
+
+      </ul>
+      <mat-divider></mat-divider>
+      <form [formGroup]="unadjastedDailyRequirementsForm">
+          <input type="hidden" formControlName="id">
+          <input type="hidden" formControlName="dateCreated">
+          <input type="hidden" formControlName="version">
+          <input type="hidden" formControlName="createdById">
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+
+          <div fxFlex="80%">
+      <mat-grid-list cols="10" rowHeight="25px">
+
+          <mat-grid-tile [colspan]="2" class="border">INPUT DATA TABLE</mat-grid-tile>
+          <mat-grid-tile [colspan]="1"></mat-grid-tile>
+          <mat-grid-tile [colspan]="3" class="border">UNADJUSTED DAILY DISTRIBUTED</mat-grid-tile>
+          <mat-grid-tile [colspan]="4"></mat-grid-tile>
+
+          <mat-grid-tile class="border">Blood Group</mat-grid-tile>
+          <mat-grid-tile class="border">O+</mat-grid-tile>
+          <mat-grid-tile class="border">O-</mat-grid-tile>
+          <mat-grid-tile class="border">A+</mat-grid-tile>
+          <mat-grid-tile class="border">A-</mat-grid-tile>
+          <mat-grid-tile class="border">B+</mat-grid-tile>
+          <mat-grid-tile class="border">B-</mat-grid-tile>
+          <mat-grid-tile class="border">AB+</mat-grid-tile>
+          <mat-grid-tile class="border">AB-</mat-grid-tile>
+          <mat-grid-tile class="border">Total</mat-grid-tile>
+
+          <mat-grid-tile class="border">Harare</mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumOplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumOminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumAplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumAminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumBplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumBminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumABplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusHarare" placeholder="" (keyup)="sumHarare(unadjastedDailyRequirementsForm.value)" (keyup)="sumABminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalHarare" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile class="border">Bulawayo</mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumOplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumOminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumAplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumAminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumBplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumBminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumABplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusBulawayo" placeholder="" (keyup)="sumBulawayo(unadjastedDailyRequirementsForm.value)" (keyup)="sumABminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalBulawayo" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile class="border">Gweru</mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumOplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumOminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumAplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumAminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumBplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumBminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumABplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusGweru" placeholder="" (keyup)="sumGweru(unadjastedDailyRequirementsForm.value)" (keyup)="sumABminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalGweru" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile class="border">Mutare</mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumOplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumOminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumAplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumAminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumBplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumBminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumABplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusMutare" placeholder="" (keyup)="sumMutare(unadjastedDailyRequirementsForm.value)" (keyup)="sumABminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalMutare" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile class="border">Masvingo</mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumOplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumOminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumAplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumAminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumBplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumBminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumABplus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusMasvingo" placeholder="" (keyup)="sumMasvingo(unadjastedDailyRequirementsForm.value)" (keyup)="sumABminus(unadjastedDailyRequirementsForm.value)">
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalMasvingo" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile class="border" [rowspan]="2">Total Daily requarement</mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oPlusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="oMinusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aPlusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="aMinusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bPlusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bMinusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abPlusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="abMinusTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="border" [rowspan]="2">
+            <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalTotalDailyRequirements" placeholder="" readonly>
+                          </mat-form-field>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+        </div>
+      </div>
+      <button mat-raised-button color="primary" type="reset">Clear</button>
+      <button mat-raised-button color="primary" type="button" (click)="saveUnadjastedDailyRequirements(unadjastedDailyRequirementsForm.value)">Save</button>
+</form>
+
+        <mat-divider></mat-divider>
+
+        <ul>
+          <li>The revised levels of daily blood needs are as follows for Bulawayo</li>
+          <li>Group O+</li>
+          <li>Group A+</li>
+          <li>Group B+</li>
+          <li>Group AB+</li>
+        </ul>
+    <mat-divider></mat-divider>
+<form [formGroup]="branchDailyMinimalCapacityForm">
+    <input type="hidden" formControlName="id">
+    <input type="hidden" formControlName="dateCreated">
+    <input type="hidden" formControlName="version">
+    <input type="hidden" formControlName="createdById">
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+
+        <div fxFlex="80%">
+        <mat-grid-list cols="8" rowHeight="25px">
+
+          <mat-grid-tile [colspan]="2" class="border">Branch Daily minimal capacity</mat-grid-tile>
+          <mat-grid-tile [colspan]="6">1</mat-grid-tile>
+
+            <mat-grid-tile class="border" [rowspan]="2"></mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Static/CBD</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Mob1</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Mob2</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Mob3</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Total Min Capacity</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">Expected Daily Collections</mat-grid-tile>
+            <mat-grid-tile class="border" [rowspan]="2">%Capacity</mat-grid-tile>
+
+            <mat-grid-tile class="border">Harare</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareStaticCbd" placeholder="" (keyup)="sumBMDCharare(branchDailyMinimalCapacityForm.value)" (keyup)="sumStaticTotal(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareMob1" placeholder="" (keyup)="sumMob1Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCharare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareMob2" placeholder="" (keyup)="sumMob2Total(branchDailyMinimalCapacityForm.value)"  (keyup)="sumBMDCharare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareMob3" placeholder="" (keyup)="sumMob3Total(branchDailyMinimalCapacityForm.value)"  (keyup)="sumBMDCharare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareTotalMinCapacity" placeholder=""  readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="harareExpectedDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="hararePercentageCapacity" placeholder="test" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border">Bulawayo</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoStaticCbd" placeholder="" (keyup)="sumStaticTotal(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCbulawayo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoMob1" placeholder="" (keyup)="sumMob1Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCbulawayo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoMob2" placeholder="" (keyup)="sumMob2Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCbulawayo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoMob3" placeholder="" (keyup)="sumMob3Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCbulawayo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoTotalMinCapacity" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoExpectedDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="bulawayoPercentageCapacity" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border">Gweru</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruStaticCbd" placeholder="" (keyup)="sumStaticTotal(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCgweru(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruMob1" placeholder="" (keyup)="sumMob1Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCgweru(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruMob2" placeholder="" (keyup)="sumMob2Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCgweru(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruMob3" placeholder="" (keyup)="sumMob3Total(branchDailyMinimalCapacityForm.value)"(keyup)="sumBMDCgweru(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruTotalMinCapacity" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruExpectedDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="gweruPercentageCapacity" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border">Mutare</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareStaticCbd" placeholder="" (keyup)="sumStaticTotal(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmutare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareMob1" placeholder="" (keyup)="sumMob1Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmutare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareMob2" placeholder="" (keyup)="sumMob2Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmutare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareMob3" placeholder="" (keyup)="sumMob3Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmutare(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareTotalMinCapacity" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutareExpectedDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="mutarePercentageCapacity" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border">Masvingo</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoStaticCbd" placeholder="" (keyup)="sumStaticTotal(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmasvingo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoMob1" placeholder="" (keyup)="sumMob1Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmasvingo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoMob2" placeholder="" (keyup)="sumMob2Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmasvingo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoMob3" placeholder="" (keyup)="sumMob3Total(branchDailyMinimalCapacityForm.value)" (keyup)="sumBMDCmasvingo(branchDailyMinimalCapacityForm.value)">
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoTotalMinCapacity" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoExpectedDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="masvingoPercentageCapacity" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border">Total</mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalStaticCbd" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalMob1" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalMob2" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalMob3" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalTotalMinCapacity" placeholder=""(onchange)="testing()" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalExDailyCollections" placeholder="" readonly>
+                          </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+              <mat-form-field class="full-width" appearance="fill">
+                            <input matInput type="number" formControlName="totalPercentageCapacity" placeholder="" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border">Fixed</mat-grid-tile>
+            <mat-grid-tile class="border">Mob</mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border">
+                <mat-form-field class="full-width" appearance="fill">
+                    <input matInput type="number" formControlName="fixedPercentage" placeholder="" readonly>
+                    <span matSuffix>%</span>
+                  </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border">
+                <mat-form-field class="full-width" appearance="fill">
+                    <input matInput type="number" formControlName="mobPercentage" placeholder="" readonly>
+                    <span matSuffix>%</span>
+                  </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+            <mat-grid-tile class="border"></mat-grid-tile>
+
+
+
+            </mat-grid-list>
+            </div>
+          </div>
+          <button mat-raised-button color="primary" type="reset">Clear</button>
+          <button mat-raised-button color="primary" type="button" (click)=saveBranchDailyMinimalCapacity(branchDailyMinimalCapacityForm.value)>Save</button>
+</form>
+    </mat-card>
+{{ branchDailyMinimalCapacityForm.value | json}}

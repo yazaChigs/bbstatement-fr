@@ -1,0 +1,5 @@
+$mhr-primary: mat-palette($mat-cyan, 800, 900);
+$mhr-accent:  mat-palette($mat-cyan, A100, A100);
+$mhr-warn:    mat-palette($mat-red);
+
+$mhr-theme: mat-light-theme($mhr-primary, $mhr-accent, $mhr-warn);

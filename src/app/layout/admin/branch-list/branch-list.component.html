@@ -1,0 +1,51 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div fxFlex="50%">
+<mat-card class="card-padding">
+    <mat-toolbar color="accent">
+        <a routerLink="/admin" mat-icon-button>
+          <mat-icon aria-label="Back">arrow_back</mat-icon>
+      </a>
+      <span class="fill-remaining-space"></span>
+        <span>BRANCH LIST</span>
+      <span class="fill-remaining-space"></span>
+      <button  mat-raised-button (click)="newBranch()"
+        color="primary">
+        <mat-icon aria-label="Add">add_circle</mat-icon>&nbsp; Add New
+    </button>
+    </mat-toolbar>
+  </mat-card>
+  <ngx-datatable class="material ngx-table-card" [rows]="list" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+    [rowHeight]="'auto'" [limit]="5">
+    <ngx-datatable-column>
+      <ng-template let-column="column" ngx-datatable-header-template>
+        Name
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.branchName}}
+      </ng-template>
+    </ngx-datatable-column>
+    <!-- <ngx-datatable-column>
+      <ng-template let-column="column" ngx-datatable-header-template>
+        Description
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.description}}
+      </ng-template>
+    </ngx-datatable-column> -->
+    <ngx-datatable-column>
+      <ng-template let-column="column" ngx-datatable-header-template>
+      </ng-template>
+      <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+        <div class="button-row">
+          <button (click)= "editBranch(row)" mat-icon-button>
+            <mat-icon>border_color</mat-icon>
+          </button>
+          <!-- <button (click)= "delete(row.id, rowIndex)" mat-icon-button>
+              <mat-icon color="warn">delete_outline</mat-icon>
+          </button> -->
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+</div>

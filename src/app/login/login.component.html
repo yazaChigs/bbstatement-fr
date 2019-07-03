@@ -1,0 +1,48 @@
+<div [class]="theme">
+  <div @animate class="container" [ngStyle]="{'margin-top.px': 70}" fxLayout fxLayout.xs="column" fxLayoutAlign="center"
+    fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div fxFlex="30%"></div>
+    <div fxFlex="30%" fxFlexOrder="3"></div>
+    <div fxFlex>
+      <!--<img class="full-width" src="./assets/images/smart-health.jpg">-->
+      <!-- <div class="main-div">
+        <img class="img-logo" src="/assets/images/u8.png" alt="Logo">
+      </div> -->
+      <mat-card class="login-card border">
+        <mat-toolbar color="primary">BLOOD BANK STATEMENT</mat-toolbar>
+        <mat-card-content>
+            <div class="main-div">
+                <img class="img-logo" src="/assets/images/u8.png" alt="Logo">
+              </div>
+          <form (keyup.enter)="login()" class=form-width>
+            <mat-form-field class="field" appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Enter your Username" [(ngModel)]="userName" name="userName" required>
+            </mat-form-field>
+
+            <mat-form-field class="field full-width" appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput placeholder="Enter your password" [(ngModel)]="password" name="password" [type]="hide ? 'password' : 'text'"
+                required>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button class="login-btn" color="primary" (click)="login()">Login</button>
+          <button (click)="forgotPassword()" class="login-btn"  mat-button color="primary">Forgot Password?</button>
+        </mat-card-actions>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <!-- <div class="footer" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+      <div fxFlex="30%"></div>
+      <div fxFlex="40%">
+          <img class="smart-image" src="./assets/images/smart-health.png">
+      </div>
+      <div fxFlex="30%"></div>
+  </div> -->
+
+</div>

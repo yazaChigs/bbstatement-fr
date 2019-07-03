@@ -1,0 +1,81 @@
+@import '~@angular/material/theming';
+.container{
+    display: flex;
+    margin-top: 20px;
+    /* height: 50px; */
+}
+.fill-remaining-space {
+    /* This fills the remaining space, by using flexbox.
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }
+// mat-card{
+//      /* top: 10px;  */
+//     width: 95%;
+//     margin: auto;
+//     margin-top: 10px;
+//     border-radius: 8px;
+//     // border: mat-color($primary);
+// }
+// mat-form-field{
+//    margin: 0px 10px ;
+// }
+
+// mat-toolbar{
+//     background: rgb(23, 130, 138);
+//     border-radius: 8px;
+//     box-shadow: 5px 5px rgb(170, 167, 167);
+// }
+.toolbar-icon{
+    font-size: 40px;
+    /*  */
+    color: white;
+    margin-bottom: 20px;
+}
+// mat-label{
+//     font-family: Helvetica, sans-serif;
+//     font-size: 16px;
+//     margin-top: 5px;
+//     margin-left: 5px;
+// }
+// h3{
+//     color: white;
+// }
+// p{
+//   color:  rgb(28, 154, 163);
+// }
+
+#listnav{
+    position: absolute;
+    right: 40px;
+    /* margin-top: -10px; */
+}
+#listnav mat-icon{
+    border: 2px solid white;
+    top:40px;
+}
+a{
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    padding-bottom: 5px;
+    margin-top: 0px
+}
+.card-padding{
+  padding: 0px;
+}
+
+.parent{
+    margin-left: 20px;
+    height: 20px;
+    margin-bottom: 30px;
+  }
+.align-text{
+  text-align: center
+}
+
+
+.div-small{
+  margin-left: 20px;
+  margin-top: 5px;
+}

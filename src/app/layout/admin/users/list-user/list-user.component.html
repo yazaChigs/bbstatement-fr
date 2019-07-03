@@ -1,0 +1,73 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+    <div fxFlex="85%">
+<mat-card class="card-padding">
+    <mat-toolbar color="accent">
+        <a routerLink="/admin/user" mat-icon-button>
+          <mat-icon aria-label="Back">arrow_back</mat-icon>
+      </a>
+      <span class="fill-remaining-space"></span>
+        <span>USER LIST</span>
+      <span class="fill-remaining-space"></span>
+      <a routerLink="/admin/user/edit" mat-raised-button
+        color="primary">
+        <mat-icon aria-label="Add">add_circle</mat-icon>&nbsp; Add New
+      </a>
+    </mat-toolbar>
+  </mat-card>
+<ngx-datatable class="material ngx-table-card" [rows]="list" [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [limit]="5">
+          <ngx-datatable-column>
+              <ng-template let-column="column" ngx-datatable-header-template>
+                  Fullname
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                   {{row.firstName}} {{row.middleName}} {{row.lastName}}
+              </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column>
+              <ng-template let-column="column" ngx-datatable-header-template>
+                 Username
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.userName}}
+              </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column>
+            <ng-template let-column="column" ngx-datatable-header-template>
+               Branch
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.branch.branchName | uppercase}}
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- <ngx-datatable-column>
+            <ng-template let-column="column" ngx-datatable-header-template>
+               Workstation
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.workstation?.name | uppercase}}
+            </ng-template>
+        </ngx-datatable-column> -->
+          <ngx-datatable-column>
+              <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                  <div class="button-row">
+                      <button mat-icon-button (click)="editUser(row)">
+                          <mat-icon>border_color</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteUser(row.id, rowIndex)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                  </div>
+              </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button (click)="openChangePasswordDialog(row)">Password</button>
+            </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+</div>
+</div>

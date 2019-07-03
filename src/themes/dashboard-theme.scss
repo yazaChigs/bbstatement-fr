@@ -1,0 +1,74 @@
+@import "~@angular/material/theming";
+
+@mixin dashboard-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+
+  .dashboard-card {
+    background-color: mat-color($primary, 300);
+  }
+  .dashboard-card:hover {
+    background: mat-color($accent);
+  }
+
+  .icon-size-large {
+    color: mat-color($primary, 900);
+    transform: scale(3);
+  }
+  .icon-size-small {
+    color: mat-color($primary, 900);
+    transform: scale(2);
+
+  }
+
+.grid-container {
+  margin: 20px;
+}
+
+.container {
+  display: flex;
+  margin: 20px;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.dashboard-card:hover {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  cursor: pointer;
+  // background-color: rgb(127, 167, 167);
+  box-shadow: 0 8px 8px rgba(10, 16, 20, 0.24), 0 0 8px rgba(10, 16, 20, 0.12) !important;
+  transform: translate3d(0, 0, 0);
+  transition: background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+.font-size-large {
+  font-size: 25px;
+  color: white;
+}
+.font-size-small {
+  font-size: 15px;
+  color: white;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+}

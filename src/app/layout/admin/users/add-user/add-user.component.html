@@ -1,0 +1,288 @@
+<mat-card class="border card-padding">
+  <mat-toolbar color="accent">
+    <a routerLink="/admin/user/list" mat-icon-button>
+        <mat-icon aria-label="Back">arrow_back</mat-icon>
+    </a>
+    <span class="fill-remaining-space"></span>
+    <span>USER INFORMATION</span>
+    <span class="fill-remaining-space"></span>
+    <button mat-raised-button [routerLink]="['/admin/user/list']" routerLinkActive="router-link-active" color="primary">
+      <mat-icon aria-label="Add">list</mat-icon>&nbsp; Users
+    </button>
+  </mat-toolbar>
+  <!-- <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div class="align-text" fxFlex="90%">
+      <mat-button-toggle-group #group="matButtonToggleGroup">
+        <mat-button-toggle (click)="accountType(false)"  [checked]="isGeneral" value="GENERAL" aria-label="General Account">
+          <span class="medical-icon-i-interpreter-services" aria-hidden="true"></span>&nbsp;GENERAL ACCOUNT
+        </mat-button-toggle>
+        <mat-button-toggle (click)="accountType(true)" [checked]="isDoc"  value="DOCTOR" aria-label="Doctor Account">
+          <span class="medical-icon-immunizations" aria-hidden="true"></span>&nbsp;DOCTOR ACCOUNT
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div> -->
+
+  <form [formGroup]="userDetailsForm" (ngSubmit)="onSubmitUserDetails(userDetailsForm.value)">
+      <app-base-form></app-base-form>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">FullName</mat-label>
+        </p>
+      </div>
+      <!-- <div *ngIf="isDoctorAccount" fxFlex="25%">
+          <mat-form-field class="full-width" appearance="outline">
+              <mat-select placeholder="Title">
+                <mat-option *ngFor="let key of titleKeys" [value]="title[key]"  (click)="selectedTitle(title[key])">
+                  {{ title[key] }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div> -->
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>First name</mat-label>
+          <input matInput placeholder="Enter first name..." formControlName="firstName">
+          <mat-error *ngFor="let validation of msg.field_required.field">
+            <mat-error *ngIf="userDetailsForm.get('firstName').hasError(validation.type) && (userDetailsForm.get('firstName').dirty || userDetailsForm.get('firstName').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input matInput placeholder="Enter last name..." formControlName="lastName">
+          <mat-error *ngFor="let validation of msg.field_required.field">
+            <mat-error *ngIf="userDetailsForm.get('lastName').hasError(validation.type) && (userDetailsForm.get('lastName').dirty || userDetailsForm.get('lastName').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="isDoctorAccount" formGroupName="physician">
+
+        <app-base-form></app-base-form>
+        <input type="hidden" formControlName="title"/>
+        <input type="hidden" formControlName="firstName" />
+        <input type="hidden" formControlName="lastName" />
+        <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+            <div fxFlex="12%">
+                <p>
+                  <mat-label class="full-width">Doctor</mat-label>
+                </p>
+              </div>
+            <div fxFlex="25%">
+                <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Practising ID</mat-label>
+                <input matInput placeholder="Enter ID..." formControlName="practisingId">
+              </mat-form-field>
+            </div>
+            <div fxFlex="25%">
+
+            </div>
+          </div>
+
+
+    </div> -->
+<!--
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Date of Birth</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <input matInput [max]="maxDate" (dateChange)="setAge(userDetailsForm.value)" [matDatepicker]="picker" placeholder="Enter Date of Birth" formControlName="dateOfBirth"
+            required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Age</mat-label>
+          <input matInput  formControlName="age" readonly>
+        </mat-form-field>
+      </div>
+    </div>
+    -->
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label>Branch</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-select placeholder="branch" formControlName="branch" [compareWith]="compareFn" required>
+            <mat-option *ngFor="let item of branches" [value]="item">
+              {{item.branchName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Gender & National Id</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-select placeholder="Gender" formControlName="gender" [compareWith]="compareFn" required>
+            <mat-option *ngFor="let key of genderKeys" [value]="gender[key]">
+              {{ gender[key] }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+<!--      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>National ID</mat-label>
+          <input matInput placeholder="Enter ID Number" formControlName="nationalId" autocomplete="off">
+        </mat-form-field>
+      </div>-->
+
+    </div>
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Email Address</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Your Username" formControlName="userName"  required>
+          <mat-hint *ngIf="serverError?.name"><span class="color-danger">{{serverError.name}}</span></mat-hint>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+
+      <div class="full-width" fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Phone Number</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Cell</mat-label>
+          <input matInput placeholder="Enter phone number..." formControlName="phoneCell">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Home</mat-label>
+          <input matInput placeholder="Enter home number..." formControlName="phoneHome">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Business</mat-label>
+          <input matInput placeholder="Enter Business number..." formControlName="phoneBusiness">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px"
+      fxLayoutGap.xs="0">
+
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Address</mat-label>
+        </p>
+      </div>
+      <div fxFlex="60%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Enter Address..." formControlName="address">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="16%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-select placeholder="Country" formControlName="country" required>
+            <mat-option value="Zimbabwe">
+              Zimbabwe
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="parent" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">User Role</mat-label>
+        </p>
+      </div>
+      <div fxFlex="20%">
+      </div>
+    </div>
+    <div class="div-small" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="0.5em" *ngFor="let role of roles">
+      <mat-checkbox  [checked]="role.selected" [disabled]="role.selected"  (change)="onChange($event)" [value]="role">{{ role.printName }}</mat-checkbox>
+    </div>
+    <div class="container" formGroupName="matching_passwords" fxLayout fxLayout.xs="column" fxLayoutAlign="right"
+      fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+        <p>
+          <mat-label class="full-width">Passwords</mat-label>
+        </p>
+      </div>
+      <div fxFlex="25%" class="form-container">
+        <mat-form-field class="full-width" appearance="outline">
+          <input matInput type="password" placeholder="Password" formControlName="password" required>
+          <mat-error *ngFor="let validation of msg.account_info.password">
+            <mat-error class="error-message" *ngIf="userDetailsForm.get('matching_passwords').get('password').hasError(validation.type) && (userDetailsForm.get('matching_passwords').get('password').dirty || userDetailsForm.get('matching_passwords').get('password').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <div fxFlex="25%" class="form-container">
+        <mat-form-field class="full-width" appearance="outline">
+          <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPassword"
+            [errorStateMatcher]="parentErrorStateMatcher" required>
+          <mat-error *ngFor="let validation of msg.account_info.confirmPassword">
+            <mat-error class="error-message" *ngIf="(userDetailsForm.get('matching_passwords').get('confirmPassword').hasError(validation.type)|| userDetailsForm.get('matching_passwords').hasError(validation.type)) && (userDetailsForm.get('matching_passwords').get('confirmPassword').dirty || userDetailsForm.get('matching_passwords').get('confirmPassword').touched)">{{validation.message}}</mat-error>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div *ngIf="changePass" fxFlex="10%" class="form-container">
+
+        <button type="button" (click)="openChangePasswordDialog()">Change Password</button>
+      </div>
+    </div>
+    <input type="hidden" formControlName="password">
+    <br>
+    <br>
+    <mat-divider></mat-divider>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="12%">
+
+      </div>
+      <div fxFlex="70%">
+        <button type="submit" mat-raised-button class="btn-md" [disabled]="!userDetailsForm.valid" color="accent">Save</button>&nbsp;
+        <button type="button" mat-raised-button class="btn-md" color="warn">Cancel</button>
+      </div>
+    </div>
+  </form>
+</mat-card>

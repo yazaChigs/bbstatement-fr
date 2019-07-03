@@ -1,0 +1,85 @@
+<mat-card class="border card-padding">
+  <mat-toolbar color="accent">
+    <a routerLink="/admin" mat-icon-button>
+        <mat-icon aria-label="Back">arrow_back</mat-icon>
+    </a>
+    <span class="fill-remaining-space"></span>
+    <span>ADD/EDIT BRANCH</span>
+    <span class="fill-remaining-space"></span>
+    <button mat-raised-button [routerLink]="['/admin/branch-list']" routerLinkActive="router-link-active" color="primary">
+      <mat-icon aria-label="Add">list</mat-icon>
+    </button>
+  </mat-toolbar>
+<form [formGroup]="branchForm">
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="20%">
+      <p>
+        <mat-label class="full-width">Branch Name</mat-label>
+      </p>
+    </div>
+    <div fxFlex="40%">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Branch Name</mat-label>
+        <input matInput placeholder="Name" formControlName="branchName" oninput="this.value = this.value.toUpperCase()" required>
+      </mat-form-field>
+    </div>
+  </div>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="20%">
+        <p>
+          <mat-label class="full-width">Address</mat-label>
+        </p>
+      </div>
+      <div fxFlex="60%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Dddress</mat-label>
+          <textarea matInput placeholder="Branch Address" formControlName="address" required></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="20%">
+        <p>
+          <mat-label class="full-width">Email</mat-label>
+        </p>
+      </div>
+      <div fxFlex="28%">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>email</mat-label>
+          <input matInput placeholder="enter email" formControlName="email" required>
+
+        </mat-form-field>
+      </div>
+    </div>
+
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="20%">
+      <p>
+        <mat-label class="full-width">Contact Number</mat-label>
+      </p>
+    </div>
+    <div fxFlex="40%">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput placeholder="Phone Number" formControlName="phoneNumber" required>
+      </mat-form-field>
+    </div>
+    <div fxFlex="40%">
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Office Phone</mat-label>
+            <input matInput placeholder="Office Phone" formControlName="officePhone" required>
+          </mat-form-field>
+      </div>
+  </div>
+
+
+    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="20%">
+      </div>
+      <div fxFlex="40%">
+        <button mat-raised-button class="btn-md" [disabled]="! branchForm.valid" color="primary" (click)="submitValues(branchForm.value)">Save</button>&nbsp;
+        <button mat-raised-button [routerLink]="['/admin/config/company-profile-list']" routerLinkActive="router-link-active" class="btn-md" color="warn">Cancel</button>
+      </div>
+    </div>
+</form>
+</mat-card>

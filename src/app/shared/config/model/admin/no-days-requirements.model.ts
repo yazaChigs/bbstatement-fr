@@ -1,0 +1,40 @@
+import { BaseModel } from 'src/app/shared/shared-model/base.model';
+
+export class NoDaysRequiremets extends BaseModel{
+  harareOplus: number;
+  harareOminus: number;
+  harareAplus: number;
+  harareBplus: number;
+  harareTotal: number;
+  harareNationalPercentage: number;
+  bulawayoOplus: number;
+  bulawayoOminus: number;
+  bulawayoAplus: number;
+  bulawayoBplus: number;
+  bulawayoTotal: number;
+  bulawayoNationalPercentage: number;
+  gweruOplus: number;
+  gweruOminus: number;
+  gweruAplus: number;
+  gweruBplus: number;
+  gweruTotal: number;
+  gweruNationalPercentage: number;
+  mutareOplus: number;
+  mutareOminus: number;
+  mutareAplus: number;
+  mutareBplus: number;
+  mutareTotal: number;
+  mutareNationalPercentage: number;
+  masvingoOplus: number;
+  masvingoOminus: number;
+  masvingoAplus: number;
+  masvingoBplus: number;
+  masvingoTotal: number;
+  masvingoNationalPercentage: number;
+  nationalRequirementsOplus: number;
+  nationalRequirementsOminus: number;
+  nationalRequirementsAplus: number;
+  nationalRequirementsBplus: number;
+  nationalRequirementsTotal: number;
+  nationalRequirementsNationalPercentage: number;
+}
