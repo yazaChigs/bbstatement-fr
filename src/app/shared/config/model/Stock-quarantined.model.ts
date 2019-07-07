@@ -36,5 +36,5 @@ export class StockQuarantined extends BaseModel {
   plt2: number;
   cryo: number;
   stockReceivedFrom: StockReceivedFrom[];
-  stockIssuedTo: StockIssuedTo[];
+  issuedToQuarantines: StockIssuedTo[];
 }

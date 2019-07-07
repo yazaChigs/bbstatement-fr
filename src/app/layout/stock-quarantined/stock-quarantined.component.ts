@@ -30,6 +30,10 @@ export class StockQuarantinedComponent implements OnInit {
   selected: Branch;
   branchId: number;
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
+  initOpeningStock = 0;
+  initTotalReceipts = 0;
+  initTotalIssues = 0;
+  initTotalDiscards = 0;
 
 
   constructor(private branchService: BranchService, private qStockService: QuarantinedStockService, private fb: FormBuilder) { }
@@ -40,6 +44,8 @@ export class StockQuarantinedComponent implements OnInit {
     this.createForms();
     this.loadBranches();
     this.getAllBranches();
+    // this.loadStockIssuedTo();
+
        // this.quarantinedStockForm.get('branch').patchValue(localStorage.getItem('BRANCH_NAME'));
   }
   getUserBranch(branchId): Branch {
@@ -58,6 +64,11 @@ export class StockQuarantinedComponent implements OnInit {
     );
     return this.selected;
   }
+
+  // calculateDefaluts() {
+  //   console.log('bhoo imomo');
+  //   this.initOpeningStock = Number(this.quarantinedStockForm.get('openingStock').value);
+  // }
 
   createForms() {
     this.quarantinedStockForm = this.fb.group({
@@ -97,11 +108,11 @@ export class StockQuarantinedComponent implements OnInit {
       plt1: new FormControl(),
       plt2: new FormControl(),
       cryo: new FormControl(),
-      stockReceivedFrom: this.fb.array([
-        this.initStockReceivedFrom()
+      receivedFromQuarantineds: this.fb.array([
+        // this.initStockReceivedFrom()
       ]),
-      stockIssuedTo: this.fb.array([
-        this.initStockIssuedTo()
+      issuedToQuarantines: this.fb.array([
+        // this.initStockIssuedTo()
       ])
     });
   }
@@ -139,9 +150,18 @@ export class StockQuarantinedComponent implements OnInit {
     this.mobile06 = Math.round((this.quarantinedStockForm.get('mobile06').value / 15) * 100);
   }
 
-  QuarantineStock(value): number {
-    return this.OpeningStock(value) + this.sumCollections(value) + this.sumReceived(value)
-     - this.sumDiscards(value) - this.sumIssues(value);
+  QuarantineStock(value) {
+    let total = 0;
+    // total =
+    //  this.OpeningStock(value)
+    // // + this.sumCollections(value) -
+    // this.sumDiscards(value)
+    // + this.quarantinedStockForm.get('totalIssues').value
+    // - this.quarantinedStockForm.get('totalReceiptsFromBranches').value;
+    // + this.sumReceived(value)
+
+      // - this.sumIssues(value);
+      return total;
   }
 
   sumCollections(value): number {
@@ -155,8 +175,8 @@ export class StockQuarantinedComponent implements OnInit {
   sumIssues(value): number {
     let total = 0;
     total = value.issueTogroupMismatchesToRefLab;
-    value.stockIssuedTo.forEach(item => {
-      total += item.issuedTo;
+    value.issuedToQuarantines.forEach(item => {
+      total += Number(item.issuedTo);
     });
     this.quarantinedStockForm.get('totalIssues').setValue(total);
     return total;
@@ -171,11 +191,13 @@ export class StockQuarantinedComponent implements OnInit {
     return total;
   }
 
-  sumReceived(value): number {
+  sumReceived(vaue): number {
+    console.log('sumRecieved');
     let total = 0;
-    total = value.referenceLaboratory;
-    value.stockReceivedFrom.forEach(item => {
-      total += item.receivedFrom;
+    total = this.quarantinedStockForm.get('referenceLaboratory').value;
+    this.StockReceivedFromArray.controls.forEach((item, index) => {
+      const valueTotal = Number(this.getStockReceivedFromControls()[index].value.receivedFrom);
+      total += valueTotal;
     });
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(total);
     return total;
@@ -185,9 +207,9 @@ export class StockQuarantinedComponent implements OnInit {
     console.log(value);
     this.qStockService.save(value).subscribe(
       result => {
-
-        this.stockQuarantined = result;
-
+        this.stockQuarantined = result.stockQuarantined;
+        console.log(result.stockQuarantined);
+        console.log(result.message);
       },
       error => {
          console.log(error.error);
@@ -196,6 +218,17 @@ export class StockQuarantinedComponent implements OnInit {
        this.populateForm(this.stockQuarantined);
       }
     );
+  }
+  populateNewForm() {
+    console.log('reseting');
+    this.quarantinedStockForm.get('id').setValue('');
+    this.quarantinedStockForm.get('dateCreated').setValue('');
+    this.quarantinedStockForm.get('version').setValue('');
+    this.quarantinedStockForm.get('createdById').setValue('');
+    this.quarantinedStockForm.get('issuedToQuarantines').reset();
+    this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
+    // this.
+    // this.loadStockIssuedTo();
   }
 
   populateForm(item) {
@@ -235,26 +268,46 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('plt1').setValue(item.plt1);
     this.quarantinedStockForm.get('plt2').setValue(item.plt2);
     this.quarantinedStockForm.get('cryo').setValue(item.cryo);
-    // this.quarantinedStockForm.get('stockReceivedFrom').setValue(item.stockReceivedFrom);
-    // this.quarantinedStockForm.get('stockIssuedTo').setValue(item.stockIssuedTo);
-    // this.quarantinedStockForm.get('todaysDate').setValue(item.todaysDate);
-    // this.quarantinedStockForm.get('todaysDate').setValue(item.todaysDate);
-    // if (item.stockIssuedTo.length > 0) {
-    //   this.StockIssuedToArray.removeAt(0);
-    // }
-    item.stockIssuedTo.forEach(complaint => {
-      this.StockIssuedToArray.push(
+
+    this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
+    if (item.receivedFromQuarantineds.length > 0) {
+      item.receivedFromQuarantineds.forEach(element => {
+        this.StockReceivedFromArray.removeAt(0);
+      });
+    }
+    console.log(item.receivedFromQuarantineds);
+    item.receivedFromQuarantineds.forEach(complaint => {
+     if (complaint.receivedFrom !== null) {
+        this.StockReceivedFromArray.push(
+        this.fb.group({
+          id: new FormControl(complaint.id),
+          version: new FormControl(complaint.version),
+          createdById: new FormControl(complaint.createdById),
+          dateCreated: new FormControl(complaint.dateCreated),
+          receivedFrom: new FormControl(complaint.receivedFrom),
+        })
+      );
+     }
+    });
+    this.quarantinedStockForm.get('issuedToQuarantines').reset();
+    if (item.issuedToQuarantines.length > 0) {
+      item.issuedToQuarantines.forEach(element => {
+        this.StockIssuedToArray.removeAt(0);
+      });
+    }
+    console.log(item.issuedToQuarantines);
+    item.issuedToQuarantines.forEach(complaint => {
+     if (complaint.issuedTo !== null) {
+        this.StockIssuedToArray.push(
         this.fb.group({
           id: new FormControl(complaint.id),
           version: new FormControl(complaint.version),
           createdById: new FormControl(complaint.createdById),
           dateCreated: new FormControl(complaint.dateCreated),
           issuedTo: new FormControl(complaint.issuedTo),
-          // complaintPeriod: new FormControl(complaint.complaintPeriod),
-          // duration: new FormControl(complaint.duration),
-          // notes: new FormControl(complaint.notes)
         })
       );
+     }
     });
   }
 
@@ -268,13 +321,17 @@ export class StockQuarantinedComponent implements OnInit {
     });
   }
   get StockReceivedFromArray() {
-    return this.quarantinedStockForm.get('stockReceivedFrom') as FormArray;
+    return this.quarantinedStockForm.get('receivedFromQuarantineds') as FormArray;
+  }
+  getStockReceivedFromControls() {
+    return (<FormArray>this.quarantinedStockForm.get('receivedFromQuarantineds')).controls;
   }
   loadStockReceivedFrom() {
     this.branches.forEach(ds => {
       this.StockReceivedFromArray.push(this.initStockReceivedFrom());
     });
  }
+
 
  initStockIssuedTo() {
   return this.fb.group({
@@ -286,7 +343,7 @@ export class StockQuarantinedComponent implements OnInit {
   });
 }
 get StockIssuedToArray() {
-  return this.quarantinedStockForm.get('stockIssuedTo') as FormArray;
+  return this.quarantinedStockForm.get('issuedToQuarantines') as FormArray;
 }
 loadStockIssuedTo() {
   this.branches.forEach(ds => {
@@ -305,8 +362,8 @@ loadStockIssuedTo() {
        console.log(error.error);
      },
      () => {
-       this.loadStockReceivedFrom();
-       this.loadStockIssuedTo();
+      //  this.loadStockReceivedFrom();
+      //  this.loadStockIssuedTo();
      }
    );
  }
@@ -335,29 +392,27 @@ getUserBranches() {
     },
     error => {
       console.log(error.error);
-    },
-    () => {
-      // this.loadStockReceivedFrom();
-      // this.loadStockIssuedTo();
     }
   );
 }
-
  getInitvalues(branchId) {
-  console.log(branchId);
   this.qStockService.getAvailableStock(branchId).subscribe(
      result => {
       this.stockQuarantined = result;
+      if (this.stockQuarantined !== null && this.stockQuarantined.issuedToQuarantines.length === 0) {
+        console.log('hamuna chinhu');
+        // this.loadStockIssuedTo();
+      }
+      if (this.stockQuarantined != null) {
+        this.populateForm(this.stockQuarantined);
+      } else {
+        this.populateNewForm();
+      }
       console.log(result);
-
     },
     error => {
        console.log(error.error);
     },
-    () => {
-
-     this.populateForm(this.stockQuarantined);
-    }
    );
  }
  compareByValue(f1: any, f2: any) {

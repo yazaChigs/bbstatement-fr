@@ -12,6 +12,10 @@
   </mat-toolbar>
 
   <form [formGroup]="availableStockForm">
+<input type="hidden" formControlName="id">
+<input type="hidden" formControlName="dateCreated">
+<input type="hidden" formControlName="version">
+<input type="hidden" formControlName="createdById">
 
 
       <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -92,7 +96,7 @@
                 </div>
 
  <!-- form array begins -->
-                <div formArrayName="stockReceivedFrom">
+                <!-- <div formArrayName="stockReceivedFrom">
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
                 *ngFor="let item of branches index as i; last as isLast"
               [formGroupName]="i">
@@ -109,7 +113,30 @@
                 </div>
                 </div>
 
+              </div> -->
+              <div formArrayName="receivedFromAvailable">
+                <!-- <input type="hidden" formControlName="id">
+                <input type="hidden" formControlName="dateCreated">
+                <input type="hidden" formControlName="version">
+                <input type="hidden" formControlName="createdById">
+                <input type="hidden" formControlName="branchName"> -->
+              <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
+              *ngFor="let item of StockReceivedFromArray.controls; index as i; last as isLast"
+            [formGroupName]="i">
+              <div fxFlex="12%">
+                <p>
+                  <mat-label class="full-width">Received from {{branches[i].branchName}}</mat-label>
+                </p>
               </div>
+              <div fxFlex="25%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label></mat-label>
+                      <input matInput formControlName="receivedFrom" type="number" placeholder="Bulawayo" (keyup)="sumReceived(availableStockForm.value)">
+                    </mat-form-field>
+              </div>
+              </div>
+            </div>
+
               <!-- form array ends -->
 
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -165,7 +192,29 @@
                         </mat-form-field>
                   </div>
                 </div>
-                <div formArrayName="stockIssuedTo">
+                <div formArrayName="issuedToAvailable">
+                  <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
+                  *ngFor="let item of StockIssuedToArray.controls; index as j; last as isLast"
+                [formGroupName]="j">
+                <input type="hidden" formControlName="id">
+                <input type="hidden" formControlName="dateCreated">
+                <input type="hidden" formControlName="version">
+                <input type="hidden" formControlName="createdById">
+                <!-- <input type="hidden" formControlName="branchName"> -->
+                  <div fxFlex="12%">
+                    <p>
+                      <mat-label class="full-width">Issued to {{branches[j].branchName}}</mat-label>
+                    </p>
+                  </div>
+                  <div fxFlex="25%">
+                      <mat-form-field class="full-width" appearance="outline">
+                          <mat-label></mat-label>
+                          <input matInput formControlName="issuedTo" type="number" placeholder=""  (keyup)="sumIssued(availableStockForm.value)">
+                        </mat-form-field>
+                  </div>
+                  </div>
+                </div>
+                <!-- <div formArrayName="stockIssuedTo">
                   <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
                   *ngFor="let item of branches index as j; last as isLast"
                 [formGroupName]="j">
@@ -181,7 +230,8 @@
                         </mat-form-field>
                   </div>
                   </div>
-                </div>
+                </div> -->
+
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
                     <div fxFlex="12%">
                       <p>
@@ -324,7 +374,7 @@
                     <mat-grid-tile class="border">O</mat-grid-tile>
                     <mat-grid-tile class="border">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="rhPositiveWbO" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="availableStockForm.value">
+                            <input matInput formControlName="rhPositiveWbO" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border">
                         <mat-form-field class="full-width" appearance="fill">
@@ -532,7 +582,7 @@
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="totalPercentageOfTotal" type="number" class="right-align" placeholder="">
+                            <input matInput formControlName="totalPercentageOfTotal" value="100" type="number" class="right-align" placeholder="">
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
                   </mat-grid-list>

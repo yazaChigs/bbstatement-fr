@@ -12,7 +12,10 @@
   </mat-toolbar>
 
 <form [formGroup]="quarantinedStockForm">
-<input type="hidden" formControlName="id">
+  <input type="hidden" formControlName="id">
+  <input type="hidden" formControlName="dateCreated">
+  <input type="hidden" formControlName="version">
+  <input type="hidden" formControlName="createdById">
 
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
     <div fxFlex="25%">
@@ -39,10 +42,10 @@
   <div fxFlex="15%"><mat-card class="infor-card"><p>Collections</p></mat-card></div>
   <div fxFlex="15%"><mat-card class="infor-card"><p>Quarantine Stock <strong>{{QuarantineStock(quarantinedStockForm.value)}}</strong></p></mat-card></div>
   <div fxFlex="15%"><mat-card class="infor-card">
-    <p>Opening: <strong>{{OpeningStock(quarantinedStockForm.value)}} </strong></p>
-    <p>Receipts <strong>{{sumReceived(quarantinedStockForm.value)}} </strong></p>
-    <p>Issues <strong>{{sumIssues(quarantinedStockForm.value)}} </strong></p>
-    <p> Discards <strong>{{sumDiscards(quarantinedStockForm.value)}} </strong></p>
+    <p>Opening: <strong>{{initOpeningStock}} </strong></p>
+    <p>Receipts <strong>{{initTotalReceipts}} </strong></p>
+    <p>Issues <strong>{{initTotalIssues}} </strong></p>
+    <p> Discards <strong>{{initTotalDiscards}} </strong></p>
   </mat-card>
 </div>
 </div>
@@ -69,7 +72,7 @@
       <div fxFlex="25%">
           <mat-form-field class="full-width" appearance="outline">
               <mat-label>Opening Stock</mat-label>
-              <input type="number" matInput formControlName="openingStock" placeholder="Opening Stock" (keyup)="sumCollections(quarantinedStockForm.value)">
+              <input type="number" [(ngModel)]="initOpeningStock" matInput formControlName="openingStock" placeholder="Opening Stock" value="0" (keyup)="sumCollections(quarantinedStockForm.value)">
             </mat-form-field>
       </div>
       <div fxFlex="6%">
@@ -172,19 +175,19 @@
       </mat-expansion-panel-header>
 
 
-      <div formArrayName="stockReceivedFrom">
+      <div formArrayName="receivedFromQuarantineds">
         <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
-        *ngFor="let item of branches index as i; last as isLast"
+        *ngFor="let item of StockReceivedFromArray.controls; index as i; last as isLast"
       [formGroupName]="i">
         <div fxFlex="12%">
           <p>
-            <mat-label class="full-width">Received from {{item.branchName}}</mat-label>
+            <mat-label class="full-width">Received from {{branches[i].branchName}}</mat-label>
           </p>
         </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
-                <mat-label>{{item.branchName}}</mat-label>
-                <input matInput formControlName="receivedFrom" type="number" placeholder="Bulawayo" (keyup)="sumReceived(quarantinedStockForm.value)">
+                <mat-label></mat-label>
+                <input matInput formControlName="receivedFrom" type="number" placeholder="Bulawayo" (keyup)="sumReceived()">
               </mat-form-field>
         </div>
         </div>
@@ -198,7 +201,7 @@
           <div fxFlex="25%">
               <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Reference Laboratory</mat-label>
-                  <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived(quarantinedStockForm.value)">
+                  <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived()">
                 </mat-form-field>
           </div>
           <div fxFlex="12%"></div>
@@ -212,7 +215,7 @@
                 </div>
                 <div fxFlex="10%">
                     <mat-form-field class="full-width" appearance="outline">
-                        <input matInput formControlName="totalReceiptsFromBranches" type="number" placeholder="total">
+                        <input matInput formControlName="totalReceiptsFromBranches" [(ngModel)]="initTotalReceipts" type="number" placeholder="total">
                       </mat-form-field>
                 </div>
               </div>
@@ -385,7 +388,7 @@
                     </div>
                     <div fxFlex="10%">
                         <mat-form-field class="full-width" appearance="outline">
-                            <input matInput formControlName="totalIssuesDiscards" type="number" placeholder="total">
+                            <input matInput formControlName="totalIssuesDiscards" [(ngModel)]="initTotalDiscards" type="number" placeholder="total">
                           </mat-form-field>
                     </div>
                   </div>
@@ -404,18 +407,22 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <div formArrayName="stockIssuedTo">
+      <div formArrayName="issuedToQuarantines">
         <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0"
-        *ngFor="let item of branches index as j; last as isLast"
+        *ngFor="let item of StockIssuedToArray.controls; index as j; last as isLast"
       [formGroupName]="j">
+      <input type="hidden" formControlName="id">
+      <input type="hidden" formControlName="dateCreated">
+      <input type="hidden" formControlName="version">
+      <input type="hidden" formControlName="createdById">
         <div fxFlex="12%">
           <p>
-            <mat-label class="full-width">Issued to {{item.branchName}}</mat-label>
+            <mat-label class="full-width">Issued to {{branches[j].branchName}}</mat-label>
           </p>
         </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
-                <mat-label>{{item.branchName}}</mat-label>
+                <mat-label></mat-label>
                 <input matInput formControlName="issuedTo" type="number" placeholder="" (keyup)="sumIssues(quarantinedStockForm.value)">
               </mat-form-field>
         </div>
@@ -444,7 +451,7 @@
                 </div>
                 <div fxFlex="10%">
                     <mat-form-field class="full-width" appearance="outline">
-                        <input matInput formControlName="totalIssues" type="number" placeholder="total">
+                        <input matInput formControlName="totalIssues" type="number" [(ngModel)]="initTotalIssues" placeholder="total">
                       </mat-form-field>
                 </div>
               </div>

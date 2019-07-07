@@ -40,11 +40,7 @@ export class StockAvailableComponent implements OnInit {
     this.createForms();
     this.loadBranches();
     this.getAllBranches();
-    // const toSelect = this.AllBranches.find(c => c.id === this.branchId);
-    // this.availableStockForm.get('_branch').setValue(toSelect);
     this.getInitvalues(this.branchId);
-    // this.populateForm()
-    // this.availableStockForm.get('branch').patchValue(localStorage.getItem('BRANCH_NAME'));
 
   }
   createForms() {
@@ -176,30 +172,79 @@ export class StockAvailableComponent implements OnInit {
       plt2: new FormControl(),
       cryo: new FormControl(),
       paedPacks: new FormControl(),
-      stockReceivedFrom: this.fb.array([
-        this.initStockReceivedFrom()
+      receivedFromAvailable: this.fb.array([
+        // this.initStockReceivedFrom()
       ]),
-      stockIssuedTo: this.fb.array([
-        this.initStockIssuedTo()
+      issuedToAvailable: this.fb.array([
+        // this.initStockIssuedTo()
       ])
     });
   }
+
 getUserBranch(): Branch {
   this.branchService.getItem(this.branchId).subscribe(
     result => {
       this.selected = result;
-      console.log(this.selected);
     }
   );
   return this.selected;
 }
 
+  populateNewForm() {
+    this.availableStockForm.get('id').setValue('');
+    this.availableStockForm.get('dateCreated').setValue('');
+    this.availableStockForm.get('version').setValue('');
+    this.availableStockForm.get('createdById').setValue('');
+  }
   populateForm(item) {
     this.availableStockForm.get('id').setValue(item.id);
     this.availableStockForm.get('dateCreated').setValue(item.dateCreated);
-    this.availableStockForm.get('timeCreated').setValue(item.timeCreated);
     this.availableStockForm.get('version').setValue(item.version);
     this.availableStockForm.get('createdById').setValue(item.createdById);
+    // this.availableStockForm.get('branchName').setValue(item.brancName);
+
+    this.availableStockForm.get('receivedFromAvailable').reset();
+    if (item.receivedFromAvailable.length > 0) {
+      item.receivedFromAvailable.forEach(element => {
+        this.StockReceivedFromArray.removeAt(0);
+      });
+    }
+    console.log(item.receivedFromAvailable);
+    item.receivedFromAvailable.forEach(complaint => {
+     if (complaint.receivedFrom !== null) {
+        this.StockReceivedFromArray.push(
+        this.fb.group({
+          id: new FormControl(complaint.id),
+          version: new FormControl(complaint.version),
+          createdById: new FormControl(complaint.createdById),
+          dateCreated: new FormControl(complaint.dateCreated),
+          branchName: new FormControl(complaint.branchName),
+          receivedFrom: new FormControl(complaint.receivedFrom),
+        })
+      );
+     }
+    });
+    this.availableStockForm.get('issuedToAvailable').reset();
+    if (item.issuedToAvailable.length > 0) {
+      item.issuedToAvailable.forEach(element => {
+        this.StockIssuedToArray.removeAt(0);
+      });
+    }
+    console.log(item.issuedToAvailable);
+    item.issuedToAvailable.forEach(complaint => {
+     if (complaint.issuedTo !== null) {
+        this.StockIssuedToArray.push(
+        this.fb.group({
+          id: new FormControl(complaint.id),
+          version: new FormControl(complaint.version),
+          createdById: new FormControl(complaint.createdById),
+          dateCreated: new FormControl(complaint.dateCreated),
+          branchName: new FormControl(complaint.branchName),
+          issuedTo: new FormControl(complaint.issuedTo),
+        })
+      );
+     }
+    });
   }
 
   getAllBranches() {
@@ -237,23 +282,25 @@ getUserBranch(): Branch {
     this.availableStockService.getAvailableStock(branchId).subscribe(
      result => {
       this.stockAvailable = result;
+      if (this.stockAvailable != null) {
+        this.populateForm(this.stockAvailable);
+      } else {
+        this.populateNewForm();
+      }
       console.log(this.stockAvailable);
      },
      error => {
         console.log(error.error);
      },
-     () => {
-
-      this.populateForm(this.stockAvailable);
-     }
     );
   }
 
   saveStockAvailable(value) {
     this.availableStockService.save(value).subscribe(
       result => {
-        this.stockAvailable = result;
-
+        this.stockAvailable = result.stockAvailable;
+        console.log(this.stockAvailable);
+        console.log(result.message);
       },
       error => {
          console.log(error.error);
@@ -263,13 +310,49 @@ getUserBranch(): Branch {
       }
     );
   }
+  initStockReceivedFrom(ds?) {
+    return this.fb.group({
+      id: new FormControl(),
+      version: new FormControl(),
+      createdById: new FormControl(),
+      dateCreated: new FormControl(),
+    branchName: new FormControl(ds.branchName),
+    receivedFrom: new FormControl(),
+    });
+  }
+  get StockReceivedFromArray() {
+    return this.availableStockForm.get('receivedFromAvailable') as FormArray;
+  }
+  loadStockReceivedFrom() {
+    this.branches.forEach(ds => {
+      this.StockReceivedFromArray.push(this.initStockReceivedFrom(ds));
+    });
+ }
 
+ initStockIssuedTo(ds?) {
+  return this.fb.group({
+    id: new FormControl(),
+    version: new FormControl(),
+    createdById: new FormControl(),
+    dateCreated: new FormControl(),
+    branchName: new FormControl(ds.branchName),
+    issuedTo: new FormControl(),
+  });
+}
+get StockIssuedToArray() {
+  return this.availableStockForm.get('issuedToAvailable') as FormArray;
+}
+loadStockIssuedTo() {
+  this.branches.forEach(ds => {
+    this.StockIssuedToArray.push(this.initStockIssuedTo(ds));
+  });
+}
 // ***************calculations*****************
   sumReceived(value?) {
     let total = 0;
     total = value.openingStock + value.receivedFromQuarantine;
-    value.stockReceivedFrom.forEach(item => {
-      total += item.receivedFrom;
+    value.receivedFromAvailable.forEach(item => {
+    total += Number(item.receivedFrom);
     });
     this.availableStockForm.get('totalAvailable').setValue(total);
     this.cardStockAvailable =  total - value.totalIssues;
@@ -280,8 +363,8 @@ getUserBranch(): Branch {
     let total = 0;
     total = value.hospitals + value.receicedFromQuarantine + value.issueToCompats
      + value.expired + value.disasters + value.haemolysed_clots_other + value.wholeBloodToPackedCells;
-    value.stockIssuedTo.forEach(item => {
-      total += item.issuedTo;
+    value.issuedToAvailable.forEach(item => {
+      total += Number(item.issuedTo);
     });
     this.availableStockForm.get('totalIssues').setValue(total);
     this.cardStockAvailable =  value.totalAvailable - total;
@@ -350,11 +433,23 @@ getUserBranch(): Branch {
      value.rhNegativePaedPcB + value.rhNegativePaedPcAB;
     this.availableStockForm.get('totalRhNegativePaedPc').setValue(total);
   }
-  totalVertical(value) {
+  totalVertical() {
     let total = 0;
-    total = value.totalO + value.totalA +
-     value.totalB + value.totalAB;
+    total = this.availableStockForm.get('totalO').value
+    + this.availableStockForm.get('totalA').value
+    + this.availableStockForm.get('totalB').value
+    + this.availableStockForm.get('totalAB').value;
     this.availableStockForm.get('totalTotal').setValue(total);
+
+    this.availableStockForm.get('percentagefTotalO').setValue(
+      ( Math.round((this.availableStockForm.get('totalO').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalA').setValue(
+      ( Math.round((this.availableStockForm.get('totalA').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalB').setValue(
+      ( Math.round((this.availableStockForm.get('totalB').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalAB').setValue(
+      ( Math.round((this.availableStockForm.get('totalAB').value / total) * 100)));
+
   }
 
   totalO(value) {
@@ -369,6 +464,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbO +
     value.rhNegativePaedPcO;
     this.availableStockForm.get('totalO').setValue(total);
+    this.totalVertical();
   }
   totalA(value) {
     let total = 0;
@@ -382,6 +478,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbA +
     value.rhNegativePaedPcA;
     this.availableStockForm.get('totalA').setValue(total);
+    this.totalVertical();
   }
   totalB(value) {
     let total = 0;
@@ -395,6 +492,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbB +
     value.rhNegativePaedPcB;
     this.availableStockForm.get('totalB').setValue(total);
+    this.totalVertical();
   }
   totalAB(value) {
     let total = 0;
@@ -408,6 +506,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbAB +
     value.rhNegativePaedPcAB;
     this.availableStockForm.get('totalAB').setValue(total);
+    this.totalVertical();
   }
   totalHorizontal(value) {
     let total = 0;
@@ -472,11 +571,22 @@ getUserBranch(): Branch {
      value.rhNegativePaedPcBcompatibility + value.rhNegativePaedPcABcompatibility;
     this.availableStockForm.get('totalRhNegativePaedPccompatibility').setValue(total);
   }
-  comTotalVertical(value) {
+  comTotalVertical() {
     let total = 0;
-    total = value.totalOcompatibility + value.totalAcompatibility +
-     value.totalBcompatibility + value.totalABcompatibility;
+    total = this.availableStockForm.get('totalOcompatibility').value
+    + this.availableStockForm.get('totalAcompatibility').value
+    + this.availableStockForm.get('totalBcompatibility').value
+    + this.availableStockForm.get('totalABcompatibility').value;
     this.availableStockForm.get('totalTotalcompatibility').setValue(total);
+
+    this.availableStockForm.get('percentageOfTotalOcompatibility').setValue(
+      ( Math.round((this.availableStockForm.get('totalOcompatibility').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalAcompatibility').setValue(
+      ( Math.round((this.availableStockForm.get('totalAcompatibility').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalBcompatibility').setValue(
+      ( Math.round((this.availableStockForm.get('totalBcompatibility').value / total) * 100)));
+    this.availableStockForm.get('percentageOfTotalABcompatibility').setValue(
+      ( Math.round((this.availableStockForm.get('totalABcompatibility').value / total) * 100)));
   }
 
   comTotalO(value) {
@@ -491,6 +601,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbOcompatibility +
     value.rhNegativePaedPcOcompatibility;
     this.availableStockForm.get('totalOcompatibility').setValue(total);
+    this.comTotalVertical();
   }
   comTotalA(value) {
     let total = 0;
@@ -504,6 +615,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbAcompatibility +
     value.rhNegativePaedPcAcompatibility;
     this.availableStockForm.get('totalAcompatibility').setValue(total);
+    this.comTotalVertical();
   }
   comTotalB(value) {
     let total = 0;
@@ -517,6 +629,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbBcompatibility +
     value.rhNegativePaedPcBcompatibility;
     this.availableStockForm.get('totalBcompatibility').setValue(total);
+    this.comTotalVertical();
   }
   comTotalAB(value) {
     let total = 0;
@@ -530,6 +643,7 @@ getUserBranch(): Branch {
     value.rhNegativePaedWbABcompatibility +
     value.rhNegativePaedPcABcompatibility;
     this.availableStockForm.get('totalABcompatibility').setValue(total);
+    this.comTotalVertical();
   }
   comTotalHorizontal(value) {
     let total = 0;
@@ -553,41 +667,7 @@ getUserBranch(): Branch {
 
 
 
-  initStockReceivedFrom() {
-    return this.fb.group({
-      id: new FormControl(),
-      version: new FormControl(),
-      createdById: new FormControl(),
-      dateCreated: new FormControl(),
-      receivedFrom: new FormControl(),
-    });
-  }
-  get StockReceivedFromArray() {
-    return this.availableStockForm.get('stockReceivedFrom') as FormArray;
-  }
-  loadStockReceivedFrom() {
-    this.branches.forEach(ds => {
-      this.StockReceivedFromArray.push(this.initStockReceivedFrom());
-    });
- }
 
- initStockIssuedTo() {
-  return this.fb.group({
-    id: new FormControl(),
-    version: new FormControl(),
-    createdById: new FormControl(),
-    dateCreated: new FormControl(),
-    issuedTo: new FormControl(),
-  });
-}
-get StockIssuedToArray() {
-  return this.availableStockForm.get('stockIssuedTo') as FormArray;
-}
-loadStockIssuedTo() {
-  this.branches.forEach(ds => {
-    this.StockIssuedToArray.push(this.initStockIssuedTo());
-  });
-}
 compareByValue(f1: any, f2: any) {
   return f1 && f2 && f1.id === f2.id;
 }

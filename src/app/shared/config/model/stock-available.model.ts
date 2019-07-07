@@ -126,7 +126,7 @@ export class StockAvailable extends BaseModel{
   plt2: number;
   cryo: number;
   paedPacks: number;
-  stockReceivedFrom: StockReceivedFrom[];
-stockIssuedTo: StockIssuedTo[];
+  receivedFromAvailable: StockReceivedFrom[];
+issuedToAvailable: StockIssuedTo[];
 
 }

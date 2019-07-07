@@ -14,7 +14,7 @@ export class QuarantinedStockService {
 constructor(private http: HttpClient, private global: Global) { }
 
 public save(item: StockQuarantined): Observable<any> {
-  console.log(this.saveAvailableStockUrl);
+  console.log(item);
   return this.http.post<StockQuarantined>(this.saveAvailableStockUrl, item);
 }
 
