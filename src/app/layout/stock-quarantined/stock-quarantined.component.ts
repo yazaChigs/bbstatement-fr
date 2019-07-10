@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { QuarantinedStockService } from '../../shared/config/service/quarantined-stock.service';
 import { Branch } from 'src/app/shared/config/model/admin/branch.model';
 import { StockQuarantined } from 'src/app/shared/config/model/Stock-quarantined.model';
 import { BranchService } from 'src/app/shared/config/service/admin/branch.service';
 import { error } from '@angular/compiler/src/util';
+import { DataManagementService } from '../../shared/config/service/admin/dataManagement.service';
+import { BranchDailyMinimalCapacity } from '../../shared/config/model/admin/branch-daily-minimal-capacity.model';
 
 @Component({
   selector: 'app-stock-quarantined',
   templateUrl: './stock-quarantined.component.html',
-  styleUrls: ['./stock-quarantined.component.css']
+  styleUrls: ['./stock-quarantined.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush // this line
 })
 export class StockQuarantinedComponent implements OnInit {
 
@@ -19,7 +22,7 @@ export class StockQuarantinedComponent implements OnInit {
   branches: Branch[];
   userBranch: Branch;
   branchesSize: number;
-  stockQuarantined: StockQuarantined;
+  stockQuarantined: StockQuarantined = new StockQuarantined();
   // branch: object;
   harareCbd = 0;
   staticHq = 0;
@@ -34,12 +37,17 @@ export class StockQuarantinedComponent implements OnInit {
   initTotalReceipts = 0;
   initTotalIssues = 0;
   initTotalDiscards = 0;
+  initCollections = 0;
+  initCollectionsFromDb = 0;
+  branchTotalMinCapacity: BranchDailyMinimalCapacity = new BranchDailyMinimalCapacity();
 
 
-  constructor(private branchService: BranchService, private qStockService: QuarantinedStockService, private fb: FormBuilder) { }
+  constructor(private branchService: BranchService, private dataManService: DataManagementService,
+              private qStockService: QuarantinedStockService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
+    this.getBranchTotalMinCapacity();
     // this.getUserBranch(this.branchId);
     this.createForms();
     this.loadBranches();
@@ -48,6 +56,46 @@ export class StockQuarantinedComponent implements OnInit {
 
        // this.quarantinedStockForm.get('branch').patchValue(localStorage.getItem('BRANCH_NAME'));
   }
+
+  collectionsBgColor() {
+    console.log(this.stockQuarantined.totalCollections);
+    let value;
+  //   if (this.branchTotalMinCapacity.harareTotalMinCapacity !== null && this.branchTotalMinCapacity.harareTotalMinCapacity !== undefined) {
+  //   value = (this.stockQuarantined.totalCollections - this.stockQuarantined.openingStock)
+  //   / this.branchTotalMinCapacity.harareTotalMinCapacity;
+  //   if (value !== undefined && value !== null) {
+  //     if (value >= 1) { return 'purple'; }
+  //     if (value >= 0.75 && value < 1) { return 'green'; }
+  //     if (value >= 0.4 && value < 0.75) { return 'orange'; }
+  //     if (value >= 0 && value < 0.4) { return 'green'; } else { return 'pink'; }
+  //   }
+  // }
+  }
+  colorIndicator(value): string {
+    if (value !== undefined && value !== null) {
+    if (value >= 1) { return 'purple'; }
+    if (value >= 0.75 && value < 1) { return 'green'; }
+    if (value >= 0.40 && value < 0.75) { return 'orange'; }
+    if (value >= 0 && value < 0.4) { return 'red'; } else { return 'pink'; }
+    }
+  }
+
+  staticHqColor(): string {
+    return this.colorIndicator(this.quarantinedStockForm.get('staticHq01').value / 15);
+    }
+  harareCbdColor(): string {
+    return this.colorIndicator(this.quarantinedStockForm.get('harareCbd03').value / 15);
+    }
+    mobile04Color(): string {
+    return this.colorIndicator(this.quarantinedStockForm.get('mobile04').value / 40);
+    }
+    mobile02Color(): string {
+    return this.colorIndicator(this.quarantinedStockForm.get('mobile02').value / 40);
+    }
+    mobile06Color(): string {
+      return this.colorIndicator(this.quarantinedStockForm.get('mobile06').value / 40);
+      }
+
   getUserBranch(branchId): Branch {
     this.branchService.getItem(this.branchId).subscribe(
       result => {
@@ -65,10 +113,6 @@ export class StockQuarantinedComponent implements OnInit {
     return this.selected;
   }
 
-  // calculateDefaluts() {
-  //   console.log('bhoo imomo');
-  //   this.initOpeningStock = Number(this.quarantinedStockForm.get('openingStock').value);
-  // }
 
   createForms() {
     this.quarantinedStockForm = this.fb.group({
@@ -136,32 +180,46 @@ export class StockQuarantinedComponent implements OnInit {
     });
     return this.branchGroup;
   }
+
+  getBranchTotalMinCapacity() {
+    this.dataManService.getBranchDailyMinimalCapacity().subscribe(
+      result => {
+        console.log(result);
+        this.branchTotalMinCapacity = result;
+        this.calculateCollections();
+      },
+      error => {
+        console.log(error.error);
+     },
+     () => {
+     }
+    );
+  }
+  calculateCollections() {
+    if (this.branchTotalMinCapacity !== null && this.branchTotalMinCapacity !== undefined) {
+      this.initCollectionsFromDb = this.branchTotalMinCapacity.harareTotalMinCapacity;
+    }
+  }
+
   OpeningStock(value): number {
     return value.openingStock;
   }
 
   staticPercentage() {
-    this.harareCbd = Math.round((this.quarantinedStockForm.get('harareCbd03').value / 40) * 100);
-    this.staticHq = Math.round((this.quarantinedStockForm.get('staticHq01').value / 40) * 100);
+    this.harareCbd = Math.round((this.quarantinedStockForm.get('harareCbd03').value / 15) * 100);
+    this.staticHq = Math.round((this.quarantinedStockForm.get('staticHq01').value / 15) * 100);
   }
   mobPercentage() {
-    this.mobile02 = Math.round((this.quarantinedStockForm.get('mobile02').value / 15) * 100);
-    this.mobile04 = Math.round((this.quarantinedStockForm.get('mobile04').value / 15) * 100);
-    this.mobile06 = Math.round((this.quarantinedStockForm.get('mobile06').value / 15) * 100);
+    this.mobile02 = Math.round((this.quarantinedStockForm.get('mobile02').value / 40) * 100);
+    this.mobile04 = Math.round((this.quarantinedStockForm.get('mobile04').value / 40) * 100);
+    this.mobile06 = Math.round((this.quarantinedStockForm.get('mobile06').value / 40) * 100);
   }
 
-  QuarantineStock(value) {
-    let total = 0;
-    // total =
-    //  this.OpeningStock(value)
-    // // + this.sumCollections(value) -
-    // this.sumDiscards(value)
-    // + this.quarantinedStockForm.get('totalIssues').value
-    // - this.quarantinedStockForm.get('totalReceiptsFromBranches').value;
-    // + this.sumReceived(value)
-
-      // - this.sumIssues(value);
-      return total;
+  QuarantineStock() {
+    return this.quarantinedStockForm.get('totalCollections').value
+      + this.quarantinedStockForm.get('totalReceiptsFromBranches').value
+      - this.quarantinedStockForm.get('totalIssuesDiscards').value
+      - this.quarantinedStockForm.get('totalIssues').value;
   }
 
   sumCollections(value): number {
@@ -170,6 +228,14 @@ export class StockQuarantinedComponent implements OnInit {
      + value.mobile04 + value.mobile02 + value.mobile06 ;
     this.quarantinedStockForm.get('totalCollections').setValue(total);
     return total;
+  }
+  totolCollectionsOnly(): number {
+    return this.quarantinedStockForm.get('totalCollections').value;
+            // + this.quarantinedStockForm.get('openingStock').value
+            // + this.quarantinedStockForm.get('openingStock').value
+            // + this.quarantinedStockForm.get('openingStock').value
+            // + this.quarantinedStockForm.get('openingStock').value
+            // + this.quarantinedStockForm.get('openingStock').value;
   }
 
   sumIssues(value): number {
@@ -229,6 +295,35 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
     // this.
     // this.loadStockIssuedTo();
+    this.quarantinedStockForm.get('todaysDate').setValue('');
+    this.quarantinedStockForm.get('openingStock').setValue('');
+    this.quarantinedStockForm.get('harareCbd03').setValue('');
+    this.quarantinedStockForm.get('staticHq01').setValue('');
+    this.quarantinedStockForm.get('mobile04').setValue('');
+    this.quarantinedStockForm.get('mobile02').setValue('');
+    this.quarantinedStockForm.get('mobile06').setValue('');
+    this.quarantinedStockForm.get('totalCollections').setValue('');
+    this.quarantinedStockForm.get('referenceLaboratory').setValue('');
+    this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue('');
+    this.quarantinedStockForm.get('p1').setValue('');
+    this.quarantinedStockForm.get('dryPacksD3D4').setValue('');
+    this.quarantinedStockForm.get('p2').setValue('');
+    this.quarantinedStockForm.get('dryPacksD1').setValue('');
+    this.quarantinedStockForm.get('p3').setValue('');
+    this.quarantinedStockForm.get('samplesOnly').setValue('');
+    this.quarantinedStockForm.get('c11').setValue('');
+    this.quarantinedStockForm.get('expired').setValue('');
+    this.quarantinedStockForm.get('wrongPack').setValue('');
+    this.quarantinedStockForm.get('other').setValue('');
+    this.quarantinedStockForm.get('serologicalDiscards').setValue('');
+    this.quarantinedStockForm.get('totalIssuesDiscards').setValue('');
+    this.quarantinedStockForm.get('availableStock').setValue('');
+    this.quarantinedStockForm.get('issueTogroupMismatchesToRefLab').setValue('');
+    this.quarantinedStockForm.get('totalIssues').setValue('');
+    this.quarantinedStockForm.get('ffp1').setValue('');
+    this.quarantinedStockForm.get('plt1').setValue('');
+    this.quarantinedStockForm.get('plt2').setValue('');
+    this.quarantinedStockForm.get('cryo').setValue('');
   }
 
   populateForm(item) {
@@ -238,8 +333,8 @@ export class StockQuarantinedComponent implements OnInit {
     // this.quarantinedStockForm.get('timeCreated').setValue(item.timeCreated);
     this.quarantinedStockForm.get('version').setValue(item.version);
     this.quarantinedStockForm.get('createdById').setValue(item.createdById);
-    this.quarantinedStockForm.get('todaysDate').setValue(item.dateCreated);
     // this.quarantinedStockForm.get('branch.branchName').setValue(item.branch);
+    this.quarantinedStockForm.get('todaysDate').setValue(item.todayDate);
     this.quarantinedStockForm.get('openingStock').setValue(item.openingStock);
     this.quarantinedStockForm.get('harareCbd03').setValue(item.harareCbd03);
     this.quarantinedStockForm.get('staticHq01').setValue(item.staticHq01);
@@ -269,15 +364,17 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('plt2').setValue(item.plt2);
     this.quarantinedStockForm.get('cryo').setValue(item.cryo);
 
-    this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
+    // this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
+    if (item.receivedFromQuarantineds !== null && item.receivedFromQuarantineds !== undefined) {
     if (item.receivedFromQuarantineds.length > 0) {
       item.receivedFromQuarantineds.forEach(element => {
         this.StockReceivedFromArray.removeAt(0);
       });
     }
+// }
     console.log(item.receivedFromQuarantineds);
     item.receivedFromQuarantineds.forEach(complaint => {
-     if (complaint.receivedFrom !== null) {
+     if (complaint.id !== null) {
         this.StockReceivedFromArray.push(
         this.fb.group({
           id: new FormControl(complaint.id),
@@ -289,7 +386,12 @@ export class StockQuarantinedComponent implements OnInit {
       );
      }
     });
-    this.quarantinedStockForm.get('issuedToQuarantines').reset();
+  }
+
+
+    // this.quarantinedStockForm.get('issuedToQuarantines').reset();
+    if (item.issuedToQuarantines !== null && item.issuedToQuarantines !== undefined) {
+
     if (item.issuedToQuarantines.length > 0) {
       item.issuedToQuarantines.forEach(element => {
         this.StockIssuedToArray.removeAt(0);
@@ -297,7 +399,7 @@ export class StockQuarantinedComponent implements OnInit {
     }
     console.log(item.issuedToQuarantines);
     item.issuedToQuarantines.forEach(complaint => {
-     if (complaint.issuedTo !== null) {
+     if (complaint.id !== null) {
         this.StockIssuedToArray.push(
         this.fb.group({
           id: new FormControl(complaint.id),
@@ -310,14 +412,14 @@ export class StockQuarantinedComponent implements OnInit {
      }
     });
   }
-
+  }
   initStockReceivedFrom() {
     return this.fb.group({
       id: new FormControl(),
       version: new FormControl(),
       createdById: new FormControl(),
       dateCreated: new FormControl(),
-      receivedFrom: new FormControl(),
+      receivedFrom: new FormControl(0),
     });
   }
   get StockReceivedFromArray() {
@@ -403,9 +505,10 @@ getUserBranches() {
         console.log('hamuna chinhu');
         // this.loadStockIssuedTo();
       }
-      if (this.stockQuarantined != null) {
+      if (this.stockQuarantined !== null) {
         this.populateForm(this.stockQuarantined);
-      } else {
+      }
+      if (this.stockQuarantined === null) {
         this.populateNewForm();
       }
       console.log(result);

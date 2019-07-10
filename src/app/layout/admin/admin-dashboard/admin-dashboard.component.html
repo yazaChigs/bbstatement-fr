@@ -22,9 +22,9 @@
           </mat-card>
         </mat-grid-tile>
       </ng-template>
-      </mat-grid-list>
+      <!-- </mat-grid-list> -->
 
-      <mat-grid-list cols={{column}} rowHeight="200px">
+      <!-- <mat-grid-list cols={{column}} rowHeight="200px"> -->
           <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
               <mat-grid-tile  colspan="1" rowspan="1">
                   <mat-card role="region" (click)="redirect('/admin/data')"  class="dashboard-card">
@@ -39,9 +39,9 @@
                   </mat-card>
                 </mat-grid-tile>
               </ng-template>
-              </mat-grid-list>
+              <!-- </mat-grid-list> -->
 
-              <mat-grid-list cols={{column}} rowHeight="200px">
+              <!-- <mat-grid-list cols={{column}} rowHeight="200px"> -->
                 <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
                     <mat-grid-tile  colspan="1" rowspan="1">
                         <mat-card role="region" (click)="redirect('/admin/branch')"  class="dashboard-card">
@@ -58,4 +58,4 @@
                     </ng-template>
                     </mat-grid-list>
       </div>
-bbb
+

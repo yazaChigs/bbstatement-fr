@@ -17,7 +17,7 @@ export class StockAvailableComponent implements OnInit {
   branches: Branch[];
   userBranch: Branch;
   branchesSize: number;
-  stockAvailable: StockAvailable;
+  stockAvailable: StockAvailable = new StockAvailable();
   branch: object;
   issuedToTotal: number;
   cardStockAvailable = 0;
@@ -195,14 +195,258 @@ getUserBranch(): Branch {
     this.availableStockForm.get('dateCreated').setValue('');
     this.availableStockForm.get('version').setValue('');
     this.availableStockForm.get('createdById').setValue('');
+    // this.availableStockForm.reset();
+    this.availableStockForm.get('openingStock').setValue('');
+    this.availableStockForm.get('receivedFromQuarantine').setValue('');
+    this.availableStockForm.get('totalAvailable').setValue('');
+    this.availableStockForm.get('hospitals').setValue('');
+    this.availableStockForm.get('receicedFromQuarantine').setValue('');
+    this.availableStockForm.get('issueToCompats').setValue('');
+    this.availableStockForm.get('expired').setValue('');
+    this.availableStockForm.get('disasters').setValue('');
+    this.availableStockForm.get('haemolysed_clots_other').setValue('');
+    this.availableStockForm.get('wholeBloodToPackedCells').setValue('');
+    this.availableStockForm.get('totalIssues').setValue('');
+    this.availableStockForm.get('totalHospitalOrders').setValue('');
+    this.availableStockForm.get('rhPositiveWbO').setValue('');
+    this.availableStockForm.get('rhPositivePcO').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbO').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcO').setValue('');
+    this.availableStockForm.get('rhNegativeWbO').setValue('');
+    this.availableStockForm.get('rhNegativePcO').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbO').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcO').setValue('');
+    this.availableStockForm.get('totalO').setValue('');
+    this.availableStockForm.get('percentagefTotalO').setValue('');
+    this.availableStockForm.get('rhPositiveWbA').setValue('');
+    this.availableStockForm.get('rhPositivePcA').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbA').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcA').setValue('');
+    this.availableStockForm.get('rhNegativeWbA').setValue('');
+    this.availableStockForm.get('rhNegativePcA').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbA').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcA').setValue('');
+    this.availableStockForm.get('totalA').setValue('');
+    this.availableStockForm.get('percentageOfTotalA').setValue('');
+    this.availableStockForm.get('rhPositiveWbB').setValue('');
+    this.availableStockForm.get('rhPositivePcB').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbB').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcB').setValue('');
+    this.availableStockForm.get('rhNegativeWbB').setValue('');
+    this.availableStockForm.get('rhNegativePcB').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbB').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcB').setValue('');
+    this.availableStockForm.get('totalB').setValue('');
+    this.availableStockForm.get('percentageOfTotalB').setValue('');
+    this.availableStockForm.get('rhPositiveWbAB').setValue('');
+    this.availableStockForm.get('rhPositivePcAB').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbAB').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcAB').setValue('');
+    this.availableStockForm.get('rhNegativeWbAB').setValue('');
+    this.availableStockForm.get('rhNegativePcAB').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbAB').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcAB').setValue('');
+    this.availableStockForm.get('totalAB').setValue('');
+    this.availableStockForm.get('percentageOfTotalAB').setValue('');
+    this.availableStockForm.get('totalRhPositiveWb').setValue('');
+    this.availableStockForm.get('totalRhPositivePc').setValue('');
+    this.availableStockForm.get('totalRhPositivePaedWb').setValue('');
+    this.availableStockForm.get('totalRhPositivePaedPc').setValue('');
+    this.availableStockForm.get('totalRhNegativeWb').setValue('');
+    this.availableStockForm.get('totalRhNegativePc').setValue('');
+    this.availableStockForm.get('totalRhNegativePaedWb').setValue('');
+    this.availableStockForm.get('totalRhNegativePaedPc').setValue('');
+    this.availableStockForm.get('totalTotal').setValue('');
+    this.availableStockForm.get('totalPercentageOfTotal').setValue('');
+    this.availableStockForm.get('rhPositiveWbOcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePcOcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbOcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcOcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativeWbOcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePcOcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbOcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcOcompatibility').setValue('');
+    this.availableStockForm.get('totalOcompatibility').setValue('');
+    this.availableStockForm.get('percentageOfTotalOcompatibility').setValue('');
+    this.availableStockForm.get('rhPositiveWbAcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePcAcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbAcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcAcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativeWbAcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePcAcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbAcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcAcompatibility').setValue('');
+    this.availableStockForm.get('totalAcompatibility').setValue('');
+    this.availableStockForm.get('percentageOfTotalAcompatibility').setValue('');
+    this.availableStockForm.get('rhPositiveWbBcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePcBcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbBcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcBcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativeWbBcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePcBcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbBcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcBcompatibility').setValue('');
+    this.availableStockForm.get('totalBcompatibility').setValue('');
+    this.availableStockForm.get('percentageOfTotalBcompatibility').setValue('');
+    this.availableStockForm.get('rhPositiveWbABcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePcABcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedWbABcompatibility').setValue('');
+    this.availableStockForm.get('rhPositivePaedPcABcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativeWbABcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePcABcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedWbABcompatibility').setValue('');
+    this.availableStockForm.get('rhNegativePaedPcABcompatibility').setValue('');
+    this.availableStockForm.get('totalABcompatibility').setValue('');
+    this.availableStockForm.get('percentageOfTotalABcompatibility').setValue('');
+    this.availableStockForm.get('totalRhPositiveWbcompatibility').setValue('');
+    this.availableStockForm.get('totalRhPositivePccompatibility').setValue('');
+    this.availableStockForm.get('totalRhPositivePaedWbcompatibility').setValue('');
+    this.availableStockForm.get('totalRhPositivePaedPccompatibility').setValue('');
+    this.availableStockForm.get('totalRhNegativeWbcompatibility').setValue('');
+    this.availableStockForm.get('totalRhNegativePccompatibility').setValue('');
+    this.availableStockForm.get('totalRhNegativePaedWbcompatibility').setValue('');
+    this.availableStockForm.get('totalRhNegativePaedPccompatibility').setValue('');
+    this.availableStockForm.get('totalTotalcompatibility').setValue('');
+    this.availableStockForm.get('totalPercentageOfTotalcompatibility').setValue('');
+    this.availableStockForm.get('compatsIssues').setValue('');
+    this.availableStockForm.get('compatsOrders').setValue('');
+    this.availableStockForm.get('compatsPercentageSupply_Orders').setValue('');
+    this.availableStockForm.get('ffp1').setValue('');
+    this.availableStockForm.get('plt1').setValue('');
+    this.availableStockForm.get('plt2').setValue('');
+    this.availableStockForm.get('cryo').setValue('');
+    this.availableStockForm.get('paedPacks').setValue('');
+    this.availableStockForm.get('receivedFromAvailable').reset();
+    this.availableStockForm.get('issuedToAvailable').reset();
   }
   populateForm(item) {
     this.availableStockForm.get('id').setValue(item.id);
     this.availableStockForm.get('dateCreated').setValue(item.dateCreated);
     this.availableStockForm.get('version').setValue(item.version);
     this.availableStockForm.get('createdById').setValue(item.createdById);
+    this.availableStockForm.get('openingStock').setValue(item.openingStock);
+    this.availableStockForm.get('receivedFromQuarantine').setValue(item.receivedFromQuarantine);
+    this.availableStockForm.get('totalAvailable').setValue(item.totalAvailable);
+    this.availableStockForm.get('hospitals').setValue(item.hospitals);
+    this.availableStockForm.get('receicedFromQuarantine').setValue(item.receicedFromQuarantine);
+    this.availableStockForm.get('issueToCompats').setValue(item.issueToCompats);
+    this.availableStockForm.get('expired').setValue(item.expired);
+    this.availableStockForm.get('disasters').setValue(item.disasters);
+    this.availableStockForm.get('haemolysed_clots_other').setValue(item.haemolysed_clots_other);
+    this.availableStockForm.get('wholeBloodToPackedCells').setValue(item.wholeBloodToPackedCells);
+    this.availableStockForm.get('totalIssues').setValue(item.totalIssues);
+    this.availableStockForm.get('totalHospitalOrders').setValue(item.totalHospitalOrders);
+    this.availableStockForm.get('rhPositiveWbO').setValue(item.rhPositiveWbO);
+    this.availableStockForm.get('rhPositivePcO').setValue(item.rhPositivePcO);
+    this.availableStockForm.get('rhPositivePaedWbO').setValue(item.rhPositivePaedWbO);
+    this.availableStockForm.get('rhPositivePaedPcO').setValue(item.rhPositivePaedPcO);
+    this.availableStockForm.get('rhNegativeWbO').setValue(item.rhNegativeWbO);
+    this.availableStockForm.get('rhNegativePcO').setValue(item.rhNegativePcO);
+    this.availableStockForm.get('rhNegativePaedWbO').setValue(item.rhNegativePaedWbO);
+    this.availableStockForm.get('rhNegativePaedPcO').setValue(item.rhNegativePaedPcO);
+    this.availableStockForm.get('totalO').setValue(item.totalO);
+    this.availableStockForm.get('percentagefTotalO').setValue(item.percentagefTotalO);
+    this.availableStockForm.get('rhPositiveWbA').setValue(item.rhPositiveWbA);
+    this.availableStockForm.get('rhPositivePcA').setValue(item.rhPositivePcA);
+    this.availableStockForm.get('rhPositivePaedWbA').setValue(item.rhPositivePaedWbA);
+    this.availableStockForm.get('rhPositivePaedPcA').setValue(item.rhPositivePaedPcA);
+    this.availableStockForm.get('rhNegativeWbA').setValue(item.rhNegativeWbA);
+    this.availableStockForm.get('rhNegativePcA').setValue(item.rhNegativePcA);
+    this.availableStockForm.get('rhNegativePaedWbA').setValue(item.rhNegativePaedWbA);
+    this.availableStockForm.get('rhNegativePaedPcA').setValue(item.rhNegativePaedPcA);
+    this.availableStockForm.get('totalA').setValue(item.totalA);
+    this.availableStockForm.get('percentageOfTotalA').setValue(item.percentageOfTotalA);
+    this.availableStockForm.get('rhPositiveWbB').setValue(item.rhPositiveWbB);
+    this.availableStockForm.get('rhPositivePcB').setValue(item.rhPositivePcB);
+    this.availableStockForm.get('rhPositivePaedWbB').setValue(item.rhPositivePaedWbB);
+    this.availableStockForm.get('rhPositivePaedPcB').setValue(item.rhPositivePaedPcB);
+    this.availableStockForm.get('rhNegativeWbB').setValue(item.rhNegativeWbB);
+    this.availableStockForm.get('rhNegativePcB').setValue(item.rhNegativePcB);
+    this.availableStockForm.get('rhNegativePaedWbB').setValue(item.rhNegativePaedWbB);
+    this.availableStockForm.get('rhNegativePaedPcB').setValue(item.rhNegativePaedPcB);
+    this.availableStockForm.get('totalB').setValue(item.totalB);
+    this.availableStockForm.get('percentageOfTotalB').setValue(item.percentageOfTotalB);
+    this.availableStockForm.get('rhPositiveWbAB').setValue(item.rhPositiveWbAB);
+    this.availableStockForm.get('rhPositivePcAB').setValue(item.rhPositivePcAB);
+    this.availableStockForm.get('rhPositivePaedWbAB').setValue(item.rhPositivePaedWbAB);
+    this.availableStockForm.get('rhPositivePaedPcAB').setValue(item.rhPositivePaedPcAB);
+    this.availableStockForm.get('rhNegativeWbAB').setValue(item.rhNegativeWbAB);
+    this.availableStockForm.get('rhNegativePcAB').setValue(item.rhNegativePcAB);
+    this.availableStockForm.get('rhNegativePaedWbAB').setValue(item.rhNegativePaedWbAB);
+    this.availableStockForm.get('rhNegativePaedPcAB').setValue(item.rhNegativePaedPcAB);
+    this.availableStockForm.get('totalAB').setValue(item.totalAB);
+    this.availableStockForm.get('percentageOfTotalAB').setValue(item.percentageOfTotalAB);
+    this.availableStockForm.get('totalRhPositiveWb').setValue(item.totalRhPositiveWb);
+    this.availableStockForm.get('totalRhPositivePc').setValue(item.totalRhPositivePc);
+    this.availableStockForm.get('totalRhPositivePaedWb').setValue(item.totalRhPositivePaedWb);
+    this.availableStockForm.get('totalRhPositivePaedPc').setValue(item.totalRhPositivePaedPc);
+    this.availableStockForm.get('totalRhNegativeWb').setValue(item.totalRhNegativeWb);
+    this.availableStockForm.get('totalRhNegativePc').setValue(item.totalRhNegativePc);
+    this.availableStockForm.get('totalRhNegativePaedWb').setValue(item.totalRhNegativePaedWb);
+    this.availableStockForm.get('totalRhNegativePaedPc').setValue(item.totalRhNegativePaedPc);
+    this.availableStockForm.get('totalTotal').setValue(item.totalTotal);
+    this.availableStockForm.get('totalPercentageOfTotal').setValue(item.totalPercentageOfTotal);
+    this.availableStockForm.get('rhPositiveWbOcompatibility').setValue(item.rhPositiveWbOcompatibility);
+    this.availableStockForm.get('rhPositivePcOcompatibility').setValue(item.rhPositivePcOcompatibility);
+    this.availableStockForm.get('rhPositivePaedWbOcompatibility').setValue(item.rhPositivePaedWbOcompatibility);
+    this.availableStockForm.get('rhPositivePaedPcOcompatibility').setValue(item.rhPositivePaedPcOcompatibility);
+    this.availableStockForm.get('rhNegativeWbOcompatibility').setValue(item.rhNegativeWbOcompatibility);
+    this.availableStockForm.get('rhNegativePcOcompatibility').setValue(item.rhNegativePcOcompatibility);
+    this.availableStockForm.get('rhNegativePaedWbOcompatibility').setValue(item.rhNegativePaedWbOcompatibility);
+    this.availableStockForm.get('rhNegativePaedPcOcompatibility').setValue(item.rhNegativePaedPcOcompatibility);
+    this.availableStockForm.get('totalOcompatibility').setValue(item.totalOcompatibility);
+    this.availableStockForm.get('percentageOfTotalOcompatibility').setValue(item.percentageOfTotalOcompatibility);
+    this.availableStockForm.get('rhPositiveWbAcompatibility').setValue(item.rhPositiveWbAcompatibility);
+    this.availableStockForm.get('rhPositivePcAcompatibility').setValue(item.rhPositivePcAcompatibility);
+    this.availableStockForm.get('rhPositivePaedWbAcompatibility').setValue(item.rhPositivePaedWbAcompatibility);
+    this.availableStockForm.get('rhPositivePaedPcAcompatibility').setValue(item.rhPositivePaedPcAcompatibility);
+    this.availableStockForm.get('rhNegativeWbAcompatibility').setValue(item.rhNegativeWbAcompatibility);
+    this.availableStockForm.get('rhNegativePcAcompatibility').setValue(item.rhNegativePcAcompatibility);
+    this.availableStockForm.get('rhNegativePaedWbAcompatibility').setValue(item.rhNegativePaedWbAcompatibility);
+    this.availableStockForm.get('rhNegativePaedPcAcompatibility').setValue(item.rhNegativePaedPcAcompatibility);
+    this.availableStockForm.get('totalAcompatibility').setValue(item.totalAcompatibility);
+    this.availableStockForm.get('percentageOfTotalAcompatibility').setValue(item.percentageOfTotalAcompatibility);
+    this.availableStockForm.get('rhPositiveWbBcompatibility').setValue(item.rhPositiveWbBcompatibility);
+    this.availableStockForm.get('rhPositivePcBcompatibility').setValue(item.rhPositivePcBcompatibility);
+    this.availableStockForm.get('rhPositivePaedWbBcompatibility').setValue(item.rhPositivePaedWbBcompatibility);
+    this.availableStockForm.get('rhPositivePaedPcBcompatibility').setValue(item.rhPositivePaedPcBcompatibility);
+    this.availableStockForm.get('rhNegativeWbBcompatibility').setValue(item.rhNegativeWbBcompatibility);
+    this.availableStockForm.get('rhNegativePcBcompatibility').setValue(item.rhNegativePcBcompatibility);
+    this.availableStockForm.get('rhNegativePaedWbBcompatibility').setValue(item.rhNegativePaedWbBcompatibility);
+    this.availableStockForm.get('rhNegativePaedPcBcompatibility').setValue(item.rhNegativePaedPcBcompatibility);
+    this.availableStockForm.get('totalBcompatibility').setValue(item.totalBcompatibility);
+    this.availableStockForm.get('percentageOfTotalBcompatibility').setValue(item.percentageOfTotalBcompatibility);
+    this.availableStockForm.get('rhPositiveWbABcompatibility').setValue(item.rhPositiveWbABcompatibility);
+    this.availableStockForm.get('rhPositivePcABcompatibility').setValue(item.rhPositivePcABcompatibility);
+    this.availableStockForm.get('rhPositivePaedWbABcompatibility').setValue(item.rhPositivePaedWbABcompatibility);
+    this.availableStockForm.get('rhPositivePaedPcABcompatibility').setValue(item.rhPositivePaedPcABcompatibility);
+    this.availableStockForm.get('rhNegativeWbABcompatibility').setValue(item.rhNegativeWbABcompatibility);
+    this.availableStockForm.get('rhNegativePcABcompatibility').setValue(item.rhNegativePcABcompatibility);
+    this.availableStockForm.get('rhNegativePaedWbABcompatibility').setValue(item.rhNegativePaedWbABcompatibility);
+    this.availableStockForm.get('rhNegativePaedPcABcompatibility').setValue(item.rhNegativePaedPcABcompatibility);
+    this.availableStockForm.get('totalABcompatibility').setValue(item.totalABcompatibility);
+    this.availableStockForm.get('percentageOfTotalABcompatibility').setValue(item.percentageOfTotalABcompatibility);
+    this.availableStockForm.get('totalRhPositiveWbcompatibility').setValue(item.totalRhPositiveWbcompatibility);
+    this.availableStockForm.get('totalRhPositivePccompatibility').setValue(item.totalRhPositivePccompatibility);
+    this.availableStockForm.get('totalRhPositivePaedWbcompatibility').setValue(item.totalRhPositivePaedWbcompatibility);
+    this.availableStockForm.get('totalRhPositivePaedPccompatibility').setValue(item.totalRhPositivePaedPccompatibility);
+    this.availableStockForm.get('totalRhNegativeWbcompatibility').setValue(item.totalRhNegativeWbcompatibility);
+    this.availableStockForm.get('totalRhNegativePccompatibility').setValue(item.totalRhNegativePccompatibility);
+    this.availableStockForm.get('totalRhNegativePaedWbcompatibility').setValue(item.totalRhNegativePaedWbcompatibility);
+    this.availableStockForm.get('totalRhNegativePaedPccompatibility').setValue(item.totalRhNegativePaedPccompatibility);
+    this.availableStockForm.get('totalTotalcompatibility').setValue(item.totalTotalcompatibility);
+    this.availableStockForm.get('totalPercentageOfTotalcompatibility').setValue(item.totalPercentageOfTotalcompatibility);
+    this.availableStockForm.get('compatsIssues').setValue(item.compatsIssues);
+    this.availableStockForm.get('compatsOrders').setValue(item.compatsOrders);
+    this.availableStockForm.get('compatsPercentageSupply_Orders').setValue(item.compatsPercentageSupply_Orders);
+    this.availableStockForm.get('ffp1').setValue(item.ffp1);
+    this.availableStockForm.get('plt1').setValue(item.plt1);
+    this.availableStockForm.get('plt2').setValue(item.plt2);
+    this.availableStockForm.get('cryo').setValue(item.cryo);
+    this.availableStockForm.get('paedPacks').setValue(item.paedPacks);
     // this.availableStockForm.get('branchName').setValue(item.brancName);
 
+    if (item.receivedFromAvailable !== null && item.receivedFromAvailable !== undefined) {
     this.availableStockForm.get('receivedFromAvailable').reset();
     if (item.receivedFromAvailable.length > 0) {
       item.receivedFromAvailable.forEach(element => {
@@ -211,7 +455,7 @@ getUserBranch(): Branch {
     }
     console.log(item.receivedFromAvailable);
     item.receivedFromAvailable.forEach(complaint => {
-     if (complaint.receivedFrom !== null) {
+     if (complaint.id !== null) {
         this.StockReceivedFromArray.push(
         this.fb.group({
           id: new FormControl(complaint.id),
@@ -224,15 +468,17 @@ getUserBranch(): Branch {
       );
      }
     });
+  }
+
+    if (item.issuedToAvailable !== null && item.issuedToAvailable !== undefined) {
     this.availableStockForm.get('issuedToAvailable').reset();
     if (item.issuedToAvailable.length > 0) {
       item.issuedToAvailable.forEach(element => {
         this.StockIssuedToArray.removeAt(0);
       });
     }
-    console.log(item.issuedToAvailable);
     item.issuedToAvailable.forEach(complaint => {
-     if (complaint.issuedTo !== null) {
+     if (complaint.id !== null) {
         this.StockIssuedToArray.push(
         this.fb.group({
           id: new FormControl(complaint.id),
@@ -246,6 +492,20 @@ getUserBranch(): Branch {
      }
     });
   }
+  }
+
+  demandVsSupplyBgColor() {
+    let value;
+    if (this.stockAvailable !== null && this.stockAvailable !== undefined) {
+    value = this.stockAvailable.hospitals / this.stockAvailable.totalHospitalOrders;
+
+    // if (value !== undefined && value !== null) {
+    if (value >= 0.5) { return 'green'; }
+    if (value >= 0.25 && value < 0.5) { return 'orange'; }
+    if (value >= 0 && value < 0.25) { return 'green'; } else { return 'pink'; }
+    // }
+  }
+}
 
   getAllBranches() {
     this.branchService.getAll().subscribe(
@@ -282,9 +542,10 @@ getUserBranch(): Branch {
     this.availableStockService.getAvailableStock(branchId).subscribe(
      result => {
       this.stockAvailable = result;
-      if (this.stockAvailable != null) {
+      if (this.stockAvailable !== null) {
         this.populateForm(this.stockAvailable);
-      } else {
+      }
+      if (this.stockAvailable === null) {
         this.populateNewForm();
       }
       console.log(this.stockAvailable);
@@ -359,7 +620,7 @@ loadStockIssuedTo() {
 
   }
 
-  sumIssued(value){
+  sumIssued(value) {
     let total = 0;
     total = value.hospitals + value.receicedFromQuarantine + value.issueToCompats
      + value.expired + value.disasters + value.haemolysed_clots_other + value.wholeBloodToPackedCells;
@@ -371,18 +632,27 @@ loadStockIssuedTo() {
   }
 
   demandVsSupply(value): number {
-    return (Math.floor((this.overallSupplies(value)  / this.overallOrders(value)) * 100));
+    if (this.overallOrders() === null && this.overallOrders() === undefined) {
+      return 0;
+    } else {
+      return (Math.floor((this.overallSupplies()  / this.overallOrders()) * 100));
+    }
   }
 
-  overallSupplies(value): number {
-    let total = 0;
-    return total = value.hospitals + value.compatsIssues;
+  overallSupplies(): number {
+    return this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value;
   }
 
-  overallOrders(value): number {
-    let total = 0;
-    return total = value.totalHospitalOrders + value.compatsOrders;
+  overallOrders(): number {
+    // let total = 0;
+    return this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value;
+    //  value.totalHospitalOrders + value.compatsOrders;
   }
+
+  calcStockAvailable(): number {
+    return this.availableStockForm.get('totalTotalcompatibility').value + this.availableStockForm.get('totalTotal').value;
+  }
+
   // ****TABLE****
   sumRhPositiveWb(value) {
     let total = 0;
@@ -440,6 +710,8 @@ loadStockIssuedTo() {
     + this.availableStockForm.get('totalB').value
     + this.availableStockForm.get('totalAB').value;
     this.availableStockForm.get('totalTotal').setValue(total);
+
+    this.calcStockAvailable();
 
     this.availableStockForm.get('percentagefTotalO').setValue(
       ( Math.round((this.availableStockForm.get('totalO').value / total) * 100)));
@@ -578,6 +850,7 @@ loadStockIssuedTo() {
     + this.availableStockForm.get('totalBcompatibility').value
     + this.availableStockForm.get('totalABcompatibility').value;
     this.availableStockForm.get('totalTotalcompatibility').setValue(total);
+    this.calcStockAvailable();
 
     this.availableStockForm.get('percentageOfTotalOcompatibility').setValue(
       ( Math.round((this.availableStockForm.get('totalOcompatibility').value / total) * 100)));

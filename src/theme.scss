@@ -123,6 +123,9 @@ $blue-gray-theme: mat-light-theme(
   .border_accent {
     border: 2px solid mat-color($accent);
   }
+  .border_black {
+    border: 2px solid black;
+  }
   .border_radius {
     border-radius: 5px;
   }

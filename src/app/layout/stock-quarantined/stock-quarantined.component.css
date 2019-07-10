@@ -5,3 +5,7 @@
 .save-btn{
   margin: 10px;
 }
+
+.indicator {
+  min-width: 20px;
+}

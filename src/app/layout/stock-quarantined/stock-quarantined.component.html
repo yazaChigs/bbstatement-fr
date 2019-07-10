@@ -39,8 +39,8 @@
         </mat-form-field>
       </p>
     </div>
-  <div fxFlex="15%"><mat-card class="infor-card"><p>Collections</p></mat-card></div>
-  <div fxFlex="15%"><mat-card class="infor-card"><p>Quarantine Stock <strong>{{QuarantineStock(quarantinedStockForm.value)}}</strong></p></mat-card></div>
+  <!-- <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="infor-card"><p>Collections </p><h2>{{ (((initCollections - initOpeningStock) / initCollectionsFromDb)*100).toFixed(2)}}%</h2></mat-card></div> -->
+  <div fxFlex="15%"><mat-card class="infor-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
   <div fxFlex="15%"><mat-card class="infor-card">
     <p>Opening: <strong>{{initOpeningStock}} </strong></p>
     <p>Receipts <strong>{{initTotalReceipts}} </strong></p>
@@ -89,7 +89,7 @@
                 <input matInput formControlName="harareCbd03" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
               </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-chip color="primary" >{{harareCbd}}%</mat-chip></div>
+        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="harareCbdColor()" color="primary" >{{harareCbd}}%</mat-card></div>
       </div>
 
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -104,7 +104,7 @@
               <input matInput formControlName="staticHq01" type="number" placeholder="Static/HQ 01" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
             </mat-form-field>
       </div>
-      <div fxFlex="6%"><mat-chip color="primary">{{staticHq}}%</mat-chip></div>
+      <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="staticHqColor()" color="primary">{{staticHq}}%</mat-card></div>
       <div fxFlex="12%">
           <p>
             <mat-label class="full-width">Mobile 04</mat-label>
@@ -116,7 +116,7 @@
                 <input matInput formControlName="mobile04" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="mobPercentage()">
               </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-chip color="primary">{{mobile04}}%</mat-chip></div>
+        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile04Color()" color="primary">{{mobile04}}%</mat-card></div>
       </div>
 
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -131,7 +131,7 @@
               <input matInput formControlName="mobile02" type="number" placeholder="Mobile 02" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
             </mat-form-field>
       </div>
-      <div fxFlex="6%"><mat-chip color="primary">{{mobile02}}%</mat-chip></div>
+      <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile02Color()" color="primary">{{mobile02}}%</mat-card></div>
           <div fxFlex="12%">
           <p>
             <mat-label class="full-width">Mobile 06</mat-label>
@@ -143,7 +143,7 @@
                 <input matInput formControlName="mobile06" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
               </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-chip color="primary">{{mobile06}}%</mat-chip></div>
+        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile06Color()" color="primary">{{mobile06}}%</mat-card></div>
       </div>
 
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -155,7 +155,7 @@
             </div>
             <div fxFlex="10%">
                 <mat-form-field class="full-width" appearance="outline">
-                    <input matInput formControlName="totalCollections" type="number" placeholder="total">
+                    <input matInput formControlName="totalCollections" [(ngModel)]="initCollections" type="number" placeholder="total" readonly>
                   </mat-form-field>
             </div>
           </div>
@@ -181,7 +181,7 @@
       [formGroupName]="i">
         <div fxFlex="12%">
           <p>
-            <mat-label class="full-width">Received from {{branches[i].branchName}}</mat-label>
+            <mat-label class="full-width">Received from {{branches[i]?.branchName}}</mat-label>
           </p>
         </div>
         <div fxFlex="25%">

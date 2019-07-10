@@ -17,12 +17,15 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { StockAvailableComponent } from './stock-available/stock-available.component';
 import { StockQuarantinedComponent } from './stock-quarantined/stock-quarantined.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { BloodGroupDaysSupplyComponent } from './dashboard/charts/BloodGroup-DaysSupply/BloodGroup-DaysSupply.component';
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     MainComponent,
     SideNavComponent,
     DashboardComponent,
-    ChangePasswordDialogComponent, StockAvailableComponent, StockQuarantinedComponent
+    ChangePasswordDialogComponent, StockAvailableComponent, StockQuarantinedComponent, BloodGroupDaysSupplyComponent,
   ],
   imports: [
     CommonModule,
@@ -34,7 +37,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule,
+    MatListModule, ChartsModule,
     MatGridListModule,
     MatCardModule, MatDividerModule,
     MatMenuModule,
