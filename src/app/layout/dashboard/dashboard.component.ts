@@ -114,6 +114,7 @@ export class DashboardComponent implements OnInit {
 
   collectionsBgColor() {
     let value;
+    if (this.stockQuarantine !== null) {
     value = (this.stockQuarantine.totalCollections - this.stockQuarantine.openingStock)
     / this.branchDailyMinimalCapacity.harareTotalMinCapacity;
     if (value !== undefined && value !== null) {
@@ -123,17 +124,20 @@ export class DashboardComponent implements OnInit {
       if (value >= 0 && value < 0.4) { return 'green'; } else { return 'pink'; }
     }
   }
+}
 
 
 
   demandVsSupplyBgColor() {
     let value;
+    if (this.stockAvailable !== null) {
     value = this.stockAvailable.hospitals / this.stockAvailable.totalHospitalOrders;
     if (value !== undefined && value !== null) {
       if (value >= 0.5) { return 'green'; }
       if (value >= 0.25 && value < 0.5) { return 'orange'; }
       if (value >= 0 && value < 0.25) { return 'green'; } else { return 'pink'; }
     }
+  }
   }
 
   stockLevelColorCodeOplus(): string {

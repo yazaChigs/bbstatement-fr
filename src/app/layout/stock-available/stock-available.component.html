@@ -24,7 +24,7 @@
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Branch</mat-label>
               <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch">
-                  <mat-option *ngFor="let branch of AllBranches" [value]="branch" (click)="getInitvalues(branch.id)">
+                  <mat-option *ngFor="let branch of AllBranches" [value]="branch" (click)="getInitvalues(branch.id)" >
                     {{branch.branchName}}
                   </mat-option>
                 </mat-select>
@@ -960,7 +960,15 @@
               <!-- start other available products panel -->
 
         </mat-accordion>
-        <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">Save</button>
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%">
+            <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">Save</button>
+          </div>
+          <div fxFlex="70%"></div>
+          <div fxFlex="12%">
+            <button *ngIf="!editBranches" type="submit" mat-raised-button color="primary" (click)="submitStockAvailable(availableStockForm.value)">save and submit</button>
+          </div>
+        </div>
       </form>
 
 </mat-card>

@@ -7,6 +7,7 @@ import { BranchService } from 'src/app/shared/config/service/admin/branch.servic
 import { error } from '@angular/compiler/src/util';
 import { DataManagementService } from '../../shared/config/service/admin/dataManagement.service';
 import { BranchDailyMinimalCapacity } from '../../shared/config/model/admin/branch-daily-minimal-capacity.model';
+import { StorageKey } from 'src/app/util/key';
 
 @Component({
   selector: 'app-stock-quarantined',
@@ -38,9 +39,11 @@ export class StockQuarantinedComponent implements OnInit {
   initTotalIssues = 0;
   initTotalDiscards = 0;
   initCollections = 0;
+  collectionsIndicator = 0;
   initCollectionsFromDb = 0;
   branchTotalMinCapacity: BranchDailyMinimalCapacity = new BranchDailyMinimalCapacity();
-
+  editBranches = true;
+  roles: string[];
 
   constructor(private branchService: BranchService, private dataManService: DataManagementService,
               private qStockService: QuarantinedStockService, private fb: FormBuilder) { }
@@ -52,24 +55,21 @@ export class StockQuarantinedComponent implements OnInit {
     this.createForms();
     this.loadBranches();
     this.getAllBranches();
-    // this.loadStockIssuedTo();
-
-       // this.quarantinedStockForm.get('branch').patchValue(localStorage.getItem('BRANCH_NAME'));
+    this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
+    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
+      this.editBranches = false; }
   }
 
   collectionsBgColor() {
-    console.log(this.stockQuarantined.totalCollections);
-    let value;
-  //   if (this.branchTotalMinCapacity.harareTotalMinCapacity !== null && this.branchTotalMinCapacity.harareTotalMinCapacity !== undefined) {
-  //   value = (this.stockQuarantined.totalCollections - this.stockQuarantined.openingStock)
-  //   / this.branchTotalMinCapacity.harareTotalMinCapacity;
-  //   if (value !== undefined && value !== null) {
-  //     if (value >= 1) { return 'purple'; }
-  //     if (value >= 0.75 && value < 1) { return 'green'; }
-  //     if (value >= 0.4 && value < 0.75) { return 'orange'; }
-  //     if (value >= 0 && value < 0.4) { return 'green'; } else { return 'pink'; }
-  //   }
-  // }
+
+    this.collectionsIndicator = ((this.initCollections - this.initOpeningStock) / this.initCollectionsFromDb);
+    const value = this.collectionsIndicator;
+    if (value !== undefined && value !== null) {
+      if (value >= 1) { return 'purple'; }
+      if (value >= 0.75 && value < 1) { return 'green'; }
+      if (value >= 0.4 && value < 0.75) { return 'orange'; }
+      if (value >= 0 && value < 0.4) { return 'red'; } else { return 'pink'; }
+    }
   }
   colorIndicator(value): string {
     if (value !== undefined && value !== null) {
@@ -122,7 +122,9 @@ export class StockQuarantinedComponent implements OnInit {
       version: new FormControl(),
       createdById: new FormControl(),
       // branch: this.createBranch(),
-      branch: new FormControl(),
+      branch: new FormControl(
+        {disabled: this.editBranches}
+      ),
       todaysDate: new FormControl(),
       openingStock: new FormControl(),
       harareCbd03: new FormControl(),
@@ -257,7 +259,7 @@ export class StockQuarantinedComponent implements OnInit {
     return total;
   }
 
-  sumReceived(vaue): number {
+  sumReceived(): number {
     console.log('sumRecieved');
     let total = 0;
     total = this.quarantinedStockForm.get('referenceLaboratory').value;
@@ -285,6 +287,21 @@ export class StockQuarantinedComponent implements OnInit {
       }
     );
   }
+
+  submitStockQuarantined(value) {
+    this.qStockService.submit(value).subscribe(
+      result => {
+        console.log(result.message);
+      },
+      error => {
+         console.log(error.error);
+      },
+      () => {
+       this.populateNewForm();
+      }
+    );
+  }
+
   populateNewForm() {
     console.log('reseting');
     this.quarantinedStockForm.get('id').setValue('');
@@ -364,8 +381,8 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('plt2').setValue(item.plt2);
     this.quarantinedStockForm.get('cryo').setValue(item.cryo);
 
-    // this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
     if (item.receivedFromQuarantineds !== null && item.receivedFromQuarantineds !== undefined) {
+    this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
     if (item.receivedFromQuarantineds.length > 0) {
       item.receivedFromQuarantineds.forEach(element => {
         this.StockReceivedFromArray.removeAt(0);
@@ -389,9 +406,8 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
 
-    // this.quarantinedStockForm.get('issuedToQuarantines').reset();
     if (item.issuedToQuarantines !== null && item.issuedToQuarantines !== undefined) {
-
+    this.quarantinedStockForm.get('issuedToQuarantines').reset();
     if (item.issuedToQuarantines.length > 0) {
       item.issuedToQuarantines.forEach(element => {
         this.StockIssuedToArray.removeAt(0);
@@ -464,8 +480,8 @@ loadStockIssuedTo() {
        console.log(error.error);
      },
      () => {
-      //  this.loadStockReceivedFrom();
-      //  this.loadStockIssuedTo();
+       this.loadStockReceivedFrom();
+       this.loadStockIssuedTo();
      }
    );
  }

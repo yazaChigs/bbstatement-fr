@@ -25,8 +25,10 @@ export class StockAvailableComponent implements OnInit {
   totalReceivedStock = 0;
   branchId: number;
   AllBranches: Branch[];
+  roles: string[];
   selected: Branch;
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
+  editBranches = true;
 
   // user = localStorage.getItem('USER');
 
@@ -42,6 +44,10 @@ export class StockAvailableComponent implements OnInit {
     this.getAllBranches();
     this.getInitvalues(this.branchId);
 
+    this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
+    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
+      this.editBranches = false; }
+
   }
   createForms() {
     this.availableStockForm = this.fb.group({
@@ -50,7 +56,8 @@ export class StockAvailableComponent implements OnInit {
       dateCreated: new FormControl(),
       version: new FormControl(),
       createdById: new FormControl(),
-      branch: new FormControl(),
+      branch: new FormControl(
+        {disabled: this.editBranches}),
       todaysDate: new FormControl(),
       openingStock: new FormControl(),
       receivedFromQuarantine: new FormControl(),
@@ -571,6 +578,21 @@ getUserBranch(): Branch {
       }
     );
   }
+
+  submitStockAvailable(value) {
+    this.availableStockService.submit(value).subscribe(
+      result => {
+        console.log(result.message);
+      },
+      error => {
+         console.log(error.error);
+      },
+      () => {
+       this.populateNewForm();
+      }
+    );
+  }
+
   initStockReceivedFrom(ds?) {
     return this.fb.group({
       id: new FormControl(),

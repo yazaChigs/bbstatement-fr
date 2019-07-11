@@ -8,14 +8,18 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class QuarantinedStockService {
-  private saveAvailableStockUrl = this.global.baseUrl + '/api/quarantined-stock/save';
+  private saveQuarantineStockUrl = this.global.baseUrl + '/api/quarantined-stock/save';
+  private submitQuarantineStockUrl = this.global.baseUrl + '/api/quarantined-stock/submit';
   private getAvailableStockUrl = this.global.baseUrl + '/api/quarantined-stock/get?branchId=';
 
 constructor(private http: HttpClient, private global: Global) { }
 
 public save(item: StockQuarantined): Observable<any> {
-  console.log(item);
-  return this.http.post<StockQuarantined>(this.saveAvailableStockUrl, item);
+  return this.http.post<StockQuarantined>(this.saveQuarantineStockUrl, item);
+}
+
+public submit(item: StockQuarantined): Observable<any> {
+  return this.http.post<StockQuarantined>(this.submitQuarantineStockUrl, item);
 }
 
 public getAvailableStock(branchId): Observable<any> {
