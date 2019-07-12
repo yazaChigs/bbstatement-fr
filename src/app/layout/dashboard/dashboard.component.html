@@ -5,3 +5,230 @@
       </mat-toolbar>
     </div>
 </div>
+<!-- <div class="grid-container">
+  <mat-grid-list *ngIf="company !== null" cols={{column}} rowHeight="200px">
+    <mat-grid-tile *ngFor="let card of list" [colspan]="card.cols" [rowspan]="card.rows">
+      <mat-card role="region" (click)="redirect(card.link)" class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>
+              <mat-icon *ngIf="card.title!=='Clinical'" >{{card.icon}}</mat-icon>
+              <span *ngIf="card.title=='Clinical'" class="medical-icon-i-outpatient med-icon" aria-hidden="true" style="font-size: 25px;"></span>
+            <span><mat-icon [ngClass]="iconSize">{{card.icon}}</mat-icon></span>
+            <h2 [ngClass]="fontSize">{{card.title}}</h2>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div> -->
+
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+  <div fxFlex="12%">
+    <mat-card class="info-card ">
+      <p>BSMS<strong></strong></p>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card  [style.background-color]="demandVsSupplyBgColor()" class="info-card">
+      DEMAND VS SUPPLY<h2>{{((stockAvailable?.hospitals/stockAvailable?.totalHospitalOrders)*100).toFixed(2)}}%</h2>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card class="info-card">
+      <p>AVAILABLE STOCK</p><h2>{{stockAvailable?.totalTotal+ stockAvailable?.totalTotalcompatibility}}</h2>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card class="info-card">
+      <p>ORDERS:</p><strong>{{stockAvailable?.hospitals + stockAvailable?.issueToCompats}}</strong>
+      <p>SUPPLIES:</p><strong>{{stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders}}</strong>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card [style.background-color]="collectionsBgColor()" class="info-card">
+      <p>COLLECTIONS</p><h2>{{ (((stockQuarantine?.totalCollections - stockQuarantine?.openingStock) / branchDailyMinimalCapacity?.harareTotalMinCapacity)*100).toFixed(2)}}%</h2>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card class="info-card">
+      <p>QUARANTINE STOCK</p><h2>{{stockQuarantine?.totalCollections + stockQuarantine?.totalReceiptsFromBranches
+          - stockQuarantine?.totalIssuesDiscards - stockQuarantine?.totalIssues}}</h2>
+    </mat-card>
+  </div>
+  <div fxFlex="12%">
+    <mat-card class="info-card">
+      <p>OPENING:<strong>{{stockQuarantine?.openingStock}}</strong></p>
+      <p>RECEIPTS:<strong>{{stockQuarantine?.totalReceiptsFromBranches}}</strong></p>
+      <p>ISSUES:<strong>{{stockQuarantine?.totalIssuesDiscards}}</strong></p>
+      <p>DISCARDS:<strong>{{stockQuarantine?.totalIssues}}</strong></p>
+    </mat-card>
+  </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="bloodStockManagementAnalysisForm">
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="80%">
+  <mat-grid-list cols="8" rowHeight="25px" style="background: rgb(248, 236, 236);">
+    <mat-grid-tile class="border_black" [colspan]=8> Blood Stocks Management Analysis</mat-grid-tile>
+
+    <mat-grid-tile [rowspan]=2 class="border_black">Blood Group</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">Stocked Units</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">Branch Daily Requirements</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">Days Supply</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black"> Stock Levels Color Code</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">No. of Weeks Supply</mat-grid-tile>
+    <mat-grid-tile [colspan]=2 [rowspan]=2 class="border_black">Responsive Action</mat-grid-tile>
+
+    <mat-grid-tile class="border_black">O+</mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="stockedUnitsOplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="requirementsOplus">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="daysSupplyOplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [style.background-color]="stockLevelColorCodeOplus()" class="border_black"></mat-grid-tile>
+
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="weeksSupplyOplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 class="border_black"><p>{{responsiveActionOplus()}}</p></mat-grid-tile>
+
+    <mat-grid-tile class="border_black">O-</mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="stockedUnitsOminus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="requirementsOminus">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="daysSupplyOminus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [style.background-color]="stockLevelColorCodeOminus()" class="border_black"></mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="weeksSupplyOminus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 class="border_black"><p>{{responsiveActionOminus()}}</p></mat-grid-tile>
+
+    <mat-grid-tile class="border_black">A+</mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="stockedUnitsAplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="requirementsAplus">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="daysSupplyAplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [style.background-color]="stockLevelColorCodeAplus()" class="border_black"></mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="weeksSupplyAplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 class="border_black"><p>{{responsiveActionAplus()}}</p></mat-grid-tile>
+
+    <mat-grid-tile class="border_black">B+</mat-grid-tile>
+    <mat-grid-tile class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="stockedUnitsBplus">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile class="border_black">
+      <mat-form-field class="full-width">
+      <input matInput placeholder="" formControlName="requirementsBplus">
+    </mat-form-field>
+  </mat-grid-tile>
+    <mat-grid-tile class="border_black"><mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="daysSupplyBplus">
+      </mat-form-field></mat-grid-tile>
+    <mat-grid-tile [style.background-color]="stockLevelColorCodeBplus()" class="border_black"></mat-grid-tile>
+    <mat-grid-tile class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="weeksSupplyBplus">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 class="border_black"><p>{{responsiveActionBplus()}}</p></mat-grid-tile>
+
+    <mat-grid-tile [rowspan]=2 class="border_black">Available stock Total (Weighted)</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="totalStockedUnitsAvailable">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="bdrAvailableStockTotal">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="daysSupplyAvailable">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 [style.background-color]="stockLevelColorCodeAvailable()" class="border_black"></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">
+        <mat-form-field class="full-width">
+            <input matInput placeholder="" formControlName="weeksSupplyAvailable">
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 [rowspan]=2 class="border_black">{{responsiveActionAvailable()}}</mat-grid-tile>
+
+    <mat-grid-tile [rowspan]=2 class="border_black">Quarantine Stock Total (Weighted)</mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="totalStockedUnitsQuarantined">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black"></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black"></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black"></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="border_black"></mat-grid-tile>
+    <mat-grid-tile [colspan]=2 [rowspan]=2 class="border_black"></mat-grid-tile>
+  </mat-grid-list>
+</div>
+</div>
+</form>
+
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="12px" fxLayoutGap.xs="0">
+  <div fxFlex="50%">
+<app-BloodGroup-DaysSupply></app-BloodGroup-DaysSupply>
+</div></div>

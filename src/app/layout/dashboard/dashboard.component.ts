@@ -279,7 +279,9 @@ export class DashboardComponent implements OnInit {
     this.availableStockService.getAvailableStock(this.branchId).subscribe(
       result => {
         this.stockAvailable = result;
+        if (this.stockAvailable !== null ) {
         this.populateStockavailable(this.stockAvailable);
+        }
       }, error => {
         console.log(error.error);
       },
@@ -290,11 +292,13 @@ export class DashboardComponent implements OnInit {
     this.qStockSevice.getAvailableStock(this.branchId).subscribe(
       result => {
         this.stockQuarantine = result;
-        console.log(this.stockQuarantine);
-
-        this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').setValue(
+        if (this.stockQuarantine !== null ) {
+           this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').setValue(
           (this.stockQuarantine.totalCollections + this.stockQuarantine.totalReceiptsFromBranches
             - this.stockQuarantine.totalIssuesDiscards - this.stockQuarantine.totalIssues) * 0.42);
+        }
+
+
 
       }, error => {
         console.log(error.error);
