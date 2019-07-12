@@ -6,8 +6,6 @@
     // baseUrl = 'http://10.8.0.3:8080/smarthealth';
     // baseUrl = 'http://192.168.100.203/smarthealth';
    // baseUrl = 'http://192.168.100.10:8080/smarthealth';
-   // baseUrl = 'https://smarthealth.africa/smarthealth';
-  //  baseUrl = 'https://smarthealth.africa/bss';
-  //  baseUrl = 'https://vimbika.net/bbs/';
+    // baseUrl = 'https://smarthealth.africa/bbs';
 }
 

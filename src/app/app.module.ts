@@ -26,12 +26,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './store/reducers';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { SanitizeHtmlPipe } from './util/sanitize-html-pipe';
+// import { SanitizeHtmlPipe } from './util/sanitize-html-pipe';
 
 
 
 @NgModule({
-  declarations: [AppComponent, SanitizeHtmlPipe],
+  declarations: [AppComponent,
+    //  SanitizeHtmlPipe
+    ],
   imports: [
     BrowserAnimationsModule,
     CommonModule,
