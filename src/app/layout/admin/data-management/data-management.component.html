@@ -16,7 +16,6 @@
       <input type="hidden" formControlName="version">
       <input type="hidden" formControlName="createdById">
     <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
-
         <div fxFlex="80%">
     <mat-grid-list cols="7" rowHeight="25px">
 
@@ -215,8 +214,15 @@
       </mat-grid-list>
       </div>
     </div>
-    <button mat-raised-button color="primary" type="reset">Clear</button>
-    <button mat-raised-button color="primary" type="button" (click)="saveNoDaysRequirements(noDaysRequirementsForm.value)">Save</button>
+    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="70%"></div>
+      <div fxFlex="12%">
+        <button mat-raised-button color="primary" type="reset">Clear</button>
+      </div>
+      <div fxFlex="12%">
+        <button mat-raised-button color="primary" type="button" (click)="saveNoDaysRequirements(noDaysRequirementsForm.value)">Save</button>
+    </div>
+  </div>
   </form>
     <mat-divider></mat-divider>
       <ul>
@@ -544,8 +550,15 @@
         </mat-grid-list>
         </div>
       </div>
-      <button mat-raised-button color="primary" type="reset">Clear</button>
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="70%"></div>
+          <div fxFlex="12%">
+            <button mat-raised-button color="primary" type="reset">Clear</button>
+          </div>
+          <div fxFlex="12%">
       <button mat-raised-button color="primary" type="button" (click)="saveUnadjastedDailyRequirements(unadjastedDailyRequirementsForm.value)">Save</button>
+    </div>
+      </div>
 </form>
 
         <mat-divider></mat-divider>
@@ -841,8 +854,15 @@
             </mat-grid-list>
             </div>
           </div>
-          <button mat-raised-button color="primary" type="reset">Clear</button>
-          <button mat-raised-button color="primary" type="button" (click)=saveBranchDailyMinimalCapacity(branchDailyMinimalCapacityForm.value)>Save</button>
+          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
+              <div fxFlex="70%"></div>
+              <div fxFlex="12%">
+                <button mat-raised-button color="primary" type="reset">Clear</button>
+              </div>
+              <div fxFlex="12%">
+                  <button mat-raised-button color="primary" type="button" (click)=saveBranchDailyMinimalCapacity(branchDailyMinimalCapacityForm.value)>Save</button>
+                </div>
+          </div>
 </form>
     </mat-card>
-{{ branchDailyMinimalCapacityForm.value | json}}
+<!-- {{ branchDailyMinimalCapacityForm.value | json}} -->

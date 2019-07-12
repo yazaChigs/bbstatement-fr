@@ -31,9 +31,9 @@
       <!-- <a mat-list-item *ngFor="let card of list" routerLink="{{card.link}}" routerLinkActive="active-link" ><mat-icon class="sidenav-icon" color="primary">{{card.icon}}</mat-icon>{{card.title}}</a> -->
       </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-<div class="fixed-header-nav">
-    <mat-toolbar color="primary">
+  <mat-sidenav-content class="full-width">
+<div class="fixed-header-nav full-width">
+    <mat-toolbar color="primary" class="full-width">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -58,7 +58,7 @@
       </div>
       <span class="nav-spacer"></span>
       <h3>| BLOOD BANK STATEMENT |</h3>
-      <button *ngIf="showCompanies" [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" >
+      <button *ngIf="showBranches" [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" >
         <mat-icon class="nav-icon">autorenew</mat-icon>
       </button>
       <button mat-icon-button [matMenuTriggerFor]="menu">

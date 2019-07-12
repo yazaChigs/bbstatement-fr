@@ -6,6 +6,7 @@ import { BranchService } from 'src/app/shared/config/service/admin/branch.servic
 import { StockAvailable } from 'src/app/shared/config/model/stock-available.model';
 import { UserService } from '../../shared/config/service/admin/user.service';
 import { StorageKey } from 'src/app/util/key';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-stock-available',
@@ -58,7 +59,7 @@ export class StockAvailableComponent implements OnInit {
       createdById: new FormControl(),
       branch: new FormControl(
         {disabled: this.editBranches}),
-      todaysDate: new FormControl(),
+      todaysDate: new FormControl(new Date().toLocaleDateString()),
       openingStock: new FormControl(),
       receivedFromQuarantine: new FormControl(),
       totalAvailable: new FormControl(),
@@ -633,7 +634,7 @@ loadStockIssuedTo() {
 // ***************calculations*****************
   sumReceived(value?) {
     let total = 0;
-    total = value.openingStock + value.receivedFromQuarantine;
+    total = Number(value.openingStock) + Number(value.receivedFromQuarantine);
     value.receivedFromAvailable.forEach(item => {
     total += Number(item.receivedFrom);
     });
@@ -644,8 +645,8 @@ loadStockIssuedTo() {
 
   sumIssued(value) {
     let total = 0;
-    total = value.hospitals + value.receicedFromQuarantine + value.issueToCompats
-     + value.expired + value.disasters + value.haemolysed_clots_other + value.wholeBloodToPackedCells;
+    total = Number(value.hospitals) + Number(value.receicedFromQuarantine) + Number(value.issueToCompats)
+     + Number(value.expired) + Number(value.disasters) + Number(value.haemolysed_clots_other) + Number(value.wholeBloodToPackedCells);
     value.issuedToAvailable.forEach(item => {
       total += Number(item.issuedTo);
     });
@@ -678,59 +679,59 @@ loadStockIssuedTo() {
   // ****TABLE****
   sumRhPositiveWb(value) {
     let total = 0;
-    total = value.rhPositiveWbO + value.rhPositiveWbA +
-     value.rhPositiveWbB + value.rhPositiveWbAB;
+    total = Number(value.rhPositiveWbO) + Number(value.rhPositiveWbA) +
+     Number(value.rhPositiveWbB) + Number(value.rhPositiveWbAB);
     this.availableStockForm.get('totalRhPositiveWb').setValue(total);
   }
   sumRhPositivePc(value) {
     let total = 0;
-    total = value.rhPositivePcO + value.rhPositivePcA +
-     value.rhPositivePcB + value.rhPositivePcAB;
+    total = Number(value.rhPositivePcO) + Number(value.rhPositivePcA) +
+     Number(value.rhPositivePcB) + Number(value.rhPositivePcAB);
     this.availableStockForm.get('totalRhPositivePc').setValue(total);
   }
   sumRhPositivePaedWb(value) {
     let total = 0;
-    total = value.rhPositivePaedWbO + value.rhPositivePaedWbA +
-     value.rhPositivePaedWbB + value.rhPositivePaedWbAB;
+    total = Number(value.rhPositivePaedWbO) + Number(value.rhPositivePaedWbA) +
+     Number(value.rhPositivePaedWbB) + Number(value.rhPositivePaedWbAB);
     this.availableStockForm.get('totalRhPositivePaedWb').setValue(total);
   }
   sumRhPositivePaedPc(value) {
     let total = 0;
-    total = value.rhPositivePaedPcO + value.rhPositivePaedPcA +
-     value.rhPositivePaedPcB + value.rhPositivePaedPcAB;
+    total = Number(value.rhPositivePaedPcO) + Number(value.rhPositivePaedPcA) +
+     Number(value.rhPositivePaedPcB) + Number(value.rhPositivePaedPcAB);
     this.availableStockForm.get('totalRhPositivePaedPc').setValue(total);
   }
 
   sumRhNegativeWb(value) {
     let total = 0;
-    total = value.rhNegativeWbO + value.rhNegativeWbA +
-     value.rhNegativeWbB + value.rhNegativeWbAB;
+    total = Number(value.rhNegativeWbO) + Number(value.rhNegativeWbA) +
+     Number(value.rhNegativeWbB) + Number(value.rhNegativeWbAB);
     this.availableStockForm.get('totalRhNegativeWb').setValue(total);
   }
   sumRhNegativePc(value) {
     let total = 0;
-    total = value.rhNegativePcO + value.rhNegativePcA +
-     value.rhNegativePcB + value.rhNegativePcAB;
+    total = Number(value.rhNegativePcO) + Number(value.rhNegativePcA) +
+     Number(value.rhNegativePcB) + Number(value.rhNegativePcAB);
     this.availableStockForm.get('totalRhNegativePc').setValue(total);
   }
   sumRhNegativePaedWb(value) {
     let total = 0;
-    total = value.rhNegativePaedWbO + value.rhNegativePaedWbA +
-     value.rhNegativePaedWbB + value.rhNegativePaedWbAB;
+    total = Number(value.rhNegativePaedWbO) + Number(value.rhNegativePaedWbA) +
+     Number(value.rhNegativePaedWbB) + Number(value.rhNegativePaedWbAB);
     this.availableStockForm.get('totalRhNegativePaedWb').setValue(total);
   }
   sumRhNegativePaedPc(value) {
     let total = 0;
-    total = value.rhNegativePaedPcO + value.rhNegativePaedPcA +
-     value.rhNegativePaedPcB + value.rhNegativePaedPcAB;
+    total = Number(value.rhNegativePaedPcO) + Number(value.rhNegativePaedPcA) +
+     Number(value.rhNegativePaedPcB) + Number(value.rhNegativePaedPcAB);
     this.availableStockForm.get('totalRhNegativePaedPc').setValue(total);
   }
   totalVertical() {
     let total = 0;
-    total = this.availableStockForm.get('totalO').value
-    + this.availableStockForm.get('totalA').value
-    + this.availableStockForm.get('totalB').value
-    + this.availableStockForm.get('totalAB').value;
+    total = Number(this.availableStockForm.get('totalO').value)
+    + Number(this.availableStockForm.get('totalA').value)
+    + Number(this.availableStockForm.get('totalB').value)
+    + Number(this.availableStockForm.get('totalAB').value);
     this.availableStockForm.get('totalTotal').setValue(total);
 
     this.calcStockAvailable();
@@ -749,128 +750,128 @@ loadStockIssuedTo() {
   totalO(value) {
     let total = 0;
     total =
-    value.rhPositiveWbO +
-    value.rhPositivePcO +
-    value.rhPositivePaedWbO +
-    value.rhPositivePaedPcO +
-    value.rhNegativeWbO +
-    value.rhNegativePcO +
-    value.rhNegativePaedWbO +
-    value.rhNegativePaedPcO;
+    Number(value.rhPositiveWbO) +
+    Number(value.rhPositivePcO) +
+    Number(value.rhPositivePaedWbO) +
+    Number(value.rhPositivePaedPcO) +
+    Number(value.rhNegativeWbO) +
+    Number(value.rhNegativePcO) +
+    Number(value.rhNegativePaedWbO) +
+    Number(value.rhNegativePaedPcO);
     this.availableStockForm.get('totalO').setValue(total);
     this.totalVertical();
   }
   totalA(value) {
     let total = 0;
     total =
-    value.rhPositiveWbA +
-    value.rhPositivePcA +
-    value.rhPositivePaedWbA +
-    value.rhPositivePaedPcA +
-    value.rhNegativeWbA +
-    value.rhNegativePcA +
-    value.rhNegativePaedWbA +
-    value.rhNegativePaedPcA;
+    Number(value.rhPositiveWbA) +
+    Number(value.rhPositivePcA) +
+    Number(value.rhPositivePaedWbA) +
+    Number(value.rhPositivePaedPcA) +
+    Number(value.rhNegativeWbA) +
+    Number(value.rhNegativePcA) +
+    Number(value.rhNegativePaedWbA) +
+    Number(value.rhNegativePaedPcA);
     this.availableStockForm.get('totalA').setValue(total);
     this.totalVertical();
   }
   totalB(value) {
     let total = 0;
     total =
-    value.rhPositiveWbB +
-    value.rhPositivePcB +
-    value.rhPositivePaedWbB +
-    value.rhPositivePaedPcB +
-    value.rhNegativeWbB +
-    value.rhNegativePcB +
-    value.rhNegativePaedWbB +
-    value.rhNegativePaedPcB;
+    Number(value.rhPositiveWbB) +
+    Number(value.rhPositivePcB) +
+    Number(value.rhPositivePaedWbB) +
+    Number(value.rhPositivePaedPcB) +
+    Number(value.rhNegativeWbB) +
+    Number(value.rhNegativePcB) +
+    Number(value.rhNegativePaedWbB) +
+    Number(value.rhNegativePaedPcB);
     this.availableStockForm.get('totalB').setValue(total);
     this.totalVertical();
   }
   totalAB(value) {
     let total = 0;
     total =
-    value.rhPositiveWbAB +
-    value.rhPositivePcAB +
-    value.rhPositivePaedWbAB +
-    value.rhPositivePaedPcAB +
-    value.rhNegativeWbAB +
-    value.rhNegativePcAB +
-    value.rhNegativePaedWbAB +
-    value.rhNegativePaedPcAB;
+    Number(value.rhPositiveWbAB) +
+    Number(value.rhPositivePcAB) +
+    Number(value.rhPositivePaedWbAB) +
+    Number(value.rhPositivePaedPcAB) +
+    Number(value.rhNegativeWbAB) +
+    Number(value.rhNegativePcAB) +
+    Number(value.rhNegativePaedWbAB) +
+    Number(value.rhNegativePaedPcAB);
     this.availableStockForm.get('totalAB').setValue(total);
     this.totalVertical();
   }
   totalHorizontal(value) {
     let total = 0;
     total =
-    value.totalRhPositiveWb +
-    value.totalRhPositivePc +
-    value.totalRhPositivePaedWb +
-    value.totalRhPositivePaedPc +
-    value.totalRhNegativeWb +
-    value.totalRhNegativePc +
-    value.totalRhNegativePaedWb +
-    value.totalRhNegativePaedPc;
+    Number(value.totalRhPositiveWb) +
+    Number(value.totalRhPositivePc) +
+    Number(value.totalRhPositivePaedWb) +
+    Number(value.totalRhPositivePaedPc) +
+    Number(value.totalRhNegativeWb) +
+    Number(value.totalRhNegativePc) +
+    Number(value.totalRhNegativePaedWb) +
+    Number(value.totalRhNegativePaedPc);
     this.availableStockForm.get('totalTotal').setValue(total);
   }
 
   comSumRhPositiveWb(value) {
     let total = 0;
-    total = value.rhPositiveWbOcompatibility + value.rhPositiveWbAcompatibility +
-     value.rhPositiveWbBcompatibility + value.rhPositiveWbABcompatibility;
+    total = Number(value.rhPositiveWbOcompatibility) + Number(value.rhPositiveWbAcompatibility) +
+     Number(value.rhPositiveWbBcompatibility) + Number(value.rhPositiveWbABcompatibility);
     this.availableStockForm.get('totalRhPositiveWbcompatibility').setValue(total);
   }
   comSumRhPositivePc(value) {
     let total = 0;
-    total = value.rhPositivePcOcompatibility + value.rhPositivePcAcompatibility +
-     value.rhPositivePcBcompatibility + value.rhPositivePcABcompatibility;
+    total = Number(value.rhPositivePcOcompatibility) + Number(value.rhPositivePcAcompatibility) +
+     Number(value.rhPositivePcBcompatibility) + Number(value.rhPositivePcABcompatibility);
     this.availableStockForm.get('totalRhPositivePccompatibility').setValue(total);
   }
   comSumRhPositivePaedWb(value) {
     let total = 0;
-    total = value.rhPositivePaedWbOcompatibility + value.rhPositivePaedWbAcompatibility +
-     value.rhPositivePaedWbBcompatibility + value.rhPositivePaedWbABcompatibility;
+    total = Number(value.rhPositivePaedWbOcompatibility) + Number(value.rhPositivePaedWbAcompatibility) +
+     Number(value.rhPositivePaedWbBcompatibility) + Number(value.rhPositivePaedWbABcompatibility);
     this.availableStockForm.get('totalRhPositivePaedWbcompatibility').setValue(total);
   }
   comSumRhPositivePaedPc(value) {
     let total = 0;
-    total = value.rhPositivePaedPcOcompatibility + value.rhPositivePaedPcAcompatibility +
-     value.rhPositivePaedPcBcompatibility + value.rhPositivePaedPcABcompatibility;
+    total = Number(value.rhPositivePaedPcOcompatibility) + Number(value.rhPositivePaedPcAcompatibility) +
+     Number(value.rhPositivePaedPcBcompatibility) + Number(value.rhPositivePaedPcABcompatibility);
     this.availableStockForm.get('totalRhPositivePaedPccompatibility').setValue(total);
   }
 
   comSumRhNegativeWb(value) {
     let total = 0;
-    total = value.rhNegativeWbOcompatibility + value.rhNegativeWbAcompatibility +
-     value.rhNegativeWbBcompatibility + value.rhNegativeWbABcompatibility;
+    total = Number(value.rhNegativeWbOcompatibility) + Number(value.rhNegativeWbAcompatibility) +
+     Number(value.rhNegativeWbBcompatibility) + Number(value.rhNegativeWbABcompatibility);
     this.availableStockForm.get('totalRhNegativeWbcompatibility').setValue(total);
   }
   comSumRhNegativePc(value) {
     let total = 0;
-    total = value.rhNegativePcOcompatibility + value.rhNegativePcAcompatibility +
-     value.rhNegativePcBcompatibility + value.rhNegativePcABcompatibility;
+    total = Number(value.rhNegativePcOcompatibility) + Number(value.rhNegativePcAcompatibility) +
+     Number(value.rhNegativePcBcompatibility) + Number(value.rhNegativePcABcompatibility);
     this.availableStockForm.get('totalRhNegativePccompatibility').setValue(total);
   }
   comSumRhNegativePaedWb(value) {
     let total = 0;
-    total = value.rhNegativePaedWbOcompatibility + value.rhNegativePaedWbAcompatibility +
-     value.rhNegativePaedWbBcompatibility + value.rhNegativePaedWbABcompatibility;
+    total = Number(value.rhNegativePaedWbOcompatibility) + Number(value.rhNegativePaedWbAcompatibility) +
+     Number(value.rhNegativePaedWbBcompatibility) + Number(value.rhNegativePaedWbABcompatibility);
     this.availableStockForm.get('totalRhNegativePaedWbcompatibility').setValue(total);
   }
   comSumRhNegativePaedPc(value) {
     let total = 0;
-    total = value.rhNegativePaedPcOcompatibility + value.rhNegativePaedPcAcompatibility +
-     value.rhNegativePaedPcBcompatibility + value.rhNegativePaedPcABcompatibility;
+    total = Number(value.rhNegativePaedPcOcompatibility) + Number(value.rhNegativePaedPcAcompatibility) +
+     Number(value.rhNegativePaedPcBcompatibility) + Number(value.rhNegativePaedPcABcompatibility);
     this.availableStockForm.get('totalRhNegativePaedPccompatibility').setValue(total);
   }
   comTotalVertical() {
     let total = 0;
-    total = this.availableStockForm.get('totalOcompatibility').value
-    + this.availableStockForm.get('totalAcompatibility').value
-    + this.availableStockForm.get('totalBcompatibility').value
-    + this.availableStockForm.get('totalABcompatibility').value;
+    total = Number(this.availableStockForm.get('totalOcompatibility').value)
+    + Number(this.availableStockForm.get('totalAcompatibility').value)
+    + Number(this.availableStockForm.get('totalBcompatibility').value)
+    + Number(this.availableStockForm.get('totalABcompatibility').value);
     this.availableStockForm.get('totalTotalcompatibility').setValue(total);
     this.calcStockAvailable();
 
@@ -887,70 +888,70 @@ loadStockIssuedTo() {
   comTotalO(value) {
     let total = 0;
     total =
-    value.rhPositiveWbOcompatibility +
-    value.rhPositivePcOcompatibility +
-    value.rhPositivePaedWbOcompatibility +
-    value.rhPositivePaedPcOcompatibility +
-    value.rhNegativeWbOcompatibility +
-    value.rhNegativePcOcompatibility +
-    value.rhNegativePaedWbOcompatibility +
-    value.rhNegativePaedPcOcompatibility;
+    Number(value.rhPositiveWbOcompatibility) +
+    Number(value.rhPositivePcOcompatibility) +
+    Number(value.rhPositivePaedWbOcompatibility) +
+    Number(value.rhPositivePaedPcOcompatibility) +
+    Number(value.rhNegativeWbOcompatibility) +
+    Number(value.rhNegativePcOcompatibility) +
+    Number(value.rhNegativePaedWbOcompatibility) +
+    Number(value.rhNegativePaedPcOcompatibility);
     this.availableStockForm.get('totalOcompatibility').setValue(total);
     this.comTotalVertical();
   }
   comTotalA(value) {
     let total = 0;
     total =
-    value.rhPositiveWbAcompatibility +
-    value.rhPositivePcAcompatibility +
-    value.rhPositivePaedWbAcompatibility +
-    value.rhPositivePaedPcAcompatibility +
-    value.rhNegativeWbAcompatibility +
-    value.rhNegativePcAcompatibility +
-    value.rhNegativePaedWbAcompatibility +
-    value.rhNegativePaedPcAcompatibility;
+    Number(value.rhPositiveWbAcompatibility) +
+    Number(value.rhPositivePcAcompatibility) +
+    Number(value.rhPositivePaedWbAcompatibility) +
+    Number(value.rhPositivePaedPcAcompatibility) +
+    Number(value.rhNegativeWbAcompatibility) +
+    Number(value.rhNegativePcAcompatibility) +
+    Number(value.rhNegativePaedWbAcompatibility) +
+    Number(value.rhNegativePaedPcAcompatibility);
     this.availableStockForm.get('totalAcompatibility').setValue(total);
     this.comTotalVertical();
   }
   comTotalB(value) {
     let total = 0;
     total =
-    value.rhPositiveWbBcompatibility +
-    value.rhPositivePcBcompatibility +
-    value.rhPositivePaedWbBcompatibility +
-    value.rhPositivePaedPcBcompatibility +
-    value.rhNegativeWbBcompatibility +
-    value.rhNegativePcBcompatibility +
-    value.rhNegativePaedWbBcompatibility +
-    value.rhNegativePaedPcBcompatibility;
+    Number(value.rhPositiveWbBcompatibility) +
+    Number(value.rhPositivePcBcompatibility) +
+    Number(value.rhPositivePaedWbBcompatibility) +
+    Number(value.rhPositivePaedPcBcompatibility) +
+    Number(value.rhNegativeWbBcompatibility) +
+    Number(value.rhNegativePcBcompatibility) +
+    Number(value.rhNegativePaedWbBcompatibility) +
+    Number(value.rhNegativePaedPcBcompatibility);
     this.availableStockForm.get('totalBcompatibility').setValue(total);
     this.comTotalVertical();
   }
   comTotalAB(value) {
     let total = 0;
     total =
-    value.rhPositiveWbABcompatibility +
-    value.rhPositivePcABcompatibility +
-    value.rhPositivePaedWbABcompatibility +
-    value.rhPositivePaedPcABcompatibility +
-    value.rhNegativeWbABcompatibility +
-    value.rhNegativePcABcompatibility +
-    value.rhNegativePaedWbABcompatibility +
-    value.rhNegativePaedPcABcompatibility;
+    Number(value.rhPositiveWbABcompatibility) +
+    Number(value.rhPositivePcABcompatibility) +
+    Number(value.rhPositivePaedWbABcompatibility) +
+    Number(value.rhPositivePaedPcABcompatibility) +
+    Number(value.rhNegativeWbABcompatibility) +
+    Number(value.rhNegativePcABcompatibility) +
+    Number(value.rhNegativePaedWbABcompatibility) +
+    Number(value.rhNegativePaedPcABcompatibility);
     this.availableStockForm.get('totalABcompatibility').setValue(total);
     this.comTotalVertical();
   }
   comTotalHorizontal(value) {
     let total = 0;
     total =
-    value.totalRhPositiveWbcompatibility +
-    value.totalRhPositivePccompatibility +
-    value.totalRhPositivePaedWbcompatibility +
-    value.totalRhPositivePaedPccompatibility +
-    value.totalRhNegativeWbcompatibility +
-    value.totalRhNegativePccompatibility +
-    value.totalRhNegativePaedWbcompatibility +
-    value.totalRhNegativePaedPccompatibility;
+    Number(value.totalRhPositiveWbcompatibility) +
+    Number(value.totalRhPositivePccompatibility) +
+    Number(value.totalRhPositivePaedWbcompatibility) +
+    Number(value.totalRhPositivePaedPccompatibility) +
+    Number(value.totalRhNegativeWbcompatibility) +
+    Number(value.totalRhNegativePccompatibility) +
+    Number(value.totalRhNegativePaedWbcompatibility) +
+    Number(value.totalRhNegativePaedPccompatibility);
     this.availableStockForm.get('totalTotalcompatibility').setValue(total);
   }
   sumCompats(value) {

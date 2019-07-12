@@ -23,7 +23,7 @@
           <p>
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Branch</mat-label>
-              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch">
+              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches">
                   <mat-option *ngFor="let branch of AllBranches" [value]="branch" (click)="getInitvalues(branch.id)" >
                     {{branch.branchName}}
                   </mat-option>
@@ -34,7 +34,7 @@
           <p>
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Date</mat-label>
-              <input matInput placeholder="Date" formControlName="todaysDate">
+              <input matInput placeholder="Date" formControlName="todaysDate" readonly>
               <mat-icon matSuffix>date_range</mat-icon>
               <mat-hint>yesterday's date</mat-hint>
             </mat-form-field>
@@ -53,7 +53,7 @@
         <div fxFlex="15%">
             <mat-card class="infor-card" color="accent">
               <p>Orders: <strong>{{overallOrders()}}</strong></p>
-              <p>Supplies: <strong>{{overallSupplies(availableStockForm.value)}}</strong></p></mat-card>
+              <p>Supplies: <strong>{{overallSupplies()}}</strong></p></mat-card>
         </div>
       </div>
 
@@ -406,7 +406,7 @@
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="totalO" type="number" placeholder="" (keyup)="totalVertical(availableStockForm.value)"  readonly>
+                            <input matInput formControlName="totalO" type="number" placeholder="" (keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
@@ -449,7 +449,7 @@
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="totalA" type="number" placeholder="" (keyup)="totalVertical(availableStockForm.value)"  readonly>
+                            <input matInput formControlName="totalA" type="number" placeholder="" (keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
@@ -492,7 +492,7 @@
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="totalB" type="number" placeholder=""(keyup)="totalVertical(availableStockForm.value)"  readonly>
+                            <input matInput formControlName="totalB" type="number" placeholder=""(keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
@@ -535,7 +535,7 @@
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
-                            <input matInput formControlName="totalAB" type="number" placeholder=""(keyup)="totalVertical(availableStockForm.value)"  readonly>
+                            <input matInput formControlName="totalAB" type="number" placeholder=""(keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
                     <mat-grid-tile class="border_black">
                         <mat-form-field class="full-width" appearance="fill">
@@ -972,4 +972,4 @@
       </form>
 
 </mat-card>
-{{availableStockForm.value | json}}
+<!-- {{availableStockForm.value | json}} -->

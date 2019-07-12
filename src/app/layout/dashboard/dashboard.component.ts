@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
       if (value >= 1) { return 'purple'; }
       if (value >= 0.75 && value < 1) { return 'green'; }
       if (value >= 0.4 && value < 0.75) { return 'orange'; }
-      if (value >= 0 && value < 0.4) { return 'green'; } else { return 'pink'; }
+      if (value >= 0 && value < 0.4) { return 'red'; } else { return 'pink'; }
     }
   }
 }
