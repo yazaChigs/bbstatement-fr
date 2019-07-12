@@ -58,7 +58,7 @@
       </div>
       <span class="nav-spacer"></span>
       <h3>| BLOOD BANK STATEMENT |</h3>
-      <button *ngIf="showCompanies" [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" >
+      <button [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" >
         <mat-icon class="nav-icon">autorenew</mat-icon>
       </button>
       <button mat-icon-button [matMenuTriggerFor]="menu">
