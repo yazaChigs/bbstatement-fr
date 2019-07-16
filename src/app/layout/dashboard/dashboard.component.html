@@ -42,7 +42,7 @@
   </div>
   <div fxFlex="12%">
     <mat-card  [style.background-color]="demandVsSupplyBgColor()" class="info-card">
-      DEMAND VS SUPPLY<h2>{{((stockAvailable?.hospitals/stockAvailable?.totalHospitalOrders)*100).toFixed(2)}}%</h2>
+      DEMAND VS SUPPLY<h2>{{(((stockAvailable?.hospitals + stockAvailable?.compatsIssues)/(stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders))*100).toFixed(2)}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -52,8 +52,8 @@
   </div>
   <div fxFlex="12%">
     <mat-card class="info-card">
-      <p>ORDERS:</p><strong>{{stockAvailable?.hospitals + stockAvailable?.issueToCompats}}</strong>
-      <p>SUPPLIES:</p><strong>{{stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders}}</strong>
+      <p>SUPPLIES:</p><strong>{{stockAvailable?.hospitals + stockAvailable?.compatsIssues}}</strong>
+      <p>ORDERS:</p><strong>{{stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders}}</strong>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -71,8 +71,8 @@
     <mat-card class="info-card">
       <p>OPENING:<strong>{{stockQuarantine?.openingStock}}</strong></p>
       <p>RECEIPTS:<strong>{{stockQuarantine?.totalReceiptsFromBranches}}</strong></p>
-      <p>ISSUES:<strong>{{stockQuarantine?.totalIssuesDiscards}}</strong></p>
-      <p>DISCARDS:<strong>{{stockQuarantine?.totalIssues}}</strong></p>
+      <p>ISSUES:<strong>{{stockQuarantine?.totalIssues}}</strong></p>
+      <p>DISCARDS:<strong>{{stockQuarantine?.totalIssuesDiscards}}</strong></p>
     </mat-card>
   </div>
   </div>

@@ -2,7 +2,7 @@
     <div fxFlex="85%">
 <mat-card class="card-padding">
     <mat-toolbar color="accent">
-        <a routerLink="/admin/user" mat-icon-button>
+        <a routerLink="/admin/" mat-icon-button>
           <mat-icon aria-label="Back">arrow_back</mat-icon>
       </a>
       <span class="fill-remaining-space"></span>
@@ -43,14 +43,6 @@
                 {{row.branch.branchName | uppercase}}
             </ng-template>
         </ngx-datatable-column>
-        <!-- <ngx-datatable-column>
-            <ng-template let-column="column" ngx-datatable-header-template>
-               Workstation
-            </ng-template>
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                {{row.workstation?.name | uppercase}}
-            </ng-template>
-        </ngx-datatable-column> -->
           <ngx-datatable-column>
               <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
                   <div class="button-row">

@@ -3,6 +3,7 @@ import { Branch } from '../../model/admin/branch.model';
 import { Global } from 'src/app/global';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpEvent, HttpRequest, HttpClient } from '@angular/common/http';
+import { id } from '@swimlane/ngx-datatable/release/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class BranchService {
   private saveLogoUrl =  this.global.baseUrl + '/api/admin/branch/save-logo';
   private getAllUrl =  this.global.baseUrl + '/api/admin/branch/get-all';
   private getUserBranchUrl =  this.global.baseUrl + '/api/admin/branch/get-user-ranch';
-  private getAllForUserUrl =  this.global.baseUrl + '/api/admin/branch/get-all-for-user';
+  private getAllForUserUrl =  this.global.baseUrl + '/api/admin/branch/get-all-for-user?branchId=';
   private getThemeUrl = this.global.baseUrl + '/api/admin/branch/get-theme';
   private getItemUrl = this.global.baseUrl + '/api/admin/branch/get-item?id=';
   private uploadFileUrl = this.global.baseUrl + '/api/admin/branch/patient-csv';
@@ -33,8 +34,8 @@ export class BranchService {
     return this.httpClient.get<Branch>(this.getUserBranchUrl);
   }
 
-  public getAllForUser(): Observable<Branch[]> {
-    return this.httpClient.get<Branch[]>(this.getAllForUserUrl);
+  public getAllForUser(branchId: number): Observable<Branch[]> {
+    return this.httpClient.get<Branch[]>(this.getAllForUserUrl + branchId);
   }
 
   public getTheme(): Observable<any> {
@@ -49,7 +50,7 @@ export class BranchService {
 
   pushFileToStorage(
     file: File, name: string, templateColor: string, address: string, email: string,
-     phoneNumber: string, officePhone: string): Observable<HttpEvent<{}>> {
+    phoneNumber: string, officePhone: string): Observable<HttpEvent<{}>> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', name);

@@ -69,11 +69,12 @@ export class SideNavComponent implements OnInit {
   }
 
   sync() {
-   this.disableSyncBtn = true;
-   this.staticData.getStaticData().subscribe(
-     result => {
-     }
-   );
+  //  this.disableSyncBtn = true;
+  //  this.staticData.getStaticData().subscribe(
+  //    result => {
+  //    }
+  //  );
+  location.reload();
   }
 
   getRoles() {

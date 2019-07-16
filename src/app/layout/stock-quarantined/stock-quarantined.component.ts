@@ -8,6 +8,8 @@ import { error } from '@angular/compiler/src/util';
 import { DataManagementService } from '../../shared/config/service/admin/dataManagement.service';
 import { BranchDailyMinimalCapacity } from '../../shared/config/model/admin/branch-daily-minimal-capacity.model';
 import { StorageKey } from 'src/app/util/key';
+import { Snotify, SnotifyService } from 'ng-snotify';
+import { NotifyUtil } from 'src/app/util/notifyutil';
 
 @Component({
   selector: 'app-stock-quarantined',
@@ -44,22 +46,34 @@ export class StockQuarantinedComponent implements OnInit {
   branchTotalMinCapacity: BranchDailyMinimalCapacity = new BranchDailyMinimalCapacity();
   editBranches = true;
   roles: string[];
+  util;
+  yesterdayDate: any;
 
   constructor(private branchService: BranchService, private dataManService: DataManagementService,
-              private qStockService: QuarantinedStockService, private fb: FormBuilder) { }
+              private qStockService: QuarantinedStockService, private fb: FormBuilder, private snotify: SnotifyService) { }
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
     this.getBranchTotalMinCapacity();
     // this.getUserBranch(this.branchId);
+    this.setYesterdayDate();
     this.createForms();
-    this.loadBranches();
+    this.loadBranches(this.branchId);
     this.getAllBranches();
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
     if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
       this.editBranches = false; }
+
+    this.util = new NotifyUtil(this.snotify);
   }
 
+
+  setYesterdayDate() {
+    const yDate = new Date();
+    yDate.setDate(yDate.getDate() - 1);
+    this.yesterdayDate = yDate;
+    console.log(this.yesterdayDate);
+  }
   collectionsBgColor() {
 
     this.collectionsIndicator = ((this.initCollections - this.initOpeningStock) / this.initCollectionsFromDb);
@@ -125,7 +139,7 @@ export class StockQuarantinedComponent implements OnInit {
       branch: new FormControl(
         // {disabled: this.editBranches}
       ),
-      todaysDate: new FormControl(new Date().toLocaleDateString()),
+      todaysDate: new FormControl(this.yesterdayDate),
       openingStock: new FormControl(),
       harareCbd03: new FormControl(),
       staticHq01: new FormControl(),
@@ -144,6 +158,7 @@ export class StockQuarantinedComponent implements OnInit {
       c11: new FormControl(),
       expired: new FormControl(),
       wrongPack: new FormControl(),
+      broken: new FormControl(),
       other: new FormControl(),
       serologicalDiscards: new FormControl(),
       totalIssuesDiscards: new FormControl(),
@@ -237,7 +252,7 @@ export class StockQuarantinedComponent implements OnInit {
 
   sumIssues(value): number {
     let total = 0;
-    total = Number(value.issueTogroupMismatchesToRefLab);
+    total = Number(value.issueTogroupMismatchesToRefLab) + Number(value.availableStock);
     value.issuedToQuarantines.forEach(item => {
       total += Number(item.issuedTo);
     });
@@ -249,7 +264,7 @@ export class StockQuarantinedComponent implements OnInit {
     let total = 0;
     total =  Number(value.p1) + Number(value.dryPacksD3D4) + Number(value.p2) +
     Number(value.dryPacksD1) + Number(value.p3) + Number(value.samplesOnly) + Number(value.c11) + Number(value.expired)
-    + Number(value.wrongPack) + Number(value.other) +  Number(value.serologicalDiscards);
+    + Number(value.wrongPack) + Number(value.broken) + Number(value.other) +  Number(value.serologicalDiscards);
     this.quarantinedStockForm.get('totalIssuesDiscards').setValue(total);
     return total;
   }
@@ -268,14 +283,17 @@ export class StockQuarantinedComponent implements OnInit {
 
   saveAQuarantinedStock(value) {
     console.log(value);
+    console.log(this.branches);
     this.qStockService.save(value).subscribe(
       result => {
         this.stockQuarantined = result.stockQuarantined;
         console.log(result.stockQuarantined);
         console.log(result.message);
+        this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
       },
       error => {
-         console.log(error.error);
+        this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
+        console.log(error.error);
       },
       () => {
        this.populateForm(this.stockQuarantined);
@@ -286,10 +304,12 @@ export class StockQuarantinedComponent implements OnInit {
   submitStockQuarantined(value) {
     this.qStockService.submit(value).subscribe(
       result => {
+        this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
         console.log(result.message);
       },
       error => {
-         console.log(error.error);
+        this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
+        console.log(error.error);
       },
       () => {
        this.populateNewForm();
@@ -298,7 +318,6 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   populateNewForm() {
-    console.log('reseting');
     this.quarantinedStockForm.get('id').setValue('');
     this.quarantinedStockForm.get('dateCreated').setValue('');
     this.quarantinedStockForm.get('version').setValue('');
@@ -430,7 +449,8 @@ export class StockQuarantinedComponent implements OnInit {
       version: new FormControl(),
       createdById: new FormControl(),
       dateCreated: new FormControl(),
-      receivedFrom: new FormControl(0),
+      receivedFrom: new FormControl(),
+      branchName: new FormControl(),
     });
   }
   get StockReceivedFromArray() {
@@ -446,13 +466,14 @@ export class StockQuarantinedComponent implements OnInit {
  }
 
 
- initStockIssuedTo() {
+ initStockIssuedTo(ds?) {
   return this.fb.group({
+    issuedTo: new FormControl(),
     id: new FormControl(),
     version: new FormControl(),
     createdById: new FormControl(),
     dateCreated: new FormControl(),
-    issuedTo: new FormControl(),
+    branchNames: new FormControl(),
   });
 }
 get StockIssuedToArray() {
@@ -460,13 +481,13 @@ get StockIssuedToArray() {
 }
 loadStockIssuedTo() {
   this.branches.forEach(ds => {
-    this.StockIssuedToArray.push(this.initStockIssuedTo());
+    this.StockIssuedToArray.push(this.initStockIssuedTo(ds));
   });
 }
 
 
- loadBranches() {
-   this.branchService.getAllForUser().subscribe(
+ loadBranches(id) {
+   this.branchService.getAllForUser(id).subscribe(
      result => {
       this.branches = result;
       console.log(this.branches);
@@ -518,6 +539,7 @@ getUserBranches() {
       }
       if (this.stockQuarantined !== null) {
         this.populateForm(this.stockQuarantined);
+
       }
       if (this.stockQuarantined === null) {
         this.populateNewForm();
@@ -526,9 +548,23 @@ getUserBranches() {
     },
     error => {
        console.log(error.error);
-    },
+    }, () => { }
    );
  }
+
+ reloadForBranch(branchId) {
+  this.branchService.getAllForUser(branchId).subscribe(
+    result => {
+     this.branches = result;
+     console.log(this.branches);
+     this.getInitvalues(branchId);
+    },
+    error => {
+      console.log(error.error);
+    },
+  );
+ }
+
  compareByValue(f1: any, f2: any) {
   return f1 && f2 && f1.id === f2.id;
 }

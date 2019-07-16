@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
    MatCardModule, MatMenuModule, MatDividerModule, MatDialogModule, MatTooltipModule, MatAutocompleteModule,
-    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule } from '@angular/material';
+    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { SideNavComponent } from './nav/side-nav/side-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { LayoutRoutingModule } from './layout-routing.module';
@@ -36,16 +36,16 @@ import { ChartsModule } from 'ng2-charts';
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatIconModule,
+    MatIconModule, MatDatepickerModule,
     MatListModule, ChartsModule,
     MatGridListModule,
-    MatCardModule, MatDividerModule,
+    MatCardModule, MatDividerModule, MatNativeDateModule,
     MatMenuModule,
     MatDialogModule, MatTooltipModule,
     NgxDatatableModule, MatChipsModule
   ],
   entryComponents: [ChangePasswordDialogComponent],
-  providers: []
+  providers: [MatDatepickerModule]
 })
 export class LayoutMainModule { }
 

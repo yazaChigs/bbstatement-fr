@@ -9,3 +9,12 @@
 .indicator {
   min-width: 20px;
 }
+.info-card{
+  background-color: aliceblue;
+  height: 5em;
+}
+.input-headline {
+  font-size: 28px;
+  font-weight: 400;
+  padding: 0px;
+}

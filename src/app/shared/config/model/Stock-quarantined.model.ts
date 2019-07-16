@@ -25,6 +25,7 @@ export class StockQuarantined extends BaseModel {
   c11: number;
   expired: number;
   wrongPack: number;
+  broken: number;
   other: number;
   serologicalDiscards: number;
   totalIssuesDiscards: number;

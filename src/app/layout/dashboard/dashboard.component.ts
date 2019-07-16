@@ -131,7 +131,8 @@ export class DashboardComponent implements OnInit {
   demandVsSupplyBgColor() {
     let value;
     if (this.stockAvailable !== null) {
-    value = this.stockAvailable.hospitals / this.stockAvailable.totalHospitalOrders;
+    value = (this.stockAvailable.hospitals + this.stockAvailable.compatsIssues)
+    / (this.stockAvailable.compatsOrders +  this.stockAvailable.totalHospitalOrders);
     if (value !== undefined && value !== null) {
       if (value >= 0.5) { return 'green'; }
       if (value >= 0.25 && value < 0.5) { return 'orange'; }
@@ -279,6 +280,7 @@ export class DashboardComponent implements OnInit {
     this.availableStockService.getAvailableStock(this.branchId).subscribe(
       result => {
         this.stockAvailable = result;
+        console.log(this.stockAvailable);
         if (this.stockAvailable !== null ) {
         this.populateStockavailable(this.stockAvailable);
         }

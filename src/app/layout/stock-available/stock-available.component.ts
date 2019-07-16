@@ -7,6 +7,8 @@ import { StockAvailable } from 'src/app/shared/config/model/stock-available.mode
 import { UserService } from '../../shared/config/service/admin/user.service';
 import { StorageKey } from 'src/app/util/key';
 import { DatePipe } from '@angular/common';
+import { SnotifyService } from 'ng-snotify';
+import { NotifyUtil } from 'src/app/util/notifyutil';
 
 @Component({
   selector: 'app-stock-available',
@@ -30,26 +32,38 @@ export class StockAvailableComponent implements OnInit {
   selected: Branch;
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
   editBranches = true;
+  util;
+  yesterdayDate: Date;
 
   // user = localStorage.getItem('USER');
 
   constructor(private availableStockService: AvailableStockService, private fb: FormBuilder,
-              private branchService: BranchService, private userService: UserService) {
+              private branchService: BranchService, private userService: UserService, private snotify: SnotifyService) {
               }
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
     this.getUserBranch();
+    this.setYesterdayDate();
     this.createForms();
-    this.loadBranches();
+    this.loadBranches(this.branchId);
     this.getAllBranches();
     this.getInitvalues(this.branchId);
+    this.util = new NotifyUtil(this.snotify);
 
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
     if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
       this.editBranches = false; }
 
   }
+
+  setYesterdayDate() {
+    const yDate = new Date();
+    yDate.setDate(yDate.getDate() - 1);
+    this.yesterdayDate = yDate;
+    console.log(this.yesterdayDate);
+  }
+
   createForms() {
     this.availableStockForm = this.fb.group({
       id: new FormControl(),
@@ -59,7 +73,7 @@ export class StockAvailableComponent implements OnInit {
       createdById: new FormControl(),
       branch: new FormControl(
         {disabled: this.editBranches}),
-      todaysDate: new FormControl(new Date().toLocaleDateString()),
+      todaysDate: new FormControl(this.yesterdayDate),
       openingStock: new FormControl(),
       receivedFromQuarantine: new FormControl(),
       totalAvailable: new FormControl(),
@@ -510,7 +524,7 @@ getUserBranch(): Branch {
     // if (value !== undefined && value !== null) {
     if (value >= 0.5) { return 'green'; }
     if (value >= 0.25 && value < 0.5) { return 'orange'; }
-    if (value >= 0 && value < 0.25) { return 'green'; } else { return 'pink'; }
+    if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
     // }
   }
 }
@@ -531,10 +545,11 @@ getUserBranch(): Branch {
     );
   }
 
-  loadBranches() {
-    this.branchService.getAllForUser().subscribe(
+  loadBranches(id) {
+    this.branchService.getAllForUser(id).subscribe(
       result => {
        this.branches = result;
+       console.log(this.branches);
       },
       error => {
         console.log(error.error);
@@ -545,6 +560,19 @@ getUserBranch(): Branch {
       }
     );
   }
+
+  reloadForBranch(branchId) {
+    this.branchService.getAllForUser(branchId).subscribe(
+      result => {
+       this.branches = result;
+       console.log(this.branches);
+       this.getInitvalues(branchId);
+      },
+      error => {
+        console.log(error.error);
+      },
+    );
+   }
 
   getInitvalues(branchId) {
     this.availableStockService.getAvailableStock(branchId).subscribe(
@@ -568,11 +596,13 @@ getUserBranch(): Branch {
     this.availableStockService.save(value).subscribe(
       result => {
         this.stockAvailable = result.stockAvailable;
-        console.log(this.stockAvailable);
-        console.log(result.message);
+        // console.log(this.stockAvailable);
+        // console.log(result.message);
+        this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
       },
       error => {
-         console.log(error.error);
+        this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
+        // console.log(error.error);
       },
       () => {
        this.populateForm(this.stockAvailable);
@@ -583,10 +613,12 @@ getUserBranch(): Branch {
   submitStockAvailable(value) {
     this.availableStockService.submit(value).subscribe(
       result => {
-        console.log(result.message);
+        this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
+        // console.log(result.message);
       },
       error => {
-         console.log(error.error);
+        this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
+        // console.log(error.error);
       },
       () => {
        this.populateNewForm();
@@ -658,7 +690,7 @@ loadStockIssuedTo() {
     if (this.overallOrders() === null && this.overallOrders() === undefined) {
       return 0;
     } else {
-      return (Math.floor((this.overallSupplies()  / this.overallOrders()) * 100));
+      return (Math.round((this.overallSupplies()  / this.overallOrders()) * 100));
     }
   }
 

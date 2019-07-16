@@ -31,9 +31,9 @@
       <!-- <a mat-list-item *ngFor="let card of list" routerLink="{{card.link}}" routerLinkActive="active-link" ><mat-icon class="sidenav-icon" color="primary">{{card.icon}}</mat-icon>{{card.title}}</a> -->
       </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content class="full-width">
-<div class="fixed-header-nav full-width">
-    <mat-toolbar color="primary" class="full-width">
+  <mat-sidenav-content class="">
+<div class="fixed-header-nav ">
+    <mat-toolbar color="primary" >
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -45,7 +45,7 @@
        <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <div style="margin-left: 15%">
+        <div style="margin-left: 5%">
           <a routerLink="/dashboard" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">dashboard</mat-icon>Dashboard</a>
           <a routerLink="/available" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">all_inbox</mat-icon>Available Stock</a>
           <a routerLink="/quarantined" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">bookmarks</mat-icon>Quarantined Stock</a>
@@ -57,8 +57,8 @@
         </a> -->
       </div>
       <span class="nav-spacer"></span>
-      <h3>| BLOOD BANK STATEMENT |</h3>
-      <button [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" >
+      <h4>| BLOOD BANK STATEMENT |</h4>
+      <button [disabled]="disableSyncBtn" mat-icon-button (click)="sync()" matTooltip="sync">
         <mat-icon class="nav-icon">autorenew</mat-icon>
       </button>
       <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -74,7 +74,7 @@
           <span>Disable alerts</span>
         </button>
       </mat-menu>
-      <button class="topnav-icon" mat-icon-button (click)="logout()">
+      <button class="topnav-icon" mat-icon-button (click)="logout()" matTooltip="logout">
         <mat-icon>exit_to_app</mat-icon>
       </button>
     </mat-toolbar>

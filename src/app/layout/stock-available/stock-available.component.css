@@ -5,3 +5,12 @@
 .grid-top-space{
   margin-top: 10px;
 }
+.info-card{
+  background-color: aliceblue;
+  height: 5em;
+}
+.input-headline {
+  font-size: 28px;
+  font-weight: 400;
+  padding: 0px;
+}
