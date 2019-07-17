@@ -233,7 +233,8 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   QuarantineStock() {
-    return this.quarantinedStockForm.get('totalCollections').value
+    return this.quarantinedStockForm.get('openingStock').value
+      + this.quarantinedStockForm.get('totalCollections').value
       + this.quarantinedStockForm.get('totalReceiptsFromBranches').value
       - this.quarantinedStockForm.get('totalIssuesDiscards').value
       - this.quarantinedStockForm.get('totalIssues').value;
@@ -241,18 +242,19 @@ export class StockQuarantinedComponent implements OnInit {
 
   sumCollections(value): number {
     let total = 0;
-    total = Number(value.openingStock) + Number(value.harareCbd03) + Number(value.staticHq01)
+    total = Number(value.harareCbd03) + Number(value.staticHq01)
      + Number(value.mobile04) + Number(value.mobile02) + Number(value.mobile06) ;
     this.quarantinedStockForm.get('totalCollections').setValue(total);
     return total;
   }
   totolCollectionsOnly(): number {
-    return this.quarantinedStockForm.get('totalCollections').value;
+    return Number(this.quarantinedStockForm.get('totalCollections').value)
+    + Number(this.quarantinedStockForm.get('openingStock').value);
   }
 
   sumIssues(value): number {
     let total = 0;
-    total = Number(value.issueTogroupMismatchesToRefLab) + Number(value.availableStock);
+    total = Number(value.issueTogroupMismatchesToRefLab) ;
     value.issuedToQuarantines.forEach(item => {
       total += Number(item.issuedTo);
     });

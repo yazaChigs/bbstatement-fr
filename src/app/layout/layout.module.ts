@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
    MatCardModule, MatMenuModule, MatDividerModule, MatDialogModule, MatTooltipModule, MatAutocompleteModule,
-    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
 import { SideNavComponent } from './nav/side-nav/side-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { LayoutRoutingModule } from './layout-routing.module';
@@ -19,6 +19,7 @@ import { StockQuarantinedComponent } from './stock-quarantined/stock-quarantined
 import {MatExpansionModule} from '@angular/material/expansion';
 import { BloodGroupDaysSupplyComponent } from './dashboard/charts/BloodGroup-DaysSupply/BloodGroup-DaysSupply.component';
 import { ChartsModule } from 'ng2-charts';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
   declarations: [
@@ -34,8 +35,8 @@ import { ChartsModule } from 'ng2-charts';
     AccessDeniedSharedModule, MatExpansionModule,
     LayoutRoutingModule, FlexLayoutModule,
     MatButtonModule,
-    MatToolbarModule,
-    MatSidenavModule,
+    MatToolbarModule, FilterPipeModule,
+    MatSidenavModule, MatCheckboxModule,
     MatIconModule, MatDatepickerModule,
     MatListModule, ChartsModule,
     MatGridListModule,

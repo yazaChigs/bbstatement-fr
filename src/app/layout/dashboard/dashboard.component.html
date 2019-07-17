@@ -1,38 +1,54 @@
-<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+<!-- <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
     <div fxFlex="98%">
       <mat-toolbar class="border border-radius" style="border-radius: 5px ; ">
         <span>Dashboard</span>
       </mat-toolbar>
     </div>
-</div>
-<!-- <div class="grid-container">
-  <mat-grid-list *ngIf="company !== null" cols={{column}} rowHeight="200px">
-    <mat-grid-tile *ngFor="let card of list" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card role="region" (click)="redirect(card.link)" class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
+</div> -->
 
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>
-              <mat-icon *ngIf="card.title!=='Clinical'" >{{card.icon}}</mat-icon>
-              <span *ngIf="card.title=='Clinical'" class="medical-icon-i-outpatient med-icon" aria-hidden="true" style="font-size: 25px;"></span>
-            <span><mat-icon [ngClass]="iconSize">{{card.icon}}</mat-icon></span>
-            <h2 [ngClass]="fontSize">{{card.title}}</h2>
-          </div>
+<form [formGroup]="dashForm">
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+  <div fxFlex="20%">
+    <!-- <mat-form-field >
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateInput)="addEvent('input', $event)" >
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field> -->
+      <mat-form-field appearance="outline" class="full-width">
+          <input matInput [matDatepicker]="picker1" placeholder="Angular forms" formControlName="date" (dateChange)="getDate(dashForm.value)">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+  </div>
+  <div fxFlex="65%">
+<div class="grid-container">
+  <mat-grid-list cols="5" rowHeight="80px" gutterSize="5">
+      <!-- <div formArrayName="branchesForm"> -->
+          <mat-grid-tile  *ngFor="let branch of allBranches | filterBy: formFilter index as i;" [colspan]="1" [rowspan]="1">
+      <mat-card class="ob-card border_accent">
+        <mat-card-content >
+            <!-- <div @fadeInOut> -->
+                <mat-checkbox [checked]="branch.selected" (change)="toggleForm(branch,i)">{{ branch.branchName }}</mat-checkbox>
+                <!-- <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button> -->
+                  <!-- <mat-menu #menu="matMenu" xPosition="before">
+                    <a (click)="viewForm(form.formKey)"  mat-menu-item>View</a>
+                    <button mat-menu-item>Remove</button>
+                  </mat-menu> -->
+            <!-- </div> -->
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
+      <!-- </div> -->
   </mat-grid-list>
-</div> -->
+  </div>
+</div>
+<div fxFlex="15%">
+   <button type="button" mat-raised-button (click)="getBranchInfo(selectedBranches)">Search</button>
+</div>
+  </div>
+</form>
 
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
   <div fxFlex="12%">
@@ -42,37 +58,36 @@
   </div>
   <div fxFlex="12%">
     <mat-card  [style.background-color]="demandVsSupplyBgColor()" class="info-card">
-      DEMAND VS SUPPLY<h2>{{(((stockAvailable?.hospitals + stockAvailable?.compatsIssues)/(stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders))*100).toFixed(2)}}%</h2>
+      DEMAND VS SUPPLY<h2>{{branchesInfo.demandVsSupply}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card class="info-card">
-      <p>AVAILABLE STOCK</p><h2>{{stockAvailable?.totalTotal+ stockAvailable?.totalTotalcompatibility}}</h2>
+      <p>AVAILABLE STOCK</p><h2>{{branchesInfo.stockAvailable}}</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card class="info-card">
-      <p>SUPPLIES:</p><strong>{{stockAvailable?.hospitals + stockAvailable?.compatsIssues}}</strong>
-      <p>ORDERS:</p><strong>{{stockAvailable?.compatsOrders + stockAvailable?.totalHospitalOrders}}</strong>
+      <p>SUPPLIES:</p><strong>{{branchesInfo?.supplies}}</strong>
+      <p>ORDERS:</p><strong>{{branchesInfo?.orders}}</strong>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card [style.background-color]="collectionsBgColor()" class="info-card">
-      <p>COLLECTIONS</p><h2>{{ (((stockQuarantine?.totalCollections - stockQuarantine?.openingStock) / branchDailyMinimalCapacity?.harareTotalMinCapacity)*100).toFixed(2)}}%</h2>
+      <p>COLLECTIONS</p><h2>{{ branchesInfo?.collections}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card class="info-card">
-      <p>QUARANTINE STOCK</p><h2>{{stockQuarantine?.totalCollections + stockQuarantine?.totalReceiptsFromBranches
-          - stockQuarantine?.totalIssuesDiscards - stockQuarantine?.totalIssues}}</h2>
+      <p>QUARANTINE STOCK</p><h2>{{branchesInfo.quarantineStock}}</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card class="info-card">
-      <p>OPENING:<strong>{{stockQuarantine?.openingStock}}</strong></p>
-      <p>RECEIPTS:<strong>{{stockQuarantine?.totalReceiptsFromBranches}}</strong></p>
-      <p>ISSUES:<strong>{{stockQuarantine?.totalIssues}}</strong></p>
-      <p>DISCARDS:<strong>{{stockQuarantine?.totalIssuesDiscards}}</strong></p>
+      <p>OPENING:<strong>{{branchesInfo?.opening}}</strong></p>
+      <p>RECEIPTS:<strong>{{branchesInfo?.receipts}}</strong></p>
+      <p>ISSUES:<strong>{{branchesInfo?.issues}}</strong></p>
+      <p>DISCARDS:<strong>{{branchesInfo?.discards}}</strong></p>
     </mat-card>
   </div>
   </div>
@@ -232,3 +247,4 @@
   <div fxFlex="50%">
 <app-BloodGroup-DaysSupply></app-BloodGroup-DaysSupply>
 </div></div>
+{{dashForm.value | json}}

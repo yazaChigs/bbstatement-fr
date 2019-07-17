@@ -7,13 +7,17 @@ import { StorageKey } from 'src/app/util/key';
 // import { UserRoleService } from 'src/app/shared/config/service/admin/user-role.service';
 import { DataManagementService } from '../../shared/config/service/admin/dataManagement.service';
 import { BranchDailyMinimalCapacity } from '../../shared/config/model/admin/branch-daily-minimal-capacity.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { NoDaysRequiremets } from '../../shared/config/model/admin/no-days-requirements.model';
 import { AvailableStockService } from '../../shared/config/service/available-stock.service';
 import { resultMemoize } from '@ngrx/store';
 import { StockAvailable } from 'src/app/shared/config/model/stock-available.model';
 import { QuarantinedStockService } from '../../shared/config/service/quarantined-stock.service';
 import { StockQuarantined } from '../../shared/config/model/Stock-quarantined.model';
+import { BranchService } from '../../shared/config/service/admin/branch.service';
+import { Branch } from 'src/app/shared/config/model/admin/branch.model';
+import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
+import { MatDatepickerInputEvent } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,40 +25,12 @@ import { StockQuarantined } from '../../shared/config/model/Stock-quarantined.mo
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  // date = new FormControl(new Date().toLocaleDateString());
   /** Based on the screen size, switch from standard to one column per row */
   column = 2;
   fontSize;
   iconSize;
-  // list: Module[];
-  // company = JSON.parse(sessionStorage.getItem(StorageKey.COMPANY_DETAIL));
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      // console.log(this.list);
-      if (matches) {
-        this.column = 1;
-        this.fontSize = 'font-size-small';
-        this.iconSize = 'icon-size-small';
-        return [
-          { title: 'Registration', cols: 1, rows: 1, icon: 'supervisor_account', link: '/patient' },
-          { title: 'Appointment Scheduling', cols: 1, rows: 1, icon: 'today', link: '/scheduling' },
-          { title: 'Clinical', cols: 1, rows: 1, icon: 'hotel', link: 'patient/clinical'  },
-          { title: 'Adminstration', cols: 1, rows: 1, icon: 'apps', link: '/admin'  },
-          { title: 'Settings', cols: 1, rows: 1, icon: 'settings', link: ''  }
-        ];
-      }
-      this.column = 2;
-      this.fontSize = 'font-size-large';
-      this.iconSize = 'icon-size-large';
-
-      return [
-        { title: 'Registration', cols: 1, rows: 1, icon: 'supervisor_account', link: '/patient'  },
-        { title: 'Appointment Scheduling', cols: 1, rows: 1, icon: 'today', link: '/scheduling'  },
-        { title: 'Clinical', cols: 1, rows: 1, icon: 'hotel', link: 'patient/clinical'  },
-        { title: 'Adminstration', cols: 1, rows: 1, icon: 'apps', link: '/admin'  },
-        { title: 'Settings', cols: 1, rows: 1, icon: 'settings', link: ''  }
-      ];
-    })
-  );
+  dashForm: FormGroup;
   color = 'blue';
   bloodStockManagementAnalysisForm: FormGroup;
   noDaysRequiremets: NoDaysRequiremets;
@@ -62,11 +38,15 @@ export class DashboardComponent implements OnInit {
   stockAvailable: StockAvailable = new StockAvailable();
   stockQuarantine: StockQuarantined = new StockQuarantined();
   branchId: number;
+  allBranches: Branch[] = [];
+  formFilter: any = { branchName: '' };
+  selectedBranches: any[] = [];
+  branchesInfo: any = {};
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
-              private fb: FormBuilder, private availableStockService: AvailableStockService,
-              private qStockSevice: QuarantinedStockService) { }
+              private fb: FormBuilder, private availableStockService: AvailableStockService, private branchService: BranchService,
+              private dashService: DashboardService, private qStockSevice: QuarantinedStockService) { }
   redirect(value) {
     this.router.navigate([value]);
   }
@@ -74,14 +54,17 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
-    this.createForm();
+    this.createFormBloodStockManagementAnalysisForm();
     this.getNoDaysRequrements();
     this.getAvailableStockForm();
     this.getQuarantinedStock();
     this.getBranchDailyMinimalCapacity();
+    this.getAllBranches();
+    this.createFilterDataForm();
+
   }
 
-  createForm() {
+  createFormBloodStockManagementAnalysisForm() {
     this.bloodStockManagementAnalysisForm = this.fb.group({
       id: new FormControl(),
       timeCreated: new FormControl(),
@@ -111,7 +94,77 @@ export class DashboardComponent implements OnInit {
       weeksSupplyAvailable: new FormControl(),
     });
   }
+  createFilterDataForm() {
+    this.dashForm = this.fb.group({
+      date : new FormControl(new Date().toLocaleDateString()),
+      branches: new FormControl(this.selectedBranches),
+    });
+  }
 
+
+
+  get StockReceivedFromArray() {
+    return this.dashForm.get('branchesForm') as FormArray;
+  }
+  getStockReceivedFromControls() {
+    return (<FormArray>this.dashForm.get('branchesForm')).controls;
+  }
+//   loadStockReceivedFrom() {
+//     this.branches.forEach(ds => {
+//       this.StockReceivedFromArray.push(this.initStockReceivedFrom());
+//     });
+//  }
+
+  getAllBranches() {
+    this.branchService.getAll().subscribe(
+      result => {
+       this.allBranches = result;
+       console.log(this.allBranches);
+       this.getBranchInfo(this.allBranches);
+      },
+      error => {
+        console.log(error.error);
+      }
+    );
+  }
+
+  getDate(value) {
+    console.log(value);
+    if (this.selectedBranches.length > 0) {
+      this.dashService.getBranchInfoByDate(value).subscribe(
+      result => {
+        this.branchesInfo = result;
+      }
+    );
+  } else {
+    console.log('please select Branch');
+  }
+  }
+
+
+  toggleForm(value: any, i) {
+    console.log(i);
+    if ( !this.selectedBranches.find(c => c === value)) {
+      this.selectedBranches.push(value);
+     } else {
+       this.selectedBranches = this.selectedBranches.filter(obj => obj !== value);
+      //  this.selectedBranches.splice(i, 1);
+      //  this.selectedBranches.splice(i, 1);
+     }
+    console.log(this.selectedBranches);
+  }
+
+  getBranchInfo(value) {
+    console.log(value);
+    this.dashService.getBranchInfo(value).subscribe(
+      result => {
+        console.log(result);
+        this.branchesInfo = result;
+    },
+    error => {
+      console.log(error.error);
+    });
+  }
   collectionsBgColor() {
     let value;
     if (this.stockQuarantine !== null) {
@@ -121,7 +174,7 @@ export class DashboardComponent implements OnInit {
       if (value >= 1) { return 'purple'; }
       if (value >= 0.75 && value < 1) { return 'green'; }
       if (value >= 0.4 && value < 0.75) { return 'orange'; }
-      if (value >= 0 && value < 0.4) { return 'red'; } else { return 'pink'; }
+      if ( value < 0.4) { return 'red'; } else { return 'pink'; }
     }
   }
 }
