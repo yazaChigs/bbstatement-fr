@@ -76,7 +76,7 @@ export class StockQuarantinedComponent implements OnInit {
   }
   collectionsBgColor() {
 
-    this.collectionsIndicator = ((this.initCollections - this.initOpeningStock) / this.initCollectionsFromDb);
+    this.collectionsIndicator = ((this.initCollections) / this.initCollectionsFromDb);
     const value = this.collectionsIndicator;
     if (value !== undefined && value !== null) {
       if (value >= 1) { return 'purple'; }
@@ -232,10 +232,11 @@ export class StockQuarantinedComponent implements OnInit {
     this.mobile06 = Math.round((this.quarantinedStockForm.get('mobile06').value / 40) * 100);
   }
 
-  QuarantineStock() {
+  QuarantineStock() :number {
     return this.quarantinedStockForm.get('openingStock').value
       + this.quarantinedStockForm.get('totalCollections').value
-      + this.quarantinedStockForm.get('totalReceiptsFromBranches').value
+      - this.quarantinedStockForm.get('availableStock').value
+      - this.quarantinedStockForm.get('totalReceiptsFromBranches').value
       - this.quarantinedStockForm.get('totalIssuesDiscards').value
       - this.quarantinedStockForm.get('totalIssues').value;
   }
@@ -252,6 +253,11 @@ export class StockQuarantinedComponent implements OnInit {
     + Number(this.quarantinedStockForm.get('openingStock').value);
   }
 
+  initCollectionsValue(): number {
+    return this.quarantinedStockForm.get('totalIssues').value
+    + this.quarantinedStockForm.get('availableStock').value;
+  }
+
   sumIssues(value): number {
     let total = 0;
     total = Number(value.issueTogroupMismatchesToRefLab) ;
@@ -259,6 +265,7 @@ export class StockQuarantinedComponent implements OnInit {
       total += Number(item.issuedTo);
     });
     this.quarantinedStockForm.get('totalIssues').setValue(total);
+    // this.initCollections = total + Number(value.availableStock);
     return total;
   }
 

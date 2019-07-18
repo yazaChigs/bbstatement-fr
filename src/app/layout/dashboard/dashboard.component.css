@@ -2,3 +2,13 @@
   background-color: aliceblue;
   height: 7em;
 }
+.branch-grid{
+  margin: 0px;
+}
+.top-filters{
+  margin-top: 25px;
+}
+.top-filters-btn{
+  margin-top: 30px;
+  height: 60px;
+}

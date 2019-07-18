@@ -9,12 +9,7 @@
 <form [formGroup]="dashForm">
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
   <div fxFlex="20%">
-    <!-- <mat-form-field >
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateInput)="addEvent('input', $event)" >
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field> -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline" class="full-width top-filters">
           <input matInput [matDatepicker]="picker1" placeholder="Angular forms" formControlName="date" (dateChange)="getDate(dashForm.value)">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
@@ -22,30 +17,21 @@
   </div>
   <div fxFlex="65%">
 <div class="grid-container">
-  <mat-grid-list cols="5" rowHeight="80px" gutterSize="5">
+  <mat-grid-list cols="5" rowHeight="80px" gutterSize="3" class="branch-grid ">
       <!-- <div formArrayName="branchesForm"> -->
           <mat-grid-tile  *ngFor="let branch of allBranches | filterBy: formFilter index as i;" [colspan]="1" [rowspan]="1">
       <mat-card class="ob-card border_accent">
         <mat-card-content >
-            <!-- <div @fadeInOut> -->
                 <mat-checkbox [checked]="branch.selected" (change)="toggleForm(branch,i)">{{ branch.branchName }}</mat-checkbox>
-                <!-- <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button> -->
-                  <!-- <mat-menu #menu="matMenu" xPosition="before">
-                    <a (click)="viewForm(form.formKey)"  mat-menu-item>View</a>
-                    <button mat-menu-item>Remove</button>
-                  </mat-menu> -->
-            <!-- </div> -->
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
-      <!-- </div> -->
   </mat-grid-list>
   </div>
 </div>
 <div fxFlex="15%">
-   <button type="button" mat-raised-button (click)="getBranchInfo(selectedBranches)">Search</button>
+   <button type="button" mat-raised-button color="accent" class="top-filters-btn" (click)="getBranchInfo(selectedBranches)">
+     <mat-icon>sync</mat-icon>Search</button>
 </div>
   </div>
 </form>
@@ -58,7 +44,7 @@
   </div>
   <div fxFlex="12%">
     <mat-card  [style.background-color]="demandVsSupplyBgColor()" class="info-card">
-      DEMAND VS SUPPLY<h2>{{branchesInfo.demandVsSupply}}%</h2>
+      DEMAND VS SUPPLY<h2>{{((branchesInfo.supplies / branchesInfo?.orders)*100).toFixed(2)}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -74,7 +60,7 @@
   </div>
   <div fxFlex="12%">
     <mat-card [style.background-color]="collectionsBgColor()" class="info-card">
-      <p>COLLECTIONS</p><h2>{{ branchesInfo?.collections}}%</h2>
+      <p>COLLECTIONS</p><h2>{{ ((branchesInfo?.collections/150)*100).toFixed(2)}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -247,4 +233,4 @@
   <div fxFlex="50%">
 <app-BloodGroup-DaysSupply></app-BloodGroup-DaysSupply>
 </div></div>
-{{dashForm.value | json}}
+<!-- {{dashForm.value | json}} -->

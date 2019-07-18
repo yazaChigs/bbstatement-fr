@@ -18,6 +18,8 @@ import { BranchService } from '../../shared/config/service/admin/branch.service'
 import { Branch } from 'src/app/shared/config/model/admin/branch.model';
 import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
 import { MatDatepickerInputEvent } from '@angular/material';
+import { SnotifyService } from 'ng-snotify';
+import { NotifyUtil } from 'src/app/util/notifyutil';
 
 @Component({
   selector: 'app-dashboard',
@@ -42,11 +44,13 @@ export class DashboardComponent implements OnInit {
   formFilter: any = { branchName: '' };
   selectedBranches: any[] = [];
   branchesInfo: any = {};
+  yesterdayDate: Date;
+  util;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
               private fb: FormBuilder, private availableStockService: AvailableStockService, private branchService: BranchService,
-              private dashService: DashboardService, private qStockSevice: QuarantinedStockService) { }
+              private dashService: DashboardService, private qStockSevice: QuarantinedStockService, private snotify: SnotifyService) { }
   redirect(value) {
     this.router.navigate([value]);
   }
@@ -54,6 +58,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
+    this.setYesterdayDate();
     this.createFormBloodStockManagementAnalysisForm();
     this.getNoDaysRequrements();
     this.getAvailableStockForm();
@@ -62,6 +67,7 @@ export class DashboardComponent implements OnInit {
     this.getAllBranches();
     this.createFilterDataForm();
 
+    this.util = new NotifyUtil(this.snotify);
   }
 
   createFormBloodStockManagementAnalysisForm() {
@@ -96,24 +102,10 @@ export class DashboardComponent implements OnInit {
   }
   createFilterDataForm() {
     this.dashForm = this.fb.group({
-      date : new FormControl(new Date().toLocaleDateString()),
+      date : new FormControl(this.yesterdayDate),
       branches: new FormControl(this.selectedBranches),
     });
   }
-
-
-
-  get StockReceivedFromArray() {
-    return this.dashForm.get('branchesForm') as FormArray;
-  }
-  getStockReceivedFromControls() {
-    return (<FormArray>this.dashForm.get('branchesForm')).controls;
-  }
-//   loadStockReceivedFrom() {
-//     this.branches.forEach(ds => {
-//       this.StockReceivedFromArray.push(this.initStockReceivedFrom());
-//     });
-//  }
 
   getAllBranches() {
     this.branchService.getAll().subscribe(
@@ -138,9 +130,17 @@ export class DashboardComponent implements OnInit {
     );
   } else {
     console.log('please select Branch');
+    this.snotify.error('please select Branch', 'Error', this.util.getNotifyConfig());
+
   }
   }
 
+  setYesterdayDate() {
+    const yDate = new Date();
+    yDate.setDate(yDate.getDate() - 1);
+    this.yesterdayDate = yDate;
+    console.log(this.yesterdayDate);
+  }
 
   toggleForm(value: any, i) {
     console.log(i);
@@ -148,8 +148,6 @@ export class DashboardComponent implements OnInit {
       this.selectedBranches.push(value);
      } else {
        this.selectedBranches = this.selectedBranches.filter(obj => obj !== value);
-      //  this.selectedBranches.splice(i, 1);
-      //  this.selectedBranches.splice(i, 1);
      }
     console.log(this.selectedBranches);
   }
@@ -168,7 +166,7 @@ export class DashboardComponent implements OnInit {
   collectionsBgColor() {
     let value;
     if (this.stockQuarantine !== null) {
-    value = (this.stockQuarantine.totalCollections - this.stockQuarantine.openingStock)
+    value = (this.branchesInfo.collections)
     / this.branchDailyMinimalCapacity.harareTotalMinCapacity;
     if (value !== undefined && value !== null) {
       if (value >= 1) { return 'purple'; }
@@ -184,12 +182,11 @@ export class DashboardComponent implements OnInit {
   demandVsSupplyBgColor() {
     let value;
     if (this.stockAvailable !== null) {
-    value = (this.stockAvailable.hospitals + this.stockAvailable.compatsIssues)
-    / (this.stockAvailable.compatsOrders +  this.stockAvailable.totalHospitalOrders);
+    value = (this.branchesInfo.supplies / this.branchesInfo.orders);
     if (value !== undefined && value !== null) {
       if (value >= 0.5) { return 'green'; }
       if (value >= 0.25 && value < 0.5) { return 'orange'; }
-      if (value >= 0 && value < 0.25) { return 'green'; } else { return 'pink'; }
+      if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
     }
   }
   }

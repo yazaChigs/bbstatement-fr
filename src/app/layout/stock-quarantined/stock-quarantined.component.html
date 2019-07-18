@@ -42,7 +42,7 @@
     </div>
     <mat-divider [vertical]="true"></mat-divider>
     <div fxFlex="10%"></div>
-  <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card"><p>Collections </p><h2>{{ (((initCollections - initOpeningStock) / initCollectionsFromDb)*100).toFixed(2)}}%</h2></mat-card></div>
+  <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card"><p>Collections </p><h2>{{ (((initCollections) / initCollectionsFromDb)*100).toFixed(2)}}%</h2></mat-card></div>
   <div fxFlex="15%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
   <div fxFlex="15%"><mat-card class="info-card">
     <p>Opening: <strong>{{initOpeningStock}} </strong></p>
@@ -50,7 +50,7 @@
   </mat-card>
 </div>
 <div fxFlex="15%"><mat-card class="info-card">
-  <p>Issues: <strong>{{initTotalIssues}} </strong></p>
+  <p>Issues: <strong>{{initCollectionsValue()}} </strong></p>
   <p> Discards: <strong>{{initTotalDiscards}} </strong></p>
 </mat-card>
 </div>
