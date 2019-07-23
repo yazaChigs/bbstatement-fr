@@ -529,6 +529,24 @@ getUserBranch(): Branch {
   }
 }
 
+getByDate(value) {
+  console.log(value.todaysDate);
+  value.todaysDate = this.availableStockForm.get('todaysDate').value;
+  this.availableStockService.getAvailableStockByDate(value).subscribe(
+  result => {
+    console.log(result);
+    this.stockAvailable = result;
+    if (this.stockAvailable !== null) {
+      this.populateForm(this.stockAvailable);
+    }
+    if (this.stockAvailable === null) {
+      this.populateNewForm();
+    }
+  }
+);
+
+}
+
   getAllBranches() {
     this.branchService.getAll().subscribe(
       result => {

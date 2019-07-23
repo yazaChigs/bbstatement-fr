@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Router } from '@angular/router';
 import { StorageKey } from 'src/app/util/key';
@@ -46,6 +46,10 @@ export class DashboardComponent implements OnInit {
   branchesInfo: any = {};
   yesterdayDate: Date;
   util;
+  collections = 0;
+  firstRun = true;
+  branches = 'bhoo zvese';
+  branchInfoAvailable = false;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
@@ -60,7 +64,7 @@ export class DashboardComponent implements OnInit {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
     this.setYesterdayDate();
     this.createFormBloodStockManagementAnalysisForm();
-    this.getNoDaysRequrements();
+    // this.getNoDaysRequrements();
     this.getAvailableStockForm();
     this.getQuarantinedStock();
     this.getBranchDailyMinimalCapacity();
@@ -121,17 +125,18 @@ export class DashboardComponent implements OnInit {
   }
 
   getDate(value) {
+    value.branches = this.selectedBranches;
     console.log(value);
     if (this.selectedBranches.length > 0) {
       this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
         this.branchesInfo = result;
+        this.overallCollections(this.branchesInfo);
       }
     );
   } else {
     console.log('please select Branch');
     this.snotify.error('please select Branch', 'Error', this.util.getNotifyConfig());
-
   }
   }
 
@@ -150,7 +155,35 @@ export class DashboardComponent implements OnInit {
        this.selectedBranches = this.selectedBranches.filter(obj => obj !== value);
      }
     console.log(this.selectedBranches);
+
   }
+
+  overallCollections(value) {
+    console.log(this.selectedBranches);
+    if (value === null || undefined) {return 0; }
+    let avarage = 0;
+    let x = 0;
+
+    if (this.selectedBranches.length === 0) { this.selectedBranches = this.allBranches; this.firstRun = true; }
+    this.selectedBranches.forEach(item => {
+      if (item.branchName === 'HARARE') {if (value.collectionsHarare !== 0 && value.harareTotalMinCap !== 0) {
+        avarage += value.collectionsHarare / value.harareTotalMinCap; x++; } }
+      if (item.branchName === 'BULAWAYO') {if (value.collectionsBulawayo !== 0 && value.bulawayoTotalMinCap !== 0) {
+        avarage += value.collectionsBulawayo / value.bulawayoTotalMinCap; x++; } }
+      if (item.branchName === 'GWERU') {if (value.collectionsGweru !== 0 && value.gweruTotalMinCap !== 0) {
+        avarage += value.collectionsGweru / value.gweruTotalMinCap; x++; } }
+      if (item.branchName === 'MUTARE') {if (value.collectionsMutare !== 0 && value.mutareTotalMinCap !== 0) {
+          avarage += value.collectionsMutare / value.mutareTotalMinCap; x++; } }
+      if (item.branchName === 'MASVINGO') {if (value.collectionsMasvingo !== 0 && value.masvingoTotalMinCap !== 0) {
+          avarage += value.collectionsMasvingo / value.masvingoTotalMinCap; x++; } }
+    });
+
+    this.collections =  Number(((avarage / x) * 100).toFixed(2)) ;
+
+    if (this.firstRun) { this.selectedBranches = []; this.firstRun = false; } // so that the statement
+    // this.selectedBranches = this.allBranches; is only run on init and not ebery time this method id called
+  }
+
 
   getBranchInfo(value) {
     console.log(value);
@@ -158,22 +191,23 @@ export class DashboardComponent implements OnInit {
       result => {
         console.log(result);
         this.branchesInfo = result;
+        this.overallCollections(this.branchesInfo);
+        this.populateBranchDailyRequirements(this.branchesInfo);
+        this.populateStockavailable(this.branchesInfo);
+        this.branchInfoAvailable = true;
     },
     error => {
       console.log(error.error);
     });
   }
   collectionsBgColor() {
-    let value;
-    if (this.stockQuarantine !== null) {
-    value = (this.branchesInfo.collections)
-    / this.branchDailyMinimalCapacity.harareTotalMinCapacity;
+    let value =  this.collections;
     if (value !== undefined && value !== null) {
       if (value >= 1) { return 'purple'; }
       if (value >= 0.75 && value < 1) { return 'green'; }
       if (value >= 0.4 && value < 0.75) { return 'orange'; }
       if ( value < 0.4) { return 'red'; } else { return 'pink'; }
-    }
+    // }
   }
 }
 
@@ -200,26 +234,26 @@ export class DashboardComponent implements OnInit {
   stockLevelColorCodeOminus(): string {
     const value = this.bloodStockManagementAnalysisForm.get('daysSupplyOminus').value;
     if (value <= 2) {return 'red'; }
-    if (value > 2 && value < 5) {return 'amber'; }
+    if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
   stockLevelColorCodeAplus(): string {
     const value = this.bloodStockManagementAnalysisForm.get('daysSupplyAplus').value;
     if (value <= 2) {return 'red'; }
-    if (value > 2 && value < 5) {return 'amber'; }
+    if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
   stockLevelColorCodeBplus(): string {
     const value = this.bloodStockManagementAnalysisForm.get('daysSupplyBplus').value;
     if (value <= 2) {return 'red'; }
-    if (value > 2 && value < 5) {return 'amber'; }
+    if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
 
   stockLevelColorCodeAvailable(): string {
     const value = this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').value;
     if (value <= 2) {return 'red'; }
-    if (value > 2 && value < 5) {return 'amber'; }
+    if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
 
@@ -245,29 +279,29 @@ export class DashboardComponent implements OnInit {
   }
 
   populateBranchDailyRequirements(item) {
-    this.bloodStockManagementAnalysisForm.get('requirementsOplus').setValue(item.harareOplus);
-    this.bloodStockManagementAnalysisForm.get('requirementsOminus').setValue(item.harareOminus);
-    this.bloodStockManagementAnalysisForm.get('requirementsAplus').setValue(item.harareAplus);
-    this.bloodStockManagementAnalysisForm.get('requirementsBplus').setValue(item.harareBplus);
+    this.bloodStockManagementAnalysisForm.get('requirementsOplus').setValue(item.dailyReqOplus);
+    this.bloodStockManagementAnalysisForm.get('requirementsOminus').setValue(item.dailyReqOminus);
+    this.bloodStockManagementAnalysisForm.get('requirementsAplus').setValue(item.dailyReqAplus);
+    this.bloodStockManagementAnalysisForm.get('requirementsBplus').setValue(item.dailyReqBplus);
   }
 
   populateStockavailable(item) {
-    this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').setValue(
-      item.rhPositiveWbOcompatibility + item.rhPositivePcOcompatibility + item.rhPositivePaedWbOcompatibility +
-      item.rhPositivePaedPcOcompatibility + item.rhPositiveWbO + item.rhPositivePcO + item.rhPositivePaedWbO +
-      item.rhPositivePaedPcO );
-    this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').setValue(
-      item.rhNegativeWbOcompatibility + item.rhNegativePcOcompatibility + item.rhNegativePaedWbOcompatibility +
-      item.rhNegativePaedPcOcompatibility + item.rhNegativeWbO + item.rhNegativePcO + item.rhNegativePaedWbO +
-      item.rhNegativePaedPcO );
-    this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').setValue(
-      item.rhPositiveWbAcompatibility + item.rhPositivePcAcompatibility + item.rhPositivePaedWbAcompatibility +
-      item.rhPositivePaedPcAcompatibility + item.rhPositiveWbA + item.rhPositivePcA + item.rhPositivePaedWbA +
-      item.rhPositivePaedPcA );
-    this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').setValue(
-      item.rhPositiveWbBcompatibility + item.rhPositivePcBcompatibility + item.rhPositivePaedWbBcompatibility +
-      item.rhPositivePaedPcBcompatibility + item.rhPositiveWbB + item.rhPositivePcB + item.rhPositivePaedWbB +
-      item.rhPositivePaedPcB );
+    this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').setValue(item.stockedOplus);
+      // item.rhPositiveWbOcompatibility + item.rhPositivePcOcompatibility + item.rhPositivePaedWbOcompatibility +
+      // item.rhPositivePaedPcOcompatibility + item.rhPositiveWbO + item.rhPositivePcO + item.rhPositivePaedWbO +
+      // item.rhPositivePaedPcO );
+    this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').setValue(item.stockedOminus);
+      // item.rhNegativeWbOcompatibility + item.rhNegativePcOcompatibility + item.rhNegativePaedWbOcompatibility +
+      // item.rhNegativePaedPcOcompatibility + item.rhNegativeWbO + item.rhNegativePcO + item.rhNegativePaedWbO +
+      // item.rhNegativePaedPcO );
+    this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').setValue(item.stockedAplus);
+      // item.rhPositiveWbAcompatibility + item.rhPositivePcAcompatibility + item.rhPositivePaedWbAcompatibility +
+      // item.rhPositivePaedPcAcompatibility + item.rhPositiveWbA + item.rhPositivePcA + item.rhPositivePaedWbA +
+      // item.rhPositivePaedPcA );
+    this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').setValue(item.stockedBplus);
+      // item.rhPositiveWbBcompatibility + item.rhPositivePcBcompatibility + item.rhPositivePaedWbBcompatibility +
+      // item.rhPositivePaedPcBcompatibility + item.rhPositiveWbB + item.rhPositivePcB + item.rhPositivePaedWbB +
+      // item.rhPositivePaedPcB );
 
     this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').setValue(
       (this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value
@@ -277,8 +311,10 @@ export class DashboardComponent implements OnInit {
 
 
     this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').setValue(
-       ((this.noDaysRequiremets.harareOplus + this.noDaysRequiremets.harareOminus) * 0.6
-       + (this.noDaysRequiremets.harareAplus + this.noDaysRequiremets.harareBplus) * 0.2).toFixed(0));
+       (( this.bloodStockManagementAnalysisForm.get('requirementsOplus').value
+       + this.bloodStockManagementAnalysisForm.get('requirementsOminus').value) * 0.6
+       + (this.bloodStockManagementAnalysisForm.get('requirementsAplus').value
+       + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value) * 0.2).toFixed(0));
 
     this.bloodStockManagementAnalysisForm.get('daysSupplyOplus').setValue(
       (this.bloodStockManagementAnalysisForm.get('requirementsOplus').value / this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value).toFixed(2));
@@ -310,7 +346,7 @@ export class DashboardComponent implements OnInit {
     this.dataManService.getNoDaysRequiremets().subscribe(
       result => {
         this.noDaysRequiremets = result;
-        this.populateBranchDailyRequirements(this.noDaysRequiremets);
+        // this.populateBranchDailyRequirements(this.noDaysRequiremets);
       }, error => {
         console.log(error.error);
       },

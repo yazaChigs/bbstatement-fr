@@ -11,6 +11,7 @@ export class AvailableStockService {
   private saveAvailableStockUrl = this.global.baseUrl + '/api/available-stock/save';
   private submitAvailableStockUrl = this.global.baseUrl + '/api/available-stock/submit';
   private getAvailableStockUrl = this.global.baseUrl + '/api/available-stock/get?branchId=';
+  private getAvailableStockByDateUrl = this.global.baseUrl + '/api/available-stock/get-by-date';
 
 constructor(private http: HttpClient, private global: Global) { }
 
@@ -24,6 +25,9 @@ public submit(item: StockAvailable): Observable<any> {
 
 public getAvailableStock(branchId): Observable<any> {
   return this.http.get<any>(this.getAvailableStockUrl + branchId);
+}
+public getAvailableStockByDate(item): Observable<any> {
+  return this.http.post<any>(this.getAvailableStockByDateUrl, item);
 }
 
 }

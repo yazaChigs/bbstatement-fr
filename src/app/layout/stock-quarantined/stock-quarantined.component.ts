@@ -10,6 +10,7 @@ import { BranchDailyMinimalCapacity } from '../../shared/config/model/admin/bran
 import { StorageKey } from 'src/app/util/key';
 import { Snotify, SnotifyService } from 'ng-snotify';
 import { NotifyUtil } from 'src/app/util/notifyutil';
+import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
 
 @Component({
   selector: 'app-stock-quarantined',
@@ -49,13 +50,13 @@ export class StockQuarantinedComponent implements OnInit {
   util;
   yesterdayDate: any;
 
-  constructor(private branchService: BranchService, private dataManService: DataManagementService,
+  constructor(private branchService: BranchService, private dataManService: DataManagementService, private dashService: DashboardService,
               private qStockService: QuarantinedStockService, private fb: FormBuilder, private snotify: SnotifyService) { }
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
-    this.getBranchTotalMinCapacity();
     // this.getUserBranch(this.branchId);
+    this.getBranchTotalMinCapacity();
     this.setYesterdayDate();
     this.createForms();
     this.loadBranches(this.branchId);
@@ -203,7 +204,9 @@ export class StockQuarantinedComponent implements OnInit {
       result => {
         console.log(result);
         this.branchTotalMinCapacity = result;
-        this.calculateCollections();
+
+        if (this.branchTotalMinCapacity !== null && this.branchTotalMinCapacity !== undefined) {
+        }
       },
       error => {
         console.log(error.error);
@@ -213,9 +216,23 @@ export class StockQuarantinedComponent implements OnInit {
     );
   }
   calculateCollections() {
-    if (this.branchTotalMinCapacity !== null && this.branchTotalMinCapacity !== undefined) {
+    if (this.branchTotalMinCapacity != null) {
+    if (this.stockQuarantined.branch.branchName === 'HARARE') {
       this.initCollectionsFromDb = this.branchTotalMinCapacity.harareTotalMinCapacity;
     }
+    if (this.stockQuarantined.branch.branchName === 'BULAWAYO') {
+      this.initCollectionsFromDb = this.branchTotalMinCapacity.bulawayoTotalMinCapacity;
+    }
+    if (this.stockQuarantined.branch.branchName === 'GWERU') {
+      this.initCollectionsFromDb = this.branchTotalMinCapacity.gweruTotalMinCapacity;
+    }
+    if (this.stockQuarantined.branch.branchName === 'MUTARE') {
+      this.initCollectionsFromDb = this.branchTotalMinCapacity.mutareTotalMinCapacity;
+    }
+    if (this.stockQuarantined.branch.branchName === 'MASVINGO') {
+      this.initCollectionsFromDb = this.branchTotalMinCapacity.masvingoTotalMinCapacity;
+    }
+  }
   }
 
   OpeningStock(value): number {
@@ -232,7 +249,7 @@ export class StockQuarantinedComponent implements OnInit {
     this.mobile06 = Math.round((this.quarantinedStockForm.get('mobile06').value / 40) * 100);
   }
 
-  QuarantineStock() :number {
+  QuarantineStock(): number {
     return this.quarantinedStockForm.get('openingStock').value
       + this.quarantinedStockForm.get('totalCollections').value
       - this.quarantinedStockForm.get('availableStock').value
@@ -543,12 +560,11 @@ getUserBranches() {
      result => {
       this.stockQuarantined = result;
       if (this.stockQuarantined !== null && this.stockQuarantined.issuedToQuarantines.length === 0) {
-        console.log('hamuna chinhu');
         // this.loadStockIssuedTo();
       }
       if (this.stockQuarantined !== null) {
         this.populateForm(this.stockQuarantined);
-
+        this.calculateCollections(); // supposed to be in ther above loop
       }
       if (this.stockQuarantined === null) {
         this.populateNewForm();
@@ -560,6 +576,25 @@ getUserBranches() {
     }, () => { }
    );
  }
+
+ getByDate(value) {
+    console.log(value.todaysDate);
+    value.todaysDate = this.quarantinedStockForm.get('todaysDate').value;
+    this.qStockService.getAvailableStockByDate(value).subscribe(
+    result => {
+      console.log(result);
+      this.stockQuarantined = result;
+      if (this.stockQuarantined !== null) {
+        this.populateForm(this.stockQuarantined);
+        this.calculateCollections(); // supposed to be in ther above loop
+      }
+      if (this.stockQuarantined === null) {
+        this.populateNewForm();
+      }
+    }
+  );
+
+}
 
  reloadForBranch(branchId) {
   this.branchService.getAllForUser(branchId).subscribe(

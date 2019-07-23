@@ -8,7 +8,7 @@
 
   <div class="grid-container">
       <mat-grid-list cols={{column}} rowHeight="200px">
-  <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
+  <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN']">
       <mat-grid-tile  colspan="1" rowspan="1">
           <mat-card role="region" (click)="redirect('/admin/user/')"  class="dashboard-card">
             <div class="card-padding">
@@ -42,7 +42,7 @@
               <!-- </mat-grid-list> -->
 
               <!-- <mat-grid-list cols={{column}} rowHeight="200px"> -->
-                <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN','ROLE_DOCTOR']">
+                <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPER_ADMIN']">
                     <mat-grid-tile  colspan="1" rowspan="1">
                         <mat-card role="region" (click)="redirect('/admin/branch')"  class="dashboard-card">
                           <div class="card-padding">

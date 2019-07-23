@@ -293,13 +293,15 @@ export class DataManagementComponent implements OnInit {
     this.dataService.getNoDaysRequiremets().subscribe(
       result => {
         this.NoDaysRequiremetsOb = result;
+        if (this.NoDaysRequiremetsOb !== null && this.NoDaysRequiremetsOb !== undefined) {
+        this.populateNDReq(this.NoDaysRequiremetsOb);
+        this.totalMinCap(this.NoDaysRequiremetsOb);
+        }
       },
       error => {
         console.log(error.error);
       },
       () => {
-        this.populateNDReq(this.NoDaysRequiremetsOb);
-        this.totalMinCap(this.NoDaysRequiremetsOb);
       }
     );
   }
@@ -402,12 +404,14 @@ export class DataManagementComponent implements OnInit {
     this.dataService.getUnadjustedDailyRequirements().subscribe(
       result => {
         this.UnadjustedDailyRequirementsOb = result;
+        if (this.UnadjustedDailyRequirementsOb !== null && this.UnadjustedDailyRequirementsOb !== undefined) {
+          this.populateUADReq(this.UnadjustedDailyRequirementsOb);
+        }
       },
       error => {
         console.log(error.error);
       },
       () => {
-        this.populateUADReq(this.UnadjustedDailyRequirementsOb);
       }
     );
   }
@@ -483,6 +487,7 @@ export class DataManagementComponent implements OnInit {
     this.unadjastedDailyRequirementsForm.get('totalTotalDailyRequirements').setValue('');
   }
   populateUADReq(UnadjustedDailyRequirementsOb: UnadjustedDailyRequirements) {
+    if (UnadjustedDailyRequirements !== null && UnadjustedDailyRequirements !== undefined) {
     this.unadjastedDailyRequirementsForm.get('id').setValue(UnadjustedDailyRequirementsOb.id);
     this.unadjastedDailyRequirementsForm.get('dateCreated').setValue(UnadjustedDailyRequirementsOb.dateCreated);
     this.unadjastedDailyRequirementsForm.get('version').setValue(UnadjustedDailyRequirementsOb.version);
@@ -542,6 +547,7 @@ export class DataManagementComponent implements OnInit {
     this.unadjastedDailyRequirementsForm.get('abMinusTotalDailyRequirements').setValue(UnadjustedDailyRequirementsOb.abMinusTotalDailyRequirements);
     this.unadjastedDailyRequirementsForm.get('totalTotalDailyRequirements').setValue(UnadjustedDailyRequirementsOb.totalTotalDailyRequirements);
   }
+}
 
   sumOplus(value) {
     let total = 0;
@@ -612,37 +618,43 @@ export class DataManagementComponent implements OnInit {
     total = Number(value.oPlusBulawayo) + Number(value.oMinusBulawayo) + Number(value.aPlusBulawayo) + Number(value.aMinusBulawayo)
     + Number(value.bPlusBulawayo) + Number(value.bMinusBulawayo) + Number(value.abPlusBulawayo) + Number(value.abMinusBulawayo) ;
     this.unadjastedDailyRequirementsForm.get('totalBulawayo').setValue(total);
+    this.branchSum(value, total - value.totalBulawayo);
   }
   sumGweru(value) {
     let total = 0;
     total = Number(value.oPlusGweru) + Number(value.oMinusGweru) + Number(value.aPlusGweru) + Number(value.aMinusGweru)
     + Number(value.bPlusGweru) + Number(value.bMinusGweru) + Number(value.abPlusGweru) + Number(value.abMinusGweru) ;
     this.unadjastedDailyRequirementsForm.get('totalGweru').setValue(total);
+    this.branchSum(value, total - value.totalGweru);
   }
   sumMutare(value) {
     let total = 0;
     total = Number(value.oPlusMutare) + Number(value.oMinusMutare) + Number(value.aPlusMutare) + Number(value.aMinusMutare)
     + Number(value.bPlusMutare) + Number(value.bMinusMutare) + Number(value.abPlusMutare) + Number(value.abMinusMutare) ;
     this.unadjastedDailyRequirementsForm.get('totalMutare').setValue(total);
+    this.branchSum(value, total - value.totalMutare);
   }
   sumMasvingo(value) {
     let total = 0;
     total = Number(value.oPlusMasvingo) + Number(value.oMinusMasvingo) + Number(value.aPlusMasvingo) + Number(value.aMinusMasvingo)
     + Number(value.bPlusMasvingo) + Number(value.bMinusMasvingo) + Number(value.abPlusMasvingo) + Number(value.abMinusMasvingo) ;
     this.unadjastedDailyRequirementsForm.get('totalMasvingo').setValue(total);
+    this.branchSum(value, total - value.totalMasvingo);
   }
 
   getBranchDailyMinimalCapacity() {
     this.dataService.getBranchDailyMinimalCapacity().subscribe(
       result => {
         this.branchDailyMinimalCapacityOb = result;
+        if (this.branchDailyMinimalCapacityOb !== null && this.branchDailyMinimalCapacityOb !== undefined) {
+          this.populateBDMCap(this.branchDailyMinimalCapacityOb);
+          this.sumTotalMinCapacity(this.branchDailyMinimalCapacityOb);
+        }
       },
         error => {
         console.log(error.error);
       },
       () => {
-        this.populateBDMCap(this.branchDailyMinimalCapacityOb);
-        this.sumTotalMinCapacity(this.branchDailyMinimalCapacityOb);
       }
     );
   }

@@ -60,7 +60,8 @@
   </div>
   <div fxFlex="12%">
     <mat-card [style.background-color]="collectionsBgColor()" class="info-card">
-      <p>COLLECTIONS</p><h2>{{ ((branchesInfo?.collections/150)*100).toFixed(2)}}%</h2>
+      <!-- <p>COLLECTIONS</p><h2>{{ ((branchesInfo?.collections/150)*100).toFixed(2)}}%</h2> -->
+      <p>COLLECTIONS</p><h2>{{ collections}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -231,6 +232,6 @@
 
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="12px" fxLayoutGap.xs="0">
   <div fxFlex="50%">
-<app-BloodGroup-DaysSupply></app-BloodGroup-DaysSupply>
+<app-BloodGroup-DaysSupply *ngIf="branchInfoAvailable" [branchData]="branchesInfo"></app-BloodGroup-DaysSupply>
 </div></div>
 <!-- {{dashForm.value | json}} -->

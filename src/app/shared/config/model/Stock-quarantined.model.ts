@@ -5,7 +5,7 @@ import { Branch } from './admin/branch.model';
 
 
 export class StockQuarantined extends BaseModel {
-  // branch: Branch;
+  branch: Branch;
   todaysDate: number;
   openingStock: number;
   harareCbd03: number;
