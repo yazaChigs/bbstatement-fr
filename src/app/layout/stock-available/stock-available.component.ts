@@ -34,6 +34,7 @@ export class StockAvailableComponent implements OnInit {
   editBranches = true;
   util;
   yesterdayDate: Date;
+  editForm = true;
 
   // user = localStorage.getItem('USER');
 
@@ -519,12 +520,12 @@ getUserBranch(): Branch {
   demandVsSupplyBgColor() {
     let value;
     if (this.stockAvailable !== null && this.stockAvailable !== undefined) {
-    value = this.stockAvailable.hospitals / this.stockAvailable.totalHospitalOrders;
-
+    value = (this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value)
+     / (this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value);
     // if (value !== undefined && value !== null) {
     if (value >= 0.5) { return 'green'; }
     if (value >= 0.25 && value < 0.5) { return 'orange'; }
-    if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
+    if (value >= 0 && value < 0.25) {  return 'red'; } else { return 'pink'; }
     // }
   }
 }
@@ -537,6 +538,7 @@ getByDate(value) {
     console.log(result);
     this.stockAvailable = result;
     if (this.stockAvailable !== null) {
+      this.editForm = this.stockAvailable.active;
       this.populateForm(this.stockAvailable);
     }
     if (this.stockAvailable === null) {
@@ -597,6 +599,7 @@ getByDate(value) {
      result => {
       this.stockAvailable = result;
       if (this.stockAvailable !== null) {
+        this.editForm = this.stockAvailable.active;
         this.populateForm(this.stockAvailable);
       }
       if (this.stockAvailable === null) {
@@ -623,7 +626,8 @@ getByDate(value) {
         // console.log(error.error);
       },
       () => {
-       this.populateForm(this.stockAvailable);
+      this.populateForm(this.stockAvailable);
+      this.editForm = this.stockAvailable.active;
       }
     );
   }

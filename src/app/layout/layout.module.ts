@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatGridListModule,
    MatCardModule, MatMenuModule, MatDividerModule, MatDialogModule, MatTooltipModule, MatAutocompleteModule,
-    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
+    MatInputModule, MatOptionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule, MatBadgeModule } from '@angular/material';
 import { SideNavComponent } from './nav/side-nav/side-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { LayoutRoutingModule } from './layout-routing.module';
@@ -39,7 +39,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     MatSidenavModule, MatCheckboxModule,
     MatIconModule, MatDatepickerModule,
     MatListModule, ChartsModule,
-    MatGridListModule,
+    MatGridListModule, MatBadgeModule,
     MatCardModule, MatDividerModule, MatNativeDateModule,
     MatMenuModule,
     MatDialogModule, MatTooltipModule,

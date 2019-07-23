@@ -49,6 +49,7 @@ export class StockQuarantinedComponent implements OnInit {
   roles: string[];
   util;
   yesterdayDate: any;
+  editForm = true;
 
   constructor(private branchService: BranchService, private dataManService: DataManagementService, private dashService: DashboardService,
               private qStockService: QuarantinedStockService, private fb: FormBuilder, private snotify: SnotifyService) { }
@@ -322,7 +323,8 @@ export class StockQuarantinedComponent implements OnInit {
         console.log(error.error);
       },
       () => {
-       this.populateForm(this.stockQuarantined);
+      this.editForm = this.stockQuarantined.active;
+      this.populateForm(this.stockQuarantined);
       }
     );
   }
@@ -563,6 +565,7 @@ getUserBranches() {
         // this.loadStockIssuedTo();
       }
       if (this.stockQuarantined !== null) {
+        this.editForm = this.stockQuarantined.active;
         this.populateForm(this.stockQuarantined);
         this.calculateCollections(); // supposed to be in ther above loop
       }
@@ -582,11 +585,11 @@ getUserBranches() {
     value.todaysDate = this.quarantinedStockForm.get('todaysDate').value;
     this.qStockService.getAvailableStockByDate(value).subscribe(
     result => {
-      console.log(result);
       this.stockQuarantined = result;
       if (this.stockQuarantined !== null) {
-        this.populateForm(this.stockQuarantined);
-        this.calculateCollections(); // supposed to be in ther above loop
+       this.editForm = this.stockQuarantined.active;
+       this.populateForm(this.stockQuarantined);
+       this.calculateCollections(); // supposed to be in ther above loop
       }
       if (this.stockQuarantined === null) {
         this.populateNewForm();

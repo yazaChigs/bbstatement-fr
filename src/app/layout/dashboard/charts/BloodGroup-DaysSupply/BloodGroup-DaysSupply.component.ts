@@ -49,34 +49,20 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
     console.log(this.branchData);
-    // this.getAvailableStockForm();
-    // this.getBranchDailyRequirements();
     this.fillChart(this.branchData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
     this.fillChart(this.branchData);
-
   }
 
   fillChart(branchData: any) {
     console.log(branchData);
     if (branchData !== null ) {
       this.plusO = this.branchData.dailyReqOplus / this.branchData.stockedOplus;
-      console.log(this.plusO);
-      console.log(this.stockedOplus);
-      console.log(this.branchData.dailyReqOplus);
-
-
       this.minusO = this.branchData.dailyReqOminus / this.branchData.stockedOminus ;
-
       this.plusA =  this.branchData.dailyReqAplus / this.branchData.stockedAplus;
-
       this.plusB =  this.branchData.dailyReqBplus / this.branchData.stockedBplus;
-      // this.pain = data.pain;
-      console.log(this.minusO);
     }
     this.barChartData = [
         {data: [this.plusO] , label: 'O+'},

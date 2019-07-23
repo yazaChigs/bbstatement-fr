@@ -50,6 +50,8 @@ export class DashboardComponent implements OnInit {
   firstRun = true;
   branches = 'bhoo zvese';
   branchInfoAvailable = false;
+  unsubmitedQuarantine = 0;
+  unsubmitedAvailable = 0;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
@@ -70,7 +72,8 @@ export class DashboardComponent implements OnInit {
     this.getBranchDailyMinimalCapacity();
     this.getAllBranches();
     this.createFilterDataForm();
-
+    this.getAllUnSubmitedQuarantineStock();
+    this.getAllUnSubmitedAvailableStock();
     this.util = new NotifyUtil(this.snotify);
   }
 
@@ -210,9 +213,6 @@ export class DashboardComponent implements OnInit {
     // }
   }
 }
-
-
-
   demandVsSupplyBgColor() {
     let value;
     if (this.stockAvailable !== null) {
@@ -287,21 +287,9 @@ export class DashboardComponent implements OnInit {
 
   populateStockavailable(item) {
     this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').setValue(item.stockedOplus);
-      // item.rhPositiveWbOcompatibility + item.rhPositivePcOcompatibility + item.rhPositivePaedWbOcompatibility +
-      // item.rhPositivePaedPcOcompatibility + item.rhPositiveWbO + item.rhPositivePcO + item.rhPositivePaedWbO +
-      // item.rhPositivePaedPcO );
     this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').setValue(item.stockedOminus);
-      // item.rhNegativeWbOcompatibility + item.rhNegativePcOcompatibility + item.rhNegativePaedWbOcompatibility +
-      // item.rhNegativePaedPcOcompatibility + item.rhNegativeWbO + item.rhNegativePcO + item.rhNegativePaedWbO +
-      // item.rhNegativePaedPcO );
     this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').setValue(item.stockedAplus);
-      // item.rhPositiveWbAcompatibility + item.rhPositivePcAcompatibility + item.rhPositivePaedWbAcompatibility +
-      // item.rhPositivePaedPcAcompatibility + item.rhPositiveWbA + item.rhPositivePcA + item.rhPositivePaedWbA +
-      // item.rhPositivePaedPcA );
     this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').setValue(item.stockedBplus);
-      // item.rhPositiveWbBcompatibility + item.rhPositivePcBcompatibility + item.rhPositivePaedWbBcompatibility +
-      // item.rhPositivePaedPcBcompatibility + item.rhPositiveWbB + item.rhPositivePcB + item.rhPositivePaedWbB +
-      // item.rhPositivePaedPcB );
 
     this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').setValue(
       (this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value
@@ -385,16 +373,29 @@ export class DashboardComponent implements OnInit {
           (this.stockQuarantine.totalCollections + this.stockQuarantine.totalReceiptsFromBranches
             - this.stockQuarantine.totalIssuesDiscards - this.stockQuarantine.totalIssues) * 0.42);
         }
-
-
-
       }, error => {
         console.log(error.error);
       },
     );
   }
 
+  getAllUnSubmitedQuarantineStock():number {
+    this.qStockSevice.getAvailableStockByActive().subscribe(
+      result => {
+        console.log(result);
+        this.unsubmitedQuarantine = result;
+      }
+    );
+    return this.unsubmitedQuarantine;
+  }
 
-
+  getAllUnSubmitedAvailableStock() {
+    this.availableStockService.getAvailableStockByActive().subscribe(
+      result => {
+        console.log(result);
+        this.unsubmitedAvailable = result;
+      }
+    );
+  }
 
 }
