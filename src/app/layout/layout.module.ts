@@ -20,12 +20,17 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { BloodGroupDaysSupplyComponent } from './dashboard/charts/BloodGroup-DaysSupply/BloodGroup-DaysSupply.component';
 import { ChartsModule } from 'ng2-charts';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { BranchContributionsComponent } from './dashboard/charts/branch-contributions/branch-contributions.component';
+import { BloodGroupsDistributionsComponent } from './dashboard/charts/blood-groups-distributions/blood-groups-distributions.component';
+import { DeemandVsSupplyComponent } from './dashboard/charts/deemand-vs-supply/deemand-vs-supply.component';
+import { StockesChartComponent } from './dashboard/charts/stockes-chart/stockes-chart.component';
+import { CollectionsChartComponent } from './dashboard/charts/collections-chart/collections-chart.component';
 
 @NgModule({
   declarations: [
     MainComponent,
-    SideNavComponent,
-    DashboardComponent,
+    SideNavComponent, DeemandVsSupplyComponent, StockesChartComponent, CollectionsChartComponent,
+    DashboardComponent, BranchContributionsComponent, BloodGroupsDistributionsComponent,
     ChangePasswordDialogComponent, StockAvailableComponent, StockQuarantinedComponent, BloodGroupDaysSupplyComponent,
   ],
   imports: [

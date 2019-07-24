@@ -26,6 +26,7 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
   stockedOminus: number;
   stockedAplus: number;
   stockedBplus: number;
+  availableStockTotal: number;
   branchesInfo: any = {};
   @Input() branchData: any = {};
 
@@ -34,21 +35,24 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    legend: {
+      position: 'left',
+    },
   };
   public barChartLabels = ['Latest'];
-  public barChartType = 'horizontalBar';
+  public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
     {data: [this.plusO] , label: 'O+'},
     {data: [this.minusO], label: 'O-'},
     {data: [this.plusA], label: 'A+'},
-    {data: [this.plusB], label: 'B+'}
+    {data: [this.plusB], label: 'B+'},
+    {data: [this.availableStockTotal], label: 'Available stock total'},
   ];
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
-    console.log(this.branchData);
     this.fillChart(this.branchData);
   }
 
@@ -57,18 +61,22 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
   }
 
   fillChart(branchData: any) {
-    console.log(branchData);
     if (branchData !== null ) {
-      this.plusO = this.branchData.dailyReqOplus / this.branchData.stockedOplus;
-      this.minusO = this.branchData.dailyReqOminus / this.branchData.stockedOminus ;
-      this.plusA =  this.branchData.dailyReqAplus / this.branchData.stockedAplus;
-      this.plusB =  this.branchData.dailyReqBplus / this.branchData.stockedBplus;
+      this.plusO = this.branchData.stockedOplus / this.branchData.dailyReqOplus;
+      this.minusO = this.branchData.stockedOminus / this.branchData.dailyReqOminus ;
+      this.plusA =  this.branchData.stockedAplus / this.branchData.dailyReqAplus;
+      this.plusB =  this.branchData.stockedBplus / this.branchData.dailyReqBplus;
+      this.availableStockTotal = Math.round(((this.branchData.stockedOplus + this.branchData.stockedOminus) * 0.6
+              + (this.branchData.stockedAplus + this.branchData.stockedBplus) * 0.2) /
+              ((this.branchData.dailyReqOplus + this.branchData.dailyReqOminus) * 0.6
+              + (this.branchData.dailyReqAplus + this.branchData.dailyReqBplus) * 0.2));
     }
     this.barChartData = [
         {data: [this.plusO] , label: 'O+'},
         {data: [this.minusO], label: 'O-'},
         {data: [this.plusA], label: 'A+'},
         {data: [this.plusB], label: 'B+'},
+        {data: [this.availableStockTotal], label: 'Available stock total'},
         // {data: [this.selfImage], label: 'selfImage'},
         // {data: [temp], label: 'Total'}
       ];

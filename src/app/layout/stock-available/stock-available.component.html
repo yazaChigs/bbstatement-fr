@@ -326,233 +326,233 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <mat-grid-list cols="11" rowHeight="3:1" class="grid-top-space">
-                    <mat-grid-tile class="border_black"></mat-grid-tile>
-                    <mat-grid-tile class="border_black" [colspan]="4">Rh Positive</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [colspan]="4">Rh Negative</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [rowspan]="2">Total</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [rowspan]="2">% of total available stock</mat-grid-tile>
+                <mat-grid-list cols="11" rowHeight="3:1" class="grid-top-space border">
+                    <mat-grid-tile class="grid-bg-a"></mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [colspan]="4">Rh Positive</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [colspan]="4">Rh Negative</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [rowspan]="2">Total</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [rowspan]="2">% of total available stock</mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">BLOOD GROUP</mat-grid-tile>
-                    <mat-grid-tile class="border_black">WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">BLOOD GROUP</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-PC</mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">O</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">O</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbO" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcO" type="number" placeholder="" (keyup)="sumRhPositivePc(availableStockForm.value)"  (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbO" type="number" placeholder="" (keyup)="sumRhPositivePaedWb(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcO" type="number" placeholder="" (keyup)="sumRhPositivePaedPc(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                          <mat-grid-tile class="border_black">
+                          <mat-grid-tile class="grid-bg-a">
                               <mat-form-field class="full-width" appearance="fill">
                                   <input matInput formControlName="rhNegativeWbO" type="number" placeholder="" (keyup)="sumRhNegativeWb(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                                 </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcO" type="number" placeholder="" (keyup)="sumRhNegativePc(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbO" type="number" placeholder="" (keyup)="sumRhNegativePaedWb(availableStockForm.value)" (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcO" type="number" placeholder="" (keyup)="sumRhNegativePaedPc(availableStockForm.value)"  (keyup)="totalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalO" type="number" placeholder="" (keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentagefTotalO" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">A</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">A</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbA" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcA" type="number" placeholder="" (keyup)="sumRhPositivePc(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbA" type="number" placeholder="" (keyup)="sumRhPositivePaedWb(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcA" type="number" placeholder="" (keyup)="sumRhPositivePaedPc(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbA" type="number" placeholder="" (keyup)="sumRhNegativeWb(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcA" type="number" placeholder="" (keyup)="sumRhNegativePc(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbA" type="number" placeholder="" (keyup)="sumRhNegativePaedWb(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcA" type="number" placeholder="" (keyup)="sumRhNegativePaedPc(availableStockForm.value)" (keyup)="totalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalA" type="number" placeholder="" (keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalA" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">B</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">B</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbB" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcB" type="number" placeholder="" (keyup)="sumRhPositivePc(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbB" type="number" placeholder="" (keyup)="sumRhPositivePaedWb(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcB" type="number" placeholder="" (keyup)="sumRhPositivePaedPc(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbB" type="number" placeholder="" (keyup)="sumRhNegativeWb(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcB" type="number" placeholder="" (keyup)="sumRhNegativePc(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbB" type="number" placeholder="" (keyup)="sumRhNegativePaedWb(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcB" type="number" placeholder="" (keyup)="sumRhNegativePaedPc(availableStockForm.value)" (keyup)="totalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalB" type="number" placeholder=""(keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalB" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">AB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">AB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbAB" type="number" placeholder="" (keyup)="sumRhPositiveWb(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcAB" type="number" placeholder="" (keyup)="sumRhPositivePc(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbAB" type="number" placeholder="" (keyup)="sumRhPositivePaedWb(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcAB" type="number" placeholder="" (keyup)="sumRhPositivePaedPc(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbAB" type="number" placeholder="" (keyup)="sumRhNegativeWb(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcAB" type="number" placeholder="" (keyup)="sumRhNegativePc(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbAB" type="number" placeholder="" (keyup)="sumRhNegativePaedWb(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcAB" type="number" placeholder="" (keyup)="sumRhNegativePaedPc(availableStockForm.value)" (keyup)="totalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalAB" type="number" placeholder=""(keyup)="totalVertical()"  readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalAB" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">TOTAL</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">TOTAL</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositiveWb" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePc" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePaedWb" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePaedPc" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativeWb" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePc" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePaedWb" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePaedPc" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalTotal" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalPercentageOfTotal"  type="number" value="" class="right-align" placeholder="100" readonly>
                             <span matSuffix>%</span>
@@ -573,235 +573,235 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <mat-grid-list cols="11" rowHeight="3:1" class="grid-top-space">
-                    <mat-grid-tile class="border_black"></mat-grid-tile>
-                    <mat-grid-tile class="border_black" [colspan]="4">Rh Positive</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [colspan]="4">Rh Negative</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [rowspan]="2">Total</mat-grid-tile>
-                    <mat-grid-tile class="border_black" [rowspan]="2">% of total available stock</mat-grid-tile>
+                <mat-grid-list cols="11" rowHeight="3:1" class="grid-top-space border">
+                    <mat-grid-tile class="grid-bg-a"></mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [colspan]="4">Rh Positive</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [colspan]="4">Rh Negative</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [rowspan]="2">Total</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a" [rowspan]="2">% of total available stock</mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">BLOOD GROUP</mat-grid-tile>
-                    <mat-grid-tile class="border_black">WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">PC</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-WB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">Paed-PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">BLOOD GROUP</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">PC</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-WB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">Paed-PC</mat-grid-tile>
                     <!-- <mat-grid-tile class="border_black">4</mat-grid-tile> -->
 
-                    <mat-grid-tile class="border_black">O</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">O</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbOcompatibility" type="number" placeholder="" (keyup)="comSumRhPositiveWb(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field>
                     </mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcOcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePc(availableStockForm.value)"  (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbOcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedWb(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcOcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedPc(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbOcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativeWb(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcOcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePc(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbOcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedWb(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcOcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedPc(availableStockForm.value)"  (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalOcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalOcompatibility" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">A</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">A</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbAcompatibility" type="number" placeholder="" (keyup)="comSumRhPositiveWb(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcAcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePc(availableStockForm.value)"  (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbAcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedWb(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcAcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedPc(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbAcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativeWb(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcAcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePc(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbAcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedWb(availableStockForm.value)" (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcAcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedPc(availableStockForm.value)"  (keyup)="comTotalA(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalAcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalAcompatibility" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">B</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">B</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbBcompatibility" type="number" placeholder="" (keyup)="comSumRhPositiveWb(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcBcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePc(availableStockForm.value)"  (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbBcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedWb(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcBcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedPc(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbBcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativeWb(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcBcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePc(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbBcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedWb(availableStockForm.value)" (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcBcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedPc(availableStockForm.value)"  (keyup)="comTotalB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalBcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalBcompatibility" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">AB</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">AB</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositiveWbABcompatibility" type="number" placeholder="" (keyup)="comSumRhPositiveWb(availableStockForm.value)" (keyup)="comTotalO(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePcABcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePc(availableStockForm.value)"  (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedWbABcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedWb(availableStockForm.value)" (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhPositivePaedPcABcompatibility" type="number" placeholder="" (keyup)="comSumRhPositivePaedPc(availableStockForm.value)" (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativeWbABcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativeWb(availableStockForm.value)" (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePcABcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePc(availableStockForm.value)" (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedWbABcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedWb(availableStockForm.value)" (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="rhNegativePaedPcABcompatibility" type="number" placeholder="" (keyup)="comSumRhNegativePaedPc(availableStockForm.value)"  (keyup)="comTotalAB(availableStockForm.value)">
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalABcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-b">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="percentageOfTotalABcompatibility" type="number" class="right-align" placeholder="" readonly>
                             <span matSuffix>%</span>
                           </mat-form-field></mat-grid-tile>
 
-                    <mat-grid-tile class="border_black">TOTAL</mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">TOTAL</mat-grid-tile>
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositiveWbcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePccompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePaedWbcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhPositivePaedPccompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativeWbcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePccompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePaedWbcompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalRhNegativePaedPccompatibility" type="number" placeholder="" readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalTotalcompatibility" type="number" placeholder=""readonly>
                           </mat-form-field></mat-grid-tile>
-                    <mat-grid-tile class="border_black">
+                    <mat-grid-tile class="grid-bg-a">
                         <mat-form-field class="full-width" appearance="fill">
                             <input matInput formControlName="totalPercentageOfTotalcompatibility" value="" type="number" class="right-align" placeholder="100"readonly>
                             <span matSuffix>%</span>

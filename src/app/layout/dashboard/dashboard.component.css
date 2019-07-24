@@ -12,3 +12,12 @@
   margin-top: 30px;
   height: 60px;
 }
+.chart-container-height{
+  height: 150px;
+}
+.grid-bg-a{
+  background: rgb(233, 191, 191);
+}
+.grid-bg-b{
+  background: rgb(248, 236, 236);
+}

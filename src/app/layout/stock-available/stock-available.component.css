@@ -14,3 +14,9 @@
   font-weight: 400;
   padding: 0px;
 }
+.grid-bg-a{
+  background: rgb(233, 191, 191);
+}
+.grid-bg-b{
+  background: rgb(248, 236, 236);
+}

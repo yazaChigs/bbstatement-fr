@@ -215,13 +215,11 @@ export class DashboardComponent implements OnInit {
 }
   demandVsSupplyBgColor() {
     let value;
-    if (this.stockAvailable !== null) {
     value = (this.branchesInfo.supplies / this.branchesInfo.orders);
     if (value !== undefined && value !== null) {
       if (value >= 0.5) { return 'green'; }
       if (value >= 0.25 && value < 0.5) { return 'orange'; }
       if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
-    }
   }
   }
 
@@ -305,15 +303,20 @@ export class DashboardComponent implements OnInit {
        + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value) * 0.2).toFixed(0));
 
     this.bloodStockManagementAnalysisForm.get('daysSupplyOplus').setValue(
-      (this.bloodStockManagementAnalysisForm.get('requirementsOplus').value / this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value).toFixed(2));
+      (this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value
+      / this.bloodStockManagementAnalysisForm.get('requirementsOplus').value).toFixed(2));
     this.bloodStockManagementAnalysisForm.get('daysSupplyOminus').setValue(
-      (this.bloodStockManagementAnalysisForm.get('requirementsOminus').value / this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').value).toFixed(2));
+      (this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').value
+      / this.bloodStockManagementAnalysisForm.get('requirementsOminus').value).toFixed(2));
     this.bloodStockManagementAnalysisForm.get('daysSupplyAplus').setValue(
-      (this.bloodStockManagementAnalysisForm.get('requirementsAplus').value / this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').value).toFixed(2));
+      (this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').value
+      / this.bloodStockManagementAnalysisForm.get('requirementsAplus').value).toFixed(2));
     this.bloodStockManagementAnalysisForm.get('daysSupplyBplus').setValue(
-      (this.bloodStockManagementAnalysisForm.get('requirementsBplus').value / this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').value).toFixed(2));
-      this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').setValue(
-        (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').value / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').value).toFixed(2));
+      (this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').value
+      / this.bloodStockManagementAnalysisForm.get('requirementsBplus').value).toFixed(2));
+    this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').setValue(
+        (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').value
+        / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').value).toFixed(2));
 
 
     this.bloodStockManagementAnalysisForm.get('weeksSupplyOplus').setValue(
