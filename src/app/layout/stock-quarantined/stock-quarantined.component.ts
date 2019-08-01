@@ -50,6 +50,7 @@ export class StockQuarantinedComponent implements OnInit {
   util;
   yesterdayDate: any;
   editForm = true;
+  showEditBtn = false;
 
   constructor(private branchService: BranchService, private dataManService: DataManagementService, private dashService: DashboardService,
               private qStockService: QuarantinedStockService, private fb: FormBuilder, private snotify: SnotifyService) { }
@@ -63,7 +64,7 @@ export class StockQuarantinedComponent implements OnInit {
     this.loadBranches(this.branchId);
     this.getAllBranches();
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
+    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR')) {
       this.editBranches = false; }
 
     this.util = new NotifyUtil(this.snotify);
@@ -207,6 +208,7 @@ export class StockQuarantinedComponent implements OnInit {
         this.branchTotalMinCapacity = result;
 
         if (this.branchTotalMinCapacity !== null && this.branchTotalMinCapacity !== undefined) {
+          // this.calculateCollections();
         }
       },
       error => {
@@ -217,7 +219,7 @@ export class StockQuarantinedComponent implements OnInit {
     );
   }
   calculateCollections() {
-    if (this.branchTotalMinCapacity != null) {
+    if (this.branchTotalMinCapacity !== null) {
     if (this.stockQuarantined.branch.branchName === 'HARARE') {
       this.initCollectionsFromDb = this.branchTotalMinCapacity.harareTotalMinCapacity;
     }
@@ -236,6 +238,11 @@ export class StockQuarantinedComponent implements OnInit {
   }
   }
 
+  calculateCollectionsPercentage(): number {
+    if (this.initCollectionsFromDb !== 0) {
+    return this.quarantinedStockForm.get('totalCollections').value / this.initCollectionsFromDb;
+    } else { return 0; }
+  }
   OpeningStock(value): number {
     return value.openingStock;
   }
@@ -309,6 +316,7 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   saveAQuarantinedStock(value) {
+    this.showEditBtn = false;
     console.log(value);
     console.log(this.branches);
     this.qStockService.save(value).subscribe(
@@ -333,14 +341,17 @@ export class StockQuarantinedComponent implements OnInit {
     this.qStockService.submit(value).subscribe(
       result => {
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
-        console.log(result.message);
+        this.populateForm(result.stockQuarantined);
+        this.editForm = result.stockQuarantined.active;
+        this.showEditBtn = true;
+        console.log(result.stockQuarantined);
       },
       error => {
         this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
         console.log(error.error);
       },
       () => {
-       this.populateNewForm();
+      //  this.populateNewForm();
       }
     );
   }
@@ -587,9 +598,9 @@ getUserBranches() {
     result => {
       this.stockQuarantined = result;
       if (this.stockQuarantined !== null) {
-       this.editForm = this.stockQuarantined.active;
-       this.populateForm(this.stockQuarantined);
-       this.calculateCollections(); // supposed to be in ther above loop
+        this.editForm = this.stockQuarantined.active;
+        this.populateForm(this.stockQuarantined);
+        this.calculateCollections(); // supposed to be in ther above loop
       }
       if (this.stockQuarantined === null) {
         this.populateNewForm();

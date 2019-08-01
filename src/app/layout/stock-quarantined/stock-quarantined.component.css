@@ -11,7 +11,8 @@
 }
 .info-card{
   background-color: aliceblue;
-  height: 5em;
+  height: 6em;
+  padding-left: 7px;
 }
 .input-headline {
   font-size: 28px;

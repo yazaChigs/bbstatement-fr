@@ -13,7 +13,7 @@ export class BranchService {
   private saveUrl = this.global.baseUrl + '/api/admin/branch/save';
   private saveLogoUrl =  this.global.baseUrl + '/api/admin/branch/save-logo';
   private getAllUrl =  this.global.baseUrl + '/api/admin/branch/get-all';
-  private getUserBranchUrl =  this.global.baseUrl + '/api/admin/branch/get-user-ranch';
+  private getUserBranchUrl =  this.global.baseUrl + '/api/admin/branch/get-user-branch';
   private getAllForUserUrl =  this.global.baseUrl + '/api/admin/branch/get-all-for-user?branchId=';
   private getThemeUrl = this.global.baseUrl + '/api/admin/branch/get-theme';
   private getItemUrl = this.global.baseUrl + '/api/admin/branch/get-item?id=';

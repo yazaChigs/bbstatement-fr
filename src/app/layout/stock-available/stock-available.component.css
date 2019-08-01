@@ -20,3 +20,6 @@
 .grid-bg-b{
   background: rgb(248, 236, 236);
 }
+.indicator {
+  min-width: 30px;
+}

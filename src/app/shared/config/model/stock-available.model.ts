@@ -9,6 +9,7 @@ export class StockAvailable extends BaseModel{
   openingStock: number;
   receivedFromQuarantine: number;
   totalAvailable: number;
+  totalReceipts: number;
   hospitals: number;
   receicedFromQuarantine: number;
   issueToCompats: number;
@@ -18,6 +19,8 @@ export class StockAvailable extends BaseModel{
   wholeBloodToPackedCells: number;
   totalIssues: number;
   totalHospitalOrders: number;
+  totalTransfersToOtherBranches: number;
+  currentAvailableStock:  number;
   rhPositiveWbO: number;
   rhPositivePcO: number;
   rhPositivePaedWbO: number;

@@ -74,9 +74,9 @@ export class AddUserComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private branchService: BranchService
   ) {
-    this.genderKeys = Object.keys(this.gender).filter(Number);
-    this.physicianTypeKeys = Object.keys(this.physicianType).filter(Number);
-    this.titleKeys = Object.keys(this.title).filter(Number);
+    // this.genderKeys = Object.keys(this.gender).filter(Number);
+    // this.physicianTypeKeys = Object.keys(this.physicianType).filter(Number);
+    // this.titleKeys = Object.keys(this.title).filter(Number);
   }
 
   ngOnInit() {
@@ -126,27 +126,27 @@ export class AddUserComponent implements OnInit, AfterViewInit, OnDestroy {
   //    this.preSelectRoleDoctor(value);
   // }
 
-  preSelectRoleDoctor(value: boolean) {
-    this.roles.forEach(r => {
-      if (r.name === 'ROLE_DOCTOR') {
-       const userroles = (<FormArray>(
-         this.userDetailsForm.get('userRoles')
-       )) as FormArray;
-       if (value) {
-        r.selected = true;
-        userroles.push(new FormControl(r));
-       } else {
-        const i = userroles.controls.findIndex(
-          x => x.value.id === r.id
-        );
-        userroles.removeAt(i);
-        r.selected = false;
-        this.roles = this.roles.filter(t => t.id !== r.id);
-        this.roles.push(r);
-       }
-      }
-   });
-  }
+  // preSelectRoleDoctor(value: boolean) {
+  //   this.roles.forEach(r => {
+  //     if (r.name === 'ROLE_DOCTOR') {
+  //      const userroles = (<FormArray>(
+  //        this.userDetailsForm.get('userRoles')
+  //      )) as FormArray;
+  //      if (value) {
+  //       r.selected = true;
+  //       userroles.push(new FormControl(r));
+  //      } else {
+  //       const i = userroles.controls.findIndex(
+  //         x => x.value.id === r.id
+  //       );
+  //       userroles.removeAt(i);
+  //       r.selected = false;
+  //       this.roles = this.roles.filter(t => t.id !== r.id);
+  //       this.roles.push(r);
+  //      }
+  //     }
+  //  });
+  // }
   populateForm() {
     this.userDetailsForm.get('id').setValue(this.userToEdit.id);
     this.userDetailsForm.get('version').setValue(this.userToEdit.version);
@@ -155,28 +155,28 @@ export class AddUserComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userDetailsForm.controls['firstName'].setValue(this.userToEdit.firstName);
     this.userDetailsForm.controls['middleName'].setValue(this.userToEdit.middleName);
     this.userDetailsForm.controls['lastName'].setValue(this.userToEdit.lastName);
-    this.userDetailsForm.controls['dateOfBirth'].setValue(new Date(this.userToEdit.dob));
+    // this.userDetailsForm.controls['dateOfBirth'].setValue(new Date(this.userToEdit.dob));
     this.userDetailsForm.controls['userName'].setValue(this.userToEdit.userName);
-    this.userDetailsForm.controls['gender'].setValue(this.userToEdit.gender);
+    // this.userDetailsForm.controls['gender'].setValue(this.userToEdit.gender);
     this.userDetailsForm.controls['branch'].setValue(this.userToEdit.branch);
     console.log(this.userToEdit.branch);
-    this.userDetailsForm.controls['phoneHome'].patchValue(
-      this.userToEdit.phoneHome
-    );
+    // this.userDetailsForm.controls['phoneHome'].patchValue(
+    //   this.userToEdit.phoneHome
+    // );
     const age = DateUtil.getYearsBetween(new Date(), new Date(this.userToEdit.dob));
-    this.userDetailsForm.controls['age'].patchValue(age);
+    // this.userDetailsForm.controls['age'].patchValue(age);
     this.userDetailsForm.controls['phoneCell'].patchValue(
       this.userToEdit.phoneCell
     );
     this.userDetailsForm.controls['phoneBusiness'].patchValue(
       this.userToEdit.phoneBusiness
     );
-    this.userDetailsForm.controls['address'].patchValue(
-      this.userToEdit.address
-    );
-    this.userDetailsForm.controls['country'].patchValue(
-      this.userToEdit.country
-    );
+    // this.userDetailsForm.controls['address'].patchValue(
+    //   this.userToEdit.address
+    // );
+    // this.userDetailsForm.controls['country'].patchValue(
+    //   this.userToEdit.country
+    // );
 
     this.userToEdit.userRoles.forEach(userRole => {
       const userroles = (<FormArray>(
@@ -299,15 +299,15 @@ export class AddUserComponent implements OnInit, AfterViewInit, OnDestroy {
           Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
         ])
       ),
-      facility: new FormControl(''),
-      dateOfBirth: new FormControl(),
-      age: new FormControl(''),
-      gender: new FormControl(''),
+      // facility: new FormControl(''),
+      // dateOfBirth: new FormControl(),
+      // age: new FormControl(''),
+      // gender: new FormControl(''),
       phoneCell: new FormControl(''),
-      phoneHome: new FormControl(''),
+      // phoneHome: new FormControl(''),
       phoneBusiness: new FormControl(''),
-      country: new FormControl(''),
-      address: new FormControl(''),
+      // country: new FormControl(''),
+      // address: new FormControl(''),
 /*      nationalId: new FormControl('',
       Validators.compose([
         Validators.pattern(this.idFormat)

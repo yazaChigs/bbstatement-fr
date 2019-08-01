@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   selectedBranches: any[] = [];
   branchesInfo: any = {};
   yesterdayDate: Date;
+  roles: string[];
   util;
   collections = 0;
   firstRun = true;
@@ -52,6 +53,7 @@ export class DashboardComponent implements OnInit {
   branchInfoAvailable = false;
   unsubmitedQuarantine = 0;
   unsubmitedAvailable = 0;
+  numberOfCollections: number;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
@@ -70,11 +72,17 @@ export class DashboardComponent implements OnInit {
     this.getAvailableStockForm();
     this.getQuarantinedStock();
     this.getBranchDailyMinimalCapacity();
-    this.getAllBranches();
     this.createFilterDataForm();
     this.getAllUnSubmitedQuarantineStock();
     this.getAllUnSubmitedAvailableStock();
     this.util = new NotifyUtil(this.snotify);
+
+    this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
+    if (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_SUPERVISOR')) {
+      this.getUserBranch();
+    } else {
+      this.getAllBranches();
+  }
   }
 
   createFormBloodStockManagementAnalysisForm() {
@@ -114,12 +122,24 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getUserBranch() {
+    this.branchService.getUsersBranch().subscribe(
+      result => {
+        this.allBranches.push(result);
+        this.getBranchInfo();
+       },
+       error => {
+         console.log(error.error);
+       }
+    );
+  }
+
   getAllBranches() {
+
     this.branchService.getAll().subscribe(
       result => {
        this.allBranches = result;
-       console.log(this.allBranches);
-       this.getBranchInfo(this.allBranches);
+       this.getBranchInfo();
       },
       error => {
         console.log(error.error);
@@ -135,6 +155,8 @@ export class DashboardComponent implements OnInit {
       result => {
         this.branchesInfo = result;
         this.overallCollections(this.branchesInfo);
+        this.populateBranchDailyRequirements(this.branchesInfo);
+        this.populateStockavailable(this.branchesInfo);
       }
     );
   } else {
@@ -165,22 +187,28 @@ export class DashboardComponent implements OnInit {
     console.log(this.selectedBranches);
     if (value === null || undefined) {return 0; }
     let avarage = 0;
+    let bloodnumber = 0;
     let x = 0;
 
     if (this.selectedBranches.length === 0) { this.selectedBranches = this.allBranches; this.firstRun = true; }
     this.selectedBranches.forEach(item => {
       if (item.branchName === 'HARARE') {if (value.collectionsHarare !== 0 && value.harareTotalMinCap !== 0) {
+        bloodnumber += value.collectionsHarare;
         avarage += value.collectionsHarare / value.harareTotalMinCap; x++; } }
       if (item.branchName === 'BULAWAYO') {if (value.collectionsBulawayo !== 0 && value.bulawayoTotalMinCap !== 0) {
+        bloodnumber += value.collectionsBulawayo;
         avarage += value.collectionsBulawayo / value.bulawayoTotalMinCap; x++; } }
       if (item.branchName === 'GWERU') {if (value.collectionsGweru !== 0 && value.gweruTotalMinCap !== 0) {
+        bloodnumber += value.collectionsGweru;
         avarage += value.collectionsGweru / value.gweruTotalMinCap; x++; } }
       if (item.branchName === 'MUTARE') {if (value.collectionsMutare !== 0 && value.mutareTotalMinCap !== 0) {
-          avarage += value.collectionsMutare / value.mutareTotalMinCap; x++; } }
+        bloodnumber += value.collectionsMutare;
+        avarage += value.collectionsMutare / value.mutareTotalMinCap; x++; } }
       if (item.branchName === 'MASVINGO') {if (value.collectionsMasvingo !== 0 && value.masvingoTotalMinCap !== 0) {
-          avarage += value.collectionsMasvingo / value.masvingoTotalMinCap; x++; } }
+        bloodnumber += value.collectionsMasvingo;
+        avarage += value.collectionsMasvingo / value.masvingoTotalMinCap; x++; } }
     });
-
+    this.numberOfCollections = bloodnumber;
     this.collections =  Number(((avarage / x) * 100).toFixed(2)) ;
 
     if (this.firstRun) { this.selectedBranches = []; this.firstRun = false; } // so that the statement
@@ -188,9 +216,10 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  getBranchInfo(value) {
-    console.log(value);
-    this.dashService.getBranchInfo(value).subscribe(
+  getBranchInfo() {
+    const value = this.dashForm.value;
+    value.branches = this.selectedBranches;
+    this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
         console.log(result);
         this.branchesInfo = result;
@@ -295,6 +324,7 @@ export class DashboardComponent implements OnInit {
       + (this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').value
       + this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').value) * 0.2);
 
+    this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').setValue(item.quarantineStock * 0.42);
 
     this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').setValue(
        (( this.bloodStockManagementAnalysisForm.get('requirementsOplus').value

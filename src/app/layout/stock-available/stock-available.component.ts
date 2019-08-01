@@ -35,6 +35,8 @@ export class StockAvailableComponent implements OnInit {
   util;
   yesterdayDate: Date;
   editForm = true;
+  showEditBtn = false;
+  percentDemandVsSupply = 0;
 
   // user = localStorage.getItem('USER');
 
@@ -53,7 +55,7 @@ export class StockAvailableComponent implements OnInit {
     this.util = new NotifyUtil(this.snotify);
 
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPER_ADMIN')) {
+    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR')) {
       this.editBranches = false; }
 
   }
@@ -70,6 +72,7 @@ export class StockAvailableComponent implements OnInit {
       id: new FormControl(),
       timeCreated: new FormControl(),
       dateCreated: new FormControl(),
+      active: new FormControl(),
       version: new FormControl(),
       createdById: new FormControl(),
       branch: new FormControl(
@@ -78,6 +81,7 @@ export class StockAvailableComponent implements OnInit {
       openingStock: new FormControl(),
       receivedFromQuarantine: new FormControl(),
       totalAvailable: new FormControl(),
+      totalReceipts: new FormControl(),
       hospitals: new FormControl(),
       receicedFromQuarantine: new FormControl(),
       issueToCompats: new FormControl(),
@@ -87,6 +91,11 @@ export class StockAvailableComponent implements OnInit {
       wholeBloodToPackedCells: new FormControl(),
       totalIssues: new FormControl(),
       totalHospitalOrders: new FormControl(),
+      totalTransfersToOtherBranches: new FormControl(),
+      currentAvailableStock: new FormControl(),
+      overallSupplies: new FormControl(),
+      overallOrders: new FormControl(),
+      overallDemandVsSupply: new FormControl(),
       rhPositiveWbO: new FormControl(),
       rhPositivePcO: new FormControl(),
       rhPositivePaedWbO: new FormControl(),
@@ -346,10 +355,12 @@ getUserBranch(): Branch {
     this.availableStockForm.get('id').setValue(item.id);
     this.availableStockForm.get('dateCreated').setValue(item.dateCreated);
     this.availableStockForm.get('version').setValue(item.version);
+    this.availableStockForm.get('active').setValue(item.active);
     this.availableStockForm.get('createdById').setValue(item.createdById);
     this.availableStockForm.get('openingStock').setValue(item.openingStock);
     this.availableStockForm.get('receivedFromQuarantine').setValue(item.receivedFromQuarantine);
     this.availableStockForm.get('totalAvailable').setValue(item.totalAvailable);
+    this.availableStockForm.get('totalReceipts').setValue(item.totalReceipts);
     this.availableStockForm.get('hospitals').setValue(item.hospitals);
     this.availableStockForm.get('receicedFromQuarantine').setValue(item.receicedFromQuarantine);
     this.availableStockForm.get('issueToCompats').setValue(item.issueToCompats);
@@ -359,6 +370,8 @@ getUserBranch(): Branch {
     this.availableStockForm.get('wholeBloodToPackedCells').setValue(item.wholeBloodToPackedCells);
     this.availableStockForm.get('totalIssues').setValue(item.totalIssues);
     this.availableStockForm.get('totalHospitalOrders').setValue(item.totalHospitalOrders);
+    this.availableStockForm.get('currentAvailableStock').setValue(item.currentAvailableStock);
+    this.availableStockForm.get('totalTransfersToOtherBranches').setValue(item.totalTransfersToOtherBranches);
     this.availableStockForm.get('rhPositiveWbO').setValue(item.rhPositiveWbO);
     this.availableStockForm.get('rhPositivePcO').setValue(item.rhPositivePcO);
     this.availableStockForm.get('rhPositivePaedWbO').setValue(item.rhPositivePaedWbO);
@@ -462,6 +475,9 @@ getUserBranch(): Branch {
     this.availableStockForm.get('compatsIssues').setValue(item.compatsIssues);
     this.availableStockForm.get('compatsOrders').setValue(item.compatsOrders);
     this.availableStockForm.get('compatsPercentageSupply_Orders').setValue(item.compatsPercentageSupply_Orders);
+    this.availableStockForm.get('verallSupplies').setValue(item.verallSupplies);
+    this.availableStockForm.get('overallOrders').setValue(item.overallOrders);
+    this.availableStockForm.get('overallDemandVsSupply').setValue(item.overallDemandVsSupply);
     this.availableStockForm.get('ffp1').setValue(item.ffp1);
     this.availableStockForm.get('plt1').setValue(item.plt1);
     this.availableStockForm.get('plt2').setValue(item.plt2);
@@ -483,6 +499,7 @@ getUserBranch(): Branch {
         this.fb.group({
           id: new FormControl(complaint.id),
           version: new FormControl(complaint.version),
+          active: new FormControl(complaint.active),
           createdById: new FormControl(complaint.createdById),
           dateCreated: new FormControl(complaint.dateCreated),
           branchName: new FormControl(complaint.branchName),
@@ -506,6 +523,7 @@ getUserBranch(): Branch {
         this.fb.group({
           id: new FormControl(complaint.id),
           version: new FormControl(complaint.version),
+          active: new FormControl(complaint.active),
           createdById: new FormControl(complaint.createdById),
           dateCreated: new FormControl(complaint.dateCreated),
           branchName: new FormControl(complaint.branchName),
@@ -528,6 +546,27 @@ getUserBranch(): Branch {
     if (value >= 0 && value < 0.25) {  return 'red'; } else { return 'pink'; }
     // }
   }
+}
+
+demandVsSupplyBgPercentageColor(): string {
+  let value;
+  // if (this.stockAvailable !== null && this.stockAvailable !== undefined) {
+  value = (this.availableStockForm.get('hospitals').value)
+   / (this.availableStockForm.get('totalHospitalOrders').value);
+  // if (value !== undefined && value !== null) {
+  if (value >= 0.5) { return 'green'; }
+  if (value >= 0.25 && value < 0.5) { return 'orange'; }
+  if (value >= 0 && value < 0.25) {  return 'red'; } else { return 'pink'; }
+  // }
+// }
+}
+demandVsSupplyBgPercentage(): number {
+  if (this.availableStockForm.get('hospitals').value !== null && this.availableStockForm.get('totalHospitalOrders').value !== null) {
+    this.demandVsSupplyBgPercentageColor();
+    return (Number(this.availableStockForm.get('hospitals').value
+   / this.availableStockForm.get('totalHospitalOrders').value) * 100); } else {
+     return 0;
+   }
 }
 
 getByDate(value) {
@@ -614,19 +653,20 @@ getByDate(value) {
   }
 
   saveStockAvailable(value) {
+    this.showEditBtn = false;
     this.availableStockService.save(value).subscribe(
       result => {
         this.stockAvailable = result.stockAvailable;
-        // console.log(this.stockAvailable);
+        console.log(this.stockAvailable);
         // console.log(result.message);
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
+        this.populateForm(result.stockAvailable);
       },
       error => {
         this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
         // console.log(error.error);
       },
       () => {
-      this.populateForm(this.stockAvailable);
       this.editForm = this.stockAvailable.active;
       }
     );
@@ -635,15 +675,18 @@ getByDate(value) {
   submitStockAvailable(value) {
     this.availableStockService.submit(value).subscribe(
       result => {
+        console.log(result.stockAvailable);
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
-        // console.log(result.message);
-      },
+        this.editForm = result.stockAvailable.active;
+        this.showEditBtn = true; // console.log(result.message);
+        this.populateForm(result.stockAvailable);
+    },
       error => {
         this.snotify.error(error.error, 'Error', this.util.getNotifyConfig());
         // console.log(error.error);
       },
       () => {
-       this.populateNewForm();
+      //  this.populateNewForm();
       }
     );
   }
@@ -652,6 +695,7 @@ getByDate(value) {
     return this.fb.group({
       id: new FormControl(),
       version: new FormControl(),
+      active: new FormControl(),
       createdById: new FormControl(),
       dateCreated: new FormControl(),
     branchName: new FormControl(ds.branchName),
@@ -671,6 +715,7 @@ getByDate(value) {
   return this.fb.group({
     id: new FormControl(),
     version: new FormControl(),
+    active: new FormControl(),
     createdById: new FormControl(),
     dateCreated: new FormControl(),
     branchName: new FormControl(ds.branchName),
@@ -696,6 +741,18 @@ loadStockIssuedTo() {
     this.cardStockAvailable =  total - value.totalIssues;
 
   }
+  sumReceivedOnly(value?) {
+    let total = 0;
+    // total = Number(value.openingStock) + Number(value.receivedFromQuarantine);
+    value.receivedFromAvailable.forEach(item => {
+    total += Number(item.receivedFrom);
+    });
+    this.availableStockForm.get('totalReceipts').setValue(total);
+    this.availableStockForm.get('currentAvailableStock').setValue(
+      this.availableStockForm.get('totalAvailable').value - this.availableStockForm.get('totalIssues').value);
+    this.cardStockAvailable =  total - value.totalIssues;
+
+  }
 
   sumIssued(value) {
     let total = 0;
@@ -705,6 +762,8 @@ loadStockIssuedTo() {
       total += Number(item.issuedTo);
     });
     this.availableStockForm.get('totalIssues').setValue(total);
+    this.availableStockForm.get('currentAvailableStock').setValue(
+      this.availableStockForm.get('totalAvailable').value - this.availableStockForm.get('totalIssues').value);
     this.cardStockAvailable =  value.totalAvailable - total;
   }
 

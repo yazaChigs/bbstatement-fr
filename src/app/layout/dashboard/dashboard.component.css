@@ -9,7 +9,7 @@
   margin-top: 25px;
 }
 .top-filters-btn{
-  margin-top: 30px;
+  margin-top: 25px;
   height: 60px;
 }
 .chart-container-height{
@@ -21,3 +21,17 @@
 .grid-bg-b{
   background: rgb(248, 236, 236);
 }
+.ob-card {
+  margin: 0px;
+}
+/* .image-container{
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url(/assets/images/donateBlood.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  top: -10px;
+} */

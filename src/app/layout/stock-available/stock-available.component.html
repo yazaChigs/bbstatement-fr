@@ -115,7 +115,7 @@
               <div fxFlex="25%">
                   <mat-form-field class="full-width" appearance="outline">
                       <mat-label></mat-label>
-                      <input matInput formControlName="receivedFrom" type="number" (keyup)="sumReceived(availableStockForm.value)">
+                      <input matInput formControlName="receivedFrom" type="number" (keyup)="sumReceived(availableStockForm.value)" (keyup)="sumReceivedOnly(availableStockForm.value)">
                     </mat-form-field>
               </div>
               </div>
@@ -126,16 +126,30 @@
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
                     <div fxFlex="45%"></div>
                         <div fxFlex="30%">
-                        <h1>
-                          <mat-label class="full-width ">Total Available Stock</mat-label>
-                        </h1>
+                        <h3>
+                          <mat-label class="full-width ">Total Receipts</mat-label>
+                        </h3>
                       </div>
                       <div fxFlex="15%">
-                          <mat-form-field class="full-width input-headline" appearance="outline">
-                              <input matInput formControlName="totalAvailable" type="number" placeholder="total" readonly>
+                          <mat-form-field class="full-width" appearance="outline">
+                              <input matInput formControlName="totalReceipts" type="number" placeholder="total" readonly>
                             </mat-form-field>
                       </div>
                     </div>
+            <mat-divider [inset]="true"></mat-divider>
+                    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+                      <div fxFlex="45%"></div>
+                          <div fxFlex="30%">
+                          <h1>
+                            <mat-label class="full-width ">Total Available Stock</mat-label>
+                          </h1>
+                        </div>
+                        <div fxFlex="15%">
+                            <mat-form-field class="full-width input-headline" appearance="outline">
+                                <input matInput formControlName="totalAvailable" type="number" placeholder="total" readonly>
+                              </mat-form-field>
+                        </div>
+                      </div>
 
             </mat-expansion-panel>
           <!-- end Receipts panel -->
@@ -160,7 +174,7 @@
                 <div fxFlex="25%">
                     <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Hospitals</mat-label>
-                        <input type="number" matInput formControlName="hospitals" placeholder="Hospitals" (keyup)="overallSupplies()" (keyup)="sumIssued(availableStockForm.value)">
+                        <input type="number" matInput formControlName="hospitals" placeholder="Hospitals" (keyup)="overallSupplies()" (keyup)="sumIssued(availableStockForm.value)" (keyup)="demandVsSupplyBgPercentageColor()">
                       </mat-form-field>
                 </div>
               </div>
@@ -185,6 +199,7 @@
                 <input type="hidden" formControlName="id">
                 <input type="hidden" formControlName="dateCreated">
                 <input type="hidden" formControlName="version">
+                <input type="hidden" formControlName="active">
                 <input type="hidden" formControlName="createdById">
                 <!-- <input type="hidden" formControlName="branchName"> -->
                   <div fxFlex="17%">
@@ -269,7 +284,7 @@
                                       <input matInput formControlName="wholeBloodToPackedCells" type="number" placeholder="Whole blood to packed cells" (keyup)="sumIssued(availableStockForm.value)">
                                     </mat-form-field>
                               </div>
-                            </div>
+      </div>
 
                 <mat-divider [inset]="true"></mat-divider>
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -281,7 +296,7 @@
                                   </div>
                                   <div fxFlex="15%">
                                       <mat-form-field class="full-width input-headline" appearance="outline">
-                                          <input matInput formControlName="totalIssues" type="number" placeholder="total" readonly>
+                                          <input matInput formControlName="totalIssues" type="number" placeholder="total" readonly >
                                         </mat-form-field>
                                   </div>
                                 </div>
@@ -308,10 +323,45 @@
                       <div fxFlex="25%">
                           <mat-form-field class="full-width" appearance="outline">
                               <mat-label>Orders</mat-label>
-                              <input matInput type="number" formControlName="totalHospitalOrders" placeholder="Orders" (keyup)="overallOrders()">
+                              <input matInput type="number" formControlName="totalHospitalOrders" placeholder="Orders" (keyup)="demandVsSupplyBgPercentageColor()" (keyup)="overallOrders()">
                             </mat-form-field>
                       </div>
-                    </div>
+                      <div fxFlex="17%">
+                        <p>
+                          <mat-label class="full-width">% demand vs supply</mat-label>
+                        </p>
+                      </div>
+        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="demandVsSupplyBgPercentageColor()" >{{demandVsSupplyBgPercentage().toFixed(0)}}%</mat-card></div>
+      </div>
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+
+        <div fxFlex="17%">
+            <p>
+              <mat-label class="full-width">Total blood transfers to other  branches</mat-label>
+            </p>
+          </div>
+          <div fxFlex="25%">
+              <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Total blood transfers to other  branches</mat-label>
+                  <input matInput formControlName="totalTransfersToOtherBranches" type="number" >
+                </mat-form-field>
+          </div>
+        </div>
+          <mat-divider [inset]="true"></mat-divider>
+                <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+                                <div fxFlex="45%"></div>
+                                    <div fxFlex="30%">
+                                    <h1>
+                                      <mat-label class="full-width">Current available stock</mat-label>
+                                    </h1>
+                                  </div>
+                                  <div fxFlex="15%">
+                                      <mat-form-field class="full-width input-headline" appearance="outline">
+                                          <input matInput formControlName="currentAvailableStock" type="number" placeholder="00" readonly>
+                                        </mat-form-field>
+                                  </div>
+                                </div>
+
                 </mat-expansion-panel>
               <!-- start orders panel -->
 
@@ -814,29 +864,73 @@
                         <mat-label class="full-width">Compats issues (WB & PC)</mat-label>
                       </p>
                     </div>
-                    <div fxFlex="25%">
+                    <div fxFlex="10%">
                         <mat-form-field class="full-width" appearance="outline">
                             <mat-label>Issues</mat-label>
                             <input type="number" matInput formControlName="compatsIssues" placeholder="Issues" (keyup)="sumCompats(availableStockForm.value)" (keyup)="overallSupplies()">
                           </mat-form-field>
                     </div>
-                  </div>
-                <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
-                  <div fxFlex="17%">
-                        <p>
-                          <mat-label class="full-width">Compats orders (WB & PC)</mat-label>
-                        </p>
-                      </div>
-                      <div fxFlex="25%">
-                          <mat-form-field class="full-width" appearance="outline">
-                              <mat-label>orders</mat-label>
-                              <input matInput type="number" formControlName="compatsOrders" placeholder="orders" (keyup)="overallOrders()" (keyup)="sumCompats(availableStockForm.value)">
-                            </mat-form-field>
-                      </div>
+                    <div fxFlex="17%">
+                      <p>
+                        <mat-label class="full-width">Compats orders (WB & PC)</mat-label>
+                      </p>
                     </div>
-
+                    <div fxFlex="10%">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>orders</mat-label>
+                            <input matInput type="number" formControlName="compatsOrders" placeholder="orders" (keyup)="overallOrders()" (keyup)="sumCompats(availableStockForm.value)">
+                          </mat-form-field>
+                    </div>
+                    <div fxFlex="25%">
+                            <p>
+                              <mat-label class="full-width">Compats % Supply / Orders</mat-label>
+                            </p>
+                          </div>
+                          <div fxFlex="10%">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <input matInput type="number" formControlName="compatsPercentageSupply_Orders" placeholder="total" readonly>
+                              <span matSuffix>%</span>
+                            </mat-form-field>
+                          </div>
+                  </div>
                 <mat-divider [inset]="true"></mat-divider>
                 <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+                  <div fxFlex="17%">
+                    <p>
+                      <mat-label class="full-width">Overall supplies</mat-label>
+                    </p>
+                  </div>
+                  <div fxFlex="10%">
+                      <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Issues</mat-label>
+                          <input type="number" matInput formControlName="overallSupplies" placeholder="Issues" (keyup)="sumCompats(availableStockForm.value)" (keyup)="overallSupplies()">
+                        </mat-form-field>
+                  </div>
+                  <div fxFlex="17%">
+                    <p>
+                      <mat-label class="full-width">Overall Orders</mat-label>
+                    </p>
+                  </div>
+                  <div fxFlex="10%">
+                      <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>orders</mat-label>
+                          <input matInput type="number" formControlName="overallOrders" placeholder="orders" (keyup)="overallOrders()" (keyup)="sumCompats(availableStockForm.value)">
+                        </mat-form-field>
+                  </div>
+                  <div fxFlex="25%">
+                          <p>
+                            <mat-label class="full-width">Overall Demand versus Supply</mat-label>
+                          </p>
+                        </div>
+                        <div fxFlex="10%">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <input matInput type="number" formControlName="overallDemandVsSupply" placeholder="total" readonly>
+                            <span matSuffix>%</span>
+                          </mat-form-field>
+                        </div>
+                    </div>
+
+                <!-- <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
                         <div fxFlex="25%"></div>
                             <div fxFlex="50%">
                             <h1>
@@ -849,7 +943,7 @@
                               <span matSuffix>%</span>
                             </mat-form-field>
                           </div>
-                        </div>
+                        </div> -->
 
                 </mat-expansion-panel>
               <!-- start compatability available stock panel -->
@@ -935,7 +1029,7 @@
               <!-- start other available products panel -->
 
         </mat-accordion>
-        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div *ngIf="editForm" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="12%">
             <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">Save</button>
           </div>
@@ -944,6 +1038,13 @@
             <button *ngIf="!editBranches" type="submit" mat-raised-button color="primary" (click)="submitStockAvailable(availableStockForm.value)">save and submit</button>
           </div>
         </div>
+        <div *ngIf="showEditBtn" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="12%"> </div>
+          <div fxFlex="70%"></div>
+          <div fxFlex="12%">
+            <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">edit</button>
+          </div>
+      </div>
       </form>
 
 </mat-card>

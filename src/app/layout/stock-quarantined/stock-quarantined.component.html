@@ -42,7 +42,10 @@
     </div>
     <mat-divider [vertical]="true"></mat-divider>
     <div fxFlex="10%"></div>
-  <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card"><p>Collections </p><h2>{{ (((initCollections) / initCollectionsFromDb)*100).toFixed(2)}}%</h2></mat-card></div>
+  <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card">
+    Total Collections:<strong>{{ initCollections}}</strong>
+    <p>Collections:</p><h2 style="margin-top: -5px;">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</h2>
+  </mat-card></div>
   <div fxFlex="15%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
   <div fxFlex="15%"><mat-card class="info-card">
     <p>Opening: <strong>{{initOpeningStock}} </strong></p>
@@ -584,6 +587,13 @@
     <div fxFlex="70%"></div>
     <div fxFlex="12%">
       <button *ngIf="!editBranches" type="submit" mat-raised-button color="primary" (click)="submitStockQuarantined(quarantinedStockForm.value)">save and submit</button>
+    </div>
+</div>
+<div *ngIf="showEditBtn" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="12%"> </div>
+    <div fxFlex="70%"></div>
+    <div fxFlex="12%">
+      <button type="submit" mat-raised-button color="primary" (click)="saveAQuarantinedStock(quarantinedStockForm.value)">edit</button>
     </div>
 </div>
 </form>
