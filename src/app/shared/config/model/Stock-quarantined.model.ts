@@ -16,6 +16,7 @@ export class StockQuarantined extends BaseModel {
   totalCollections: number;
   referenceLaboratory: number;
   totalReceiptsFromBranches: number;
+  totalReceiptsFromBranchesOnly: number;
   p1: number;
   dryPacksD3D4: number;
   p2: number;
@@ -38,4 +39,6 @@ export class StockQuarantined extends BaseModel {
   cryo: number;
   stockReceivedFrom: StockReceivedFrom[];
   issuedToQuarantines: StockIssuedTo[];
+  compliedBy: string;
+  checkedBy: string;
 }

@@ -152,6 +152,7 @@ export class StockQuarantinedComponent implements OnInit {
       totalCollections: new FormControl(),
       referenceLaboratory: new FormControl(),
       totalReceiptsFromBranches: new FormControl(),
+      totalReceiptsFromBranchesOnly: new FormControl(),
       p1: new FormControl(),
       dryPacksD3D4: new FormControl(),
       p2: new FormControl(),
@@ -166,8 +167,10 @@ export class StockQuarantinedComponent implements OnInit {
       serologicalDiscards: new FormControl(),
       totalIssuesDiscards: new FormControl(),
       availableStock: new FormControl(),
+      totalBloodTransferredToOtherBranches: new FormControl(),
       issueTogroupMismatchesToRefLab: new FormControl(),
       totalIssues: new FormControl(),
+      currentStockInQuarantine: new FormControl(),
       ffp1: new FormControl(),
       plt1: new FormControl(),
       plt2: new FormControl(),
@@ -258,12 +261,16 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   QuarantineStock(): number {
-    return this.quarantinedStockForm.get('openingStock').value
-      + this.quarantinedStockForm.get('totalCollections').value
-      - this.quarantinedStockForm.get('availableStock').value
-      - this.quarantinedStockForm.get('totalReceiptsFromBranches').value
+   const value =
+    // this.quarantinedStockForm.get('openingStock').value
+    //   + this.quarantinedStockForm.get('totalCollections').value
+      // - this.quarantinedStockForm.get('availableStock').value
+      + this.quarantinedStockForm.get('totalReceiptsFromBranches').value
       - this.quarantinedStockForm.get('totalIssuesDiscards').value
       - this.quarantinedStockForm.get('totalIssues').value;
+
+   this.quarantinedStockForm.get('currentStockInQuarantine').setValue(value);
+   return value;
   }
 
   sumCollections(value): number {
@@ -271,6 +278,9 @@ export class StockQuarantinedComponent implements OnInit {
     total = Number(value.harareCbd03) + Number(value.staticHq01)
      + Number(value.mobile04) + Number(value.mobile02) + Number(value.mobile06) ;
     this.quarantinedStockForm.get('totalCollections').setValue(total);
+    this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
+      total + Number(this.quarantinedStockForm.get('openingStock').value)
+       + Number(this.quarantinedStockForm.get('referenceLaboratory').value));
     return total;
   }
   totolCollectionsOnly(): number {
@@ -285,10 +295,11 @@ export class StockQuarantinedComponent implements OnInit {
 
   sumIssues(value): number {
     let total = 0;
-    total = Number(value.issueTogroupMismatchesToRefLab) ;
     value.issuedToQuarantines.forEach(item => {
       total += Number(item.issuedTo);
     });
+    this.quarantinedStockForm.get('totalBloodTransferredToOtherBranches').setValue(total);
+    total += Number(value.issueTogroupMismatchesToRefLab) + Number(value.availableStock);
     this.quarantinedStockForm.get('totalIssues').setValue(total);
     // this.initCollections = total + Number(value.availableStock);
     return total;
@@ -306,13 +317,15 @@ export class StockQuarantinedComponent implements OnInit {
   sumReceived(): number {
     console.log('sumRecieved');
     let total = 0;
-    total = Number(this.quarantinedStockForm.get('referenceLaboratory').value);
+    // total = Number(this.quarantinedStockForm.get('referenceLaboratory').value);
     this.StockReceivedFromArray.controls.forEach((item, index) => {
       const valueTotal = Number(this.getStockReceivedFromControls()[index].value.receivedFrom);
       total += valueTotal;
     });
-    this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(total);
-    return total;
+    this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').setValue(total);
+    this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
+      total + Number(this.quarantinedStockForm.get('referenceLaboratory').value));
+    return total +  Number(this.quarantinedStockForm.get('referenceLaboratory').value);
   }
 
   saveAQuarantinedStock(value) {
@@ -322,6 +335,9 @@ export class StockQuarantinedComponent implements OnInit {
     this.qStockService.save(value).subscribe(
       result => {
         this.stockQuarantined = result.stockQuarantined;
+        if (this.stockQuarantined! == null) {
+          this.editForm = result.active;
+        }
         console.log(result.stockQuarantined);
         console.log(result.message);
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
@@ -331,7 +347,7 @@ export class StockQuarantinedComponent implements OnInit {
         console.log(error.error);
       },
       () => {
-      this.editForm = this.stockQuarantined.active;
+      // this.editForm = this.stockQuarantined.active;
       this.populateForm(this.stockQuarantined);
       }
     );
@@ -363,9 +379,6 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('createdById').setValue('');
     this.quarantinedStockForm.get('issuedToQuarantines').reset();
     this.quarantinedStockForm.get('receivedFromQuarantineds').reset();
-    // this.
-    // this.loadStockIssuedTo();
-    // this.quarantinedStockForm.get('todaysDate').setValue('');
     this.quarantinedStockForm.get('openingStock').setValue('');
     this.quarantinedStockForm.get('harareCbd03').setValue('');
     this.quarantinedStockForm.get('staticHq01').setValue('');
@@ -375,6 +388,7 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('totalCollections').setValue('');
     this.quarantinedStockForm.get('referenceLaboratory').setValue('');
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue('');
+    this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').setValue('');
     this.quarantinedStockForm.get('p1').setValue('');
     this.quarantinedStockForm.get('dryPacksD3D4').setValue('');
     this.quarantinedStockForm.get('p2').setValue('');
@@ -388,6 +402,8 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('serologicalDiscards').setValue('');
     this.quarantinedStockForm.get('totalIssuesDiscards').setValue('');
     this.quarantinedStockForm.get('availableStock').setValue('');
+    this.quarantinedStockForm.get('currentStockInQuarantine').setValue('');
+    this.quarantinedStockForm.get('totalBloodTransferredToOtherBranches').setValue('');
     this.quarantinedStockForm.get('issueTogroupMismatchesToRefLab').setValue('');
     this.quarantinedStockForm.get('totalIssues').setValue('');
     this.quarantinedStockForm.get('ffp1').setValue('');
@@ -400,11 +416,8 @@ export class StockQuarantinedComponent implements OnInit {
     // console.log(item.branch);
     this.quarantinedStockForm.get('id').setValue(item.id);
     this.quarantinedStockForm.get('dateCreated').setValue(item.dateCreated);
-    // this.quarantinedStockForm.get('timeCreated').setValue(item.timeCreated);
     this.quarantinedStockForm.get('version').setValue(item.version);
     this.quarantinedStockForm.get('createdById').setValue(item.createdById);
-    // this.quarantinedStockForm.get('branch.branchName').setValue(item.branch);
-    // this.quarantinedStockForm.get('todaysDate').setValue(item.todayDate);
     this.quarantinedStockForm.get('openingStock').setValue(item.openingStock);
     this.quarantinedStockForm.get('harareCbd03').setValue(item.harareCbd03);
     this.quarantinedStockForm.get('staticHq01').setValue(item.staticHq01);
@@ -414,6 +427,7 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('totalCollections').setValue(item.totalCollections);
     this.quarantinedStockForm.get('referenceLaboratory').setValue(item.referenceLaboratory);
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(item.totalReceiptsFromBranches);
+    this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').setValue(item.totalReceiptsFromBranches);
     this.quarantinedStockForm.get('p1').setValue(item.p1);
     this.quarantinedStockForm.get('dryPacksD3D4').setValue(item.dryPacksD3D4);
     this.quarantinedStockForm.get('p2').setValue(item.p2);
@@ -427,6 +441,8 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('serologicalDiscards').setValue(item.serologicalDiscards);
     this.quarantinedStockForm.get('totalIssuesDiscards').setValue(item.totalIssuesDiscards);
     this.quarantinedStockForm.get('availableStock').setValue(item.availableStock);
+    this.quarantinedStockForm.get('currentStockInQuarantine').setValue(item.currentStockInQuarantine);
+    this.quarantinedStockForm.get('totalBloodTransferredToOtherBranches').setValue(item.totalBloodTransferredToOtherBranches);
     this.quarantinedStockForm.get('issueTogroupMismatchesToRefLab').setValue(item.issueTogroupMismatchesToRefLab);
     this.quarantinedStockForm.get('totalIssues').setValue(item.totalIssues);
     this.quarantinedStockForm.get('ffp1').setValue(item.ffp1);
@@ -576,11 +592,13 @@ getUserBranches() {
         // this.loadStockIssuedTo();
       }
       if (this.stockQuarantined !== null) {
-        this.editForm = this.stockQuarantined.active;
+        this.editForm = result.active;
         this.populateForm(this.stockQuarantined);
         this.calculateCollections(); // supposed to be in ther above loop
       }
       if (this.stockQuarantined === null) {
+        this.showEditBtn = false; // console.log(result.message);
+        this.editForm = true;
         this.populateNewForm();
       }
       console.log(result);
@@ -598,7 +616,7 @@ getUserBranches() {
     result => {
       this.stockQuarantined = result;
       if (this.stockQuarantined !== null) {
-        this.editForm = this.stockQuarantined.active;
+        this.editForm = result.active;
         this.populateForm(this.stockQuarantined);
         this.calculateCollections(); // supposed to be in ther above loop
       }

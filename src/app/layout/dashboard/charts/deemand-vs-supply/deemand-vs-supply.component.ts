@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color, BaseChartDirective } from 'ng2-charts';
+import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
 
 @Component({
   selector: 'app-deemand-vs-supply',
@@ -11,13 +12,13 @@ export class DeemandVsSupplyComponent implements OnInit {
 
   showItems = true;
   public lineChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], fill: false, lineTension: 0, label: 'Harare' },
-    { data: [28, 48, 40, 19, 86, 27, 90], fill: false, lineTension: 0, label: 'Bulawayo' },
-    { data: [40, 56, 12, 56, 45, 78, 89], fill: false, lineTension: 0, label: 'Gweru' },
-    { data: [56, 89, 12, 34, 35, 36, 37], fill: false, lineTension: 0, label: 'Mutare' },
-    { data: [23, 45, 56, 90, 78, 34, 56], fill: false, lineTension: 0, label: 'Masvingo', yAxisID: 'y-axis-1' }
+    { data: [10, 20, 30, 40, 50, 60], fill: false, lineTension: 0, label: 'Harare' },
+    { data: [10, 20, 30, 40, 50, 60], fill: false, lineTension: 0, label: 'Bulawayo' },
+    { data: [10, 20, 30, 40, 50, 60], fill: false, lineTension: 0, label: 'Gweru' },
+    { data: [10, 20, 30, 40, 50, 60], fill: false, lineTension: 0, label: 'Mutare' },
+    { data: [10, 20, 30, 40, 50, 60], fill: false, lineTension: 0, label: 'Masvingo', yAxisID: 'y-axis-1' }
   ];
-  public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels: Label[] = [];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
     maintainAspectRatio: false,
@@ -91,18 +92,39 @@ export class DeemandVsSupplyComponent implements OnInit {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-  constructor() { }
+  constructor(private service: DashboardService) { }
 
   ngOnInit() {
+    console.log(this.lineChartData);
+    this.getReport();
   }
 
   // events
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+    // console.log(event, active);
+  }
+
+  public getReport() {
+    this.service.getReport().subscribe(
+      data => {
+        console.log(data);
+        this.lineChartLabels = data[0].row;
+        data.splice(0, 1);
+        this.lineChartData = [];
+        data.forEach(item => {
+          const current = item.row;
+          const province = current[0];
+          current.splice(0, 1);
+          const record = { data: current, fill: false, lineTension: 0, label: province };
+          this.lineChartData.push(record);
+        });
+      },
+      error => console.log(error.error)
+    );
   }
 
 }

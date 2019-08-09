@@ -113,6 +113,9 @@ export class DashboardComponent implements OnInit {
       bdrAvailableStockTotal: new FormControl(),
       daysSupplyAvailable: new FormControl(),
       weeksSupplyAvailable: new FormControl(),
+      bdrStockedUnitsQuarantined: new FormControl(),
+      daysSupplyStockedUnitsQuarantined: new FormControl(),
+      weeksSupplyQuarantine: new FormControl(),
     });
   }
   createFilterDataForm() {
@@ -154,6 +157,7 @@ export class DashboardComponent implements OnInit {
       this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
         this.branchesInfo = result;
+        console.log(this.branchesInfo);
         this.overallCollections(this.branchesInfo);
         this.populateBranchDailyRequirements(this.branchesInfo);
         this.populateStockavailable(this.branchesInfo);
@@ -218,10 +222,14 @@ export class DashboardComponent implements OnInit {
 
   getBranchInfo() {
     const value = this.dashForm.value;
-    value.branches = this.selectedBranches;
+    if (this.selectedBranches.length === 0) {
+      value.branches = this.allBranches;
+    } else {
+      value.branches = this.selectedBranches;
+    }
+    console.log(this.selectedBranches);
     this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
-        console.log(result);
         this.branchesInfo = result;
         this.overallCollections(this.branchesInfo);
         this.populateBranchDailyRequirements(this.branchesInfo);
@@ -246,6 +254,15 @@ export class DashboardComponent implements OnInit {
     let value;
     value = (this.branchesInfo.supplies / this.branchesInfo.orders);
     if (value !== undefined && value !== null) {
+      if (value >= 0.5) { return 'green'; }
+      if (value >= 0.25 && value < 0.5) { return 'orange'; }
+      if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
+  }
+  }
+
+  bsmsBgColor() {
+    let value = this.branchesInfo.bsms;
+    if (this.branchesInfo.bsms !== undefined && this.branchesInfo.bsms !== null) {
       if (value >= 0.5) { return 'green'; }
       if (value >= 0.25 && value < 0.5) { return 'orange'; }
       if (value >= 0 && value < 0.25) { return 'red'; } else { return 'pink'; }
@@ -283,6 +300,12 @@ export class DashboardComponent implements OnInit {
     if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
+  stockLevelColorCodeQuarantine(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').value;
+    if (value <= 2) {return 'red'; }
+    if (value > 2 && value < 5) {return 'orange'; }
+    if (value >= 5) { return 'green'; }
+  }
 
   responsiveActionOplus(): string {
     const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyOplus').value;
@@ -304,12 +327,22 @@ export class DashboardComponent implements OnInit {
     const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyAvailable').value;
     if (value <= 3) {return 'Collect / clear quarantine'; } else {return 'Stagger collections'; }
   }
+  responsiveActionQuarantine(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantine').value;
+    if (value <= 3) {return 'Collect / clear quarantine'; } else {return 'Stagger collections'; }
+  }
 
   populateBranchDailyRequirements(item) {
     this.bloodStockManagementAnalysisForm.get('requirementsOplus').setValue(item.dailyReqOplus);
     this.bloodStockManagementAnalysisForm.get('requirementsOminus').setValue(item.dailyReqOminus);
     this.bloodStockManagementAnalysisForm.get('requirementsAplus').setValue(item.dailyReqAplus);
     this.bloodStockManagementAnalysisForm.get('requirementsBplus').setValue(item.dailyReqBplus);
+    this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantined').setValue(
+    Math.round((this.bloodStockManagementAnalysisForm.get('requirementsOplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsOminus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsAplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value) * 0.435)
+    );
   }
 
   populateStockavailable(item) {
@@ -347,6 +380,9 @@ export class DashboardComponent implements OnInit {
     this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').setValue(
         (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').value
         / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').value).toFixed(2));
+    this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').setValue(
+        (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').value
+        / this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantined').value).toFixed(2));
 
 
     this.bloodStockManagementAnalysisForm.get('weeksSupplyOplus').setValue(
@@ -359,6 +395,8 @@ export class DashboardComponent implements OnInit {
       (this.bloodStockManagementAnalysisForm.get('daysSupplyBplus').value / 7).toFixed(2));
     this.bloodStockManagementAnalysisForm.get('weeksSupplyAvailable').setValue(
       (this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').value / 7).toFixed(2));
+    this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantine').setValue(
+      (this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').value / 7).toFixed(2));
 
 
     }

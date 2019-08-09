@@ -13,6 +13,7 @@ export class DashboardService {
   private submitAvailableStockUrl = this.global.baseUrl + '/api/available-stock/submit';
   private getBranchInfoUrl = this.global.baseUrl + '/api/dashboard/get-for-selected-branches';
   private getBranchInfoByDateUrl = this.global.baseUrl + '/api/dashboard/get-for-selected-branches-by-date';
+  private getReportUrl = this.global.baseUrl + '/api/dashboard/get-report';
 
 constructor(private http: HttpClient, private global: Global) { }
 
@@ -22,6 +23,10 @@ public getBranchInfo(branches: Branch[]): Observable<any> {
 public getBranchInfoByDate(value): Observable<any> {
   console.log(value);
   return this.http.post<any>(this.getBranchInfoByDateUrl, value);
+}
+
+public getReport(): Observable<any> {
+  return this.http.get<any>(this.getReportUrl);
 }
 
 // public submit(item: StockAvailable): Observable<any> {

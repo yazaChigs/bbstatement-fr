@@ -31,7 +31,7 @@
   </div>
 </div>
 <div fxFlex="8%">
-   <button type="button" mat-raised-button color="accent" class="top-filters-btn" (click)="getBranchInfo(selectedBranches)">
+   <button type="button" mat-raised-button color="accent" class="top-filters-btn" (click)="getBranchInfo()">
      <mat-icon>sync</mat-icon>Search</button>
 </div>
 <div fxFlex="10%">
@@ -49,8 +49,8 @@
 
 <div style="margin-top: -35px; " class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
   <div fxFlex="12%">
-    <mat-card class="info-card ">
-      <p>BSMS<strong></strong></p>
+    <mat-card [style.background-color]="bsmsBgColor()" class="info-card ">
+      <p>BSMS</p><h1>{{((branchesInfo?.bsms)*100).toFixed(0)}}%</h1>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -232,11 +232,23 @@
         <input matInput placeholder="" formControlName="totalStockedUnitsQuarantined">
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [rowspan]=2 class="grid-bg-b"></mat-grid-tile>
-    <mat-grid-tile [rowspan]=2 class="grid-bg-b"></mat-grid-tile>
-    <mat-grid-tile [rowspan]=2 class="grid-bg-b"></mat-grid-tile>
-    <mat-grid-tile [rowspan]=2 class="grid-bg-b"></mat-grid-tile>
-    <mat-grid-tile [colspan]=2 [rowspan]=2 class="grid-bg-b"></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="grid-bg-b">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="bdrStockedUnitsQuarantined">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="grid-bg-b">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="daysSupplyStockedUnitsQuarantined">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 [style.background-color]="stockLevelColorCodeQuarantine()" class=""></mat-grid-tile>
+    <mat-grid-tile [rowspan]=2 class="grid-bg-b">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="" formControlName="weeksSupplyQuarantine">
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]=2 [rowspan]=2 class="grid-bg-b">{{responsiveActionQuarantine()}}</mat-grid-tile>
   </mat-grid-list>
   </mat-card>
 </div>

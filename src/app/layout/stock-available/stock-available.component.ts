@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AvailableStockService } from '../../shared/config/service/available-stock.service';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { Branch } from '../../shared/config/model/admin/branch.model';
@@ -37,8 +37,7 @@ export class StockAvailableComponent implements OnInit {
   editForm = true;
   showEditBtn = false;
   percentDemandVsSupply = 0;
-
-  // user = localStorage.getItem('USER');
+  user = localStorage.getItem('USER');
 
   constructor(private availableStockService: AvailableStockService, private fb: FormBuilder,
               private branchService: BranchService, private userService: UserService, private snotify: SnotifyService) {
@@ -72,7 +71,7 @@ export class StockAvailableComponent implements OnInit {
       id: new FormControl(),
       timeCreated: new FormControl(),
       dateCreated: new FormControl(),
-      active: new FormControl(),
+      // active: new FormControl(),
       version: new FormControl(),
       createdById: new FormControl(),
       branch: new FormControl(
@@ -199,11 +198,22 @@ export class StockAvailableComponent implements OnInit {
       compatsIssues: new FormControl(),
       compatsOrders: new FormControl(),
       compatsPercentageSupply_Orders: new FormControl(),
+      grandTotalWbPositive: new FormControl(),
+      grandTotalPcPositive: new FormControl(),
+      grandTotalPaedWbPositive: new FormControl(),
+      grandTotalPaedPcPositive: new FormControl(),
+      grandTotalWbNegative: new FormControl(),
+      grandTotalPcNegative: new FormControl(),
+      grandTotalPaedWbNegative: new FormControl(),
+      grandTotalPaedPcNegative: new FormControl(),
+      grandTotal: new FormControl(),
       ffp1: new FormControl(),
       plt1: new FormControl(),
       plt2: new FormControl(),
       cryo: new FormControl(),
       paedPacks: new FormControl(),
+      checkedBy: new FormControl(),
+      compiledBy: new FormControl(),
       receivedFromAvailable: this.fb.array([
         // this.initStockReceivedFrom()
       ]),
@@ -221,7 +231,13 @@ getUserBranch(): Branch {
   );
   return this.selected;
 }
-
+compareAvailableTotals(): boolean {
+  if (this.availableStockForm.get('totalTotal').value !== this.availableStockForm.get('currentAvailableStock').value) {
+    return true;
+  } else {
+    return false;
+  }
+}
   populateNewForm() {
     this.availableStockForm.get('id').setValue('');
     this.availableStockForm.get('dateCreated').setValue('');
@@ -239,6 +255,8 @@ getUserBranch(): Branch {
     this.availableStockForm.get('haemolysed_clots_other').setValue('');
     this.availableStockForm.get('wholeBloodToPackedCells').setValue('');
     this.availableStockForm.get('totalIssues').setValue('');
+    this.availableStockForm.get('currentAvailableStock').setValue('');
+    this.availableStockForm.get('totalTransfersToOtherBranches').setValue('');
     this.availableStockForm.get('totalHospitalOrders').setValue('');
     this.availableStockForm.get('rhPositiveWbO').setValue('');
     this.availableStockForm.get('rhPositivePcO').setValue('');
@@ -343,6 +361,18 @@ getUserBranch(): Branch {
     this.availableStockForm.get('compatsIssues').setValue('');
     this.availableStockForm.get('compatsOrders').setValue('');
     this.availableStockForm.get('compatsPercentageSupply_Orders').setValue('');
+    this.availableStockForm.get('overallSupplies').setValue('');
+    this.availableStockForm.get('overallOrders').setValue('');
+    this.availableStockForm.get('overallDemandVsSupply').setValue('');
+    this.availableStockForm.get('grandTotalWbPositive').setValue('');
+    this.availableStockForm.get('grandTotalPcPositive').setValue('');
+    this.availableStockForm.get('grandTotalPaedWbPositive').setValue('');
+    this.availableStockForm.get('grandTotalPaedPcPositive').setValue('');
+    this.availableStockForm.get('grandTotalWbNegative').setValue('');
+    this.availableStockForm.get('grandTotalPcNegative').setValue('');
+    this.availableStockForm.get('grandTotalPaedWbNegative').setValue('');
+    this.availableStockForm.get('grandTotalPaedPcNegative').setValue('');
+    this.availableStockForm.get('grandTotal').setValue('');
     this.availableStockForm.get('ffp1').setValue('');
     this.availableStockForm.get('plt1').setValue('');
     this.availableStockForm.get('plt2').setValue('');
@@ -355,7 +385,7 @@ getUserBranch(): Branch {
     this.availableStockForm.get('id').setValue(item.id);
     this.availableStockForm.get('dateCreated').setValue(item.dateCreated);
     this.availableStockForm.get('version').setValue(item.version);
-    this.availableStockForm.get('active').setValue(item.active);
+    // this.availableStockForm.get('active').setValue(item.active);
     this.availableStockForm.get('createdById').setValue(item.createdById);
     this.availableStockForm.get('openingStock').setValue(item.openingStock);
     this.availableStockForm.get('receivedFromQuarantine').setValue(item.receivedFromQuarantine);
@@ -475,9 +505,18 @@ getUserBranch(): Branch {
     this.availableStockForm.get('compatsIssues').setValue(item.compatsIssues);
     this.availableStockForm.get('compatsOrders').setValue(item.compatsOrders);
     this.availableStockForm.get('compatsPercentageSupply_Orders').setValue(item.compatsPercentageSupply_Orders);
-    this.availableStockForm.get('verallSupplies').setValue(item.verallSupplies);
+    this.availableStockForm.get('overallSupplies').setValue(item.verallSupplies);
     this.availableStockForm.get('overallOrders').setValue(item.overallOrders);
     this.availableStockForm.get('overallDemandVsSupply').setValue(item.overallDemandVsSupply);
+    this.availableStockForm.get('grandTotalWbPositive').setValue(item.grandTotalWbPositive);
+    this.availableStockForm.get('grandTotalPcPositive').setValue(item.grandTotalPcPositive);
+    this.availableStockForm.get('grandTotalPaedWbPositive').setValue(item.grandTotalPaedWbPositive);
+    this.availableStockForm.get('grandTotalPaedPcPositive').setValue(item.grandTotalPaedPcPositive);
+    this.availableStockForm.get('grandTotalWbNegative').setValue(item.grandTotalWbNegative);
+    this.availableStockForm.get('grandTotalPcNegative').setValue(item.grandTotalPcNegative);
+    this.availableStockForm.get('grandTotalPaedWbNegative').setValue(item.grandTotalPaedWbNegative);
+    this.availableStockForm.get('grandTotalPaedPcNegative').setValue(item.grandTotalPaedPcNegative);
+    this.availableStockForm.get('grandTotal').setValue(item.grandTotal);
     this.availableStockForm.get('ffp1').setValue(item.ffp1);
     this.availableStockForm.get('plt1').setValue(item.plt1);
     this.availableStockForm.get('plt2').setValue(item.plt2);
@@ -570,14 +609,14 @@ demandVsSupplyBgPercentage(): number {
 }
 
 getByDate(value) {
-  console.log(value.todaysDate);
+  console.log(value);
   value.todaysDate = this.availableStockForm.get('todaysDate').value;
   this.availableStockService.getAvailableStockByDate(value).subscribe(
   result => {
     console.log(result);
     this.stockAvailable = result;
     if (this.stockAvailable !== null) {
-      this.editForm = this.stockAvailable.active;
+      this.editForm = result.active;
       this.populateForm(this.stockAvailable);
     }
     if (this.stockAvailable === null) {
@@ -638,10 +677,13 @@ getByDate(value) {
      result => {
       this.stockAvailable = result;
       if (this.stockAvailable !== null) {
-        this.editForm = this.stockAvailable.active;
+        this.editForm = result.active;
         this.populateForm(this.stockAvailable);
       }
       if (this.stockAvailable === null) {
+        this.showEditBtn = false; // console.log(result.message);
+        this.editForm = true;
+
         this.populateNewForm();
       }
       console.log(this.stockAvailable);
@@ -653,12 +695,16 @@ getByDate(value) {
   }
 
   saveStockAvailable(value) {
+if (!this.compareAvailableTotals()) {
     this.showEditBtn = false;
     this.availableStockService.save(value).subscribe(
       result => {
         this.stockAvailable = result.stockAvailable;
         console.log(this.stockAvailable);
         // console.log(result.message);
+        if (this.stockAvailable!== null) {
+          this.editForm = result.active;
+        }
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
         this.populateForm(result.stockAvailable);
       },
@@ -667,12 +713,16 @@ getByDate(value) {
         // console.log(error.error);
       },
       () => {
-      this.editForm = this.stockAvailable.active;
       }
     );
+  } else {
+     this.snotify.error('Please check available stock entries', 'Error', this.util.getNotifyConfig());
+  }
   }
 
   submitStockAvailable(value) {
+if (!this.compareAvailableTotals()) {
+
     this.availableStockService.submit(value).subscribe(
       result => {
         console.log(result.stockAvailable);
@@ -689,6 +739,9 @@ getByDate(value) {
       //  this.populateNewForm();
       }
     );
+     } else {
+     this.snotify.error('Please check available stock entries', 'Error', this.util.getNotifyConfig());
+  }
   }
 
   initStockReceivedFrom(ds?) {
@@ -738,6 +791,8 @@ loadStockIssuedTo() {
     total += Number(item.receivedFrom);
     });
     this.availableStockForm.get('totalAvailable').setValue(total);
+    this.availableStockForm.get('currentAvailableStock').setValue(
+      this.availableStockForm.get('totalAvailable').value - this.availableStockForm.get('totalIssues').value);
     this.cardStockAvailable =  total - value.totalIssues;
 
   }
@@ -756,11 +811,12 @@ loadStockIssuedTo() {
 
   sumIssued(value) {
     let total = 0;
-    total = Number(value.hospitals) + Number(value.receicedFromQuarantine) + Number(value.issueToCompats)
-     + Number(value.expired) + Number(value.disasters) + Number(value.haemolysed_clots_other) + Number(value.wholeBloodToPackedCells);
     value.issuedToAvailable.forEach(item => {
       total += Number(item.issuedTo);
     });
+    this.availableStockForm.get('totalTransfersToOtherBranches').setValue(total);
+    total += Number(value.hospitals) + Number(value.receicedFromQuarantine) + Number(value.issueToCompats)
+     + Number(value.expired) + Number(value.disasters) + Number(value.haemolysed_clots_other) + Number(value.wholeBloodToPackedCells);
     this.availableStockForm.get('totalIssues').setValue(total);
     this.availableStockForm.get('currentAvailableStock').setValue(
       this.availableStockForm.get('totalAvailable').value - this.availableStockForm.get('totalIssues').value);
@@ -776,13 +832,22 @@ loadStockIssuedTo() {
   }
 
   overallSupplies(): number {
-    return this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value;
+    let value = this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value;
+    this.availableStockForm.get('overallSupplies').setValue(value);
+    return value;
   }
 
   overallOrders(): number {
     // let total = 0;
-    return this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value;
+    let value = this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value;
     //  value.totalHospitalOrders + value.compatsOrders;
+    this.availableStockForm.get('overallOrders').setValue(value);
+    if (this.availableStockForm.get('overallSupplies').value) {
+        this.availableStockForm.get('overallDemandVsSupply').setValue(
+      ((this.availableStockForm.get('overallSupplies').value / value) * 100).toFixed(0)
+    );
+    }
+    return value;
   }
 
   calcStockAvailable(): number {
@@ -795,24 +860,40 @@ loadStockIssuedTo() {
     total = Number(value.rhPositiveWbO) + Number(value.rhPositiveWbA) +
      Number(value.rhPositiveWbB) + Number(value.rhPositiveWbAB);
     this.availableStockForm.get('totalRhPositiveWb').setValue(total);
+    this.availableStockForm.get('grandTotalWbPositive').setValue(
+      this.availableStockForm.get('totalRhPositiveWbcompatibility').value +
+      this.availableStockForm.get('totalRhPositiveWb').value
+    );
   }
   sumRhPositivePc(value) {
     let total = 0;
     total = Number(value.rhPositivePcO) + Number(value.rhPositivePcA) +
      Number(value.rhPositivePcB) + Number(value.rhPositivePcAB);
     this.availableStockForm.get('totalRhPositivePc').setValue(total);
+    this.availableStockForm.get('grandTotalPcPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePccompatibility').value +
+      this.availableStockForm.get('totalRhPositivePc').value
+    );
   }
   sumRhPositivePaedWb(value) {
     let total = 0;
     total = Number(value.rhPositivePaedWbO) + Number(value.rhPositivePaedWbA) +
      Number(value.rhPositivePaedWbB) + Number(value.rhPositivePaedWbAB);
     this.availableStockForm.get('totalRhPositivePaedWb').setValue(total);
+    this.availableStockForm.get('grandTotalPaedWbPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePaedWbcompatibility').value +
+      this.availableStockForm.get('totalRhPositivePaedWb').value
+    );
   }
   sumRhPositivePaedPc(value) {
     let total = 0;
     total = Number(value.rhPositivePaedPcO) + Number(value.rhPositivePaedPcA) +
      Number(value.rhPositivePaedPcB) + Number(value.rhPositivePaedPcAB);
     this.availableStockForm.get('totalRhPositivePaedPc').setValue(total);
+    this.availableStockForm.get('grandTotalPaedPcPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePaedPccompatibility').value +
+      this.availableStockForm.get('totalRhPositivePaedPc').value
+    );
   }
 
   sumRhNegativeWb(value) {
@@ -820,24 +901,40 @@ loadStockIssuedTo() {
     total = Number(value.rhNegativeWbO) + Number(value.rhNegativeWbA) +
      Number(value.rhNegativeWbB) + Number(value.rhNegativeWbAB);
     this.availableStockForm.get('totalRhNegativeWb').setValue(total);
+    this.availableStockForm.get('grandTotalWbNegative').setValue(
+      this.availableStockForm.get('totalRhNegativeWbcompatibility').value +
+      this.availableStockForm.get('totalRhNegativeWb').value
+    );
   }
   sumRhNegativePc(value) {
     let total = 0;
     total = Number(value.rhNegativePcO) + Number(value.rhNegativePcA) +
      Number(value.rhNegativePcB) + Number(value.rhNegativePcAB);
     this.availableStockForm.get('totalRhNegativePc').setValue(total);
+    this.availableStockForm.get('grandTotalPcNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePccompatibility').value +
+      this.availableStockForm.get('totalRhNegativePc').value
+    );
   }
   sumRhNegativePaedWb(value) {
     let total = 0;
     total = Number(value.rhNegativePaedWbO) + Number(value.rhNegativePaedWbA) +
      Number(value.rhNegativePaedWbB) + Number(value.rhNegativePaedWbAB);
     this.availableStockForm.get('totalRhNegativePaedWb').setValue(total);
+    this.availableStockForm.get('grandTotalPaedWbNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePaedWbcompatibility').value +
+      this.availableStockForm.get('totalRhNegativePaedWb').value
+    );
   }
   sumRhNegativePaedPc(value) {
     let total = 0;
     total = Number(value.rhNegativePaedPcO) + Number(value.rhNegativePaedPcA) +
      Number(value.rhNegativePaedPcB) + Number(value.rhNegativePaedPcAB);
     this.availableStockForm.get('totalRhNegativePaedPc').setValue(total);
+    this.availableStockForm.get('grandTotalPaedPcNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePaedPccompatibility').value +
+      this.availableStockForm.get('totalRhNegativePaedPc').value
+    );
   }
   totalVertical() {
     let total = 0;
@@ -848,6 +945,10 @@ loadStockIssuedTo() {
     this.availableStockForm.get('totalTotal').setValue(total);
 
     this.calcStockAvailable();
+
+    this.availableStockForm.get('grandTotal').setValue(
+      this.availableStockForm.get('totalTotal').value + this.availableStockForm.get('totalTotalcompatibility').value
+    );
 
     this.availableStockForm.get('percentagefTotalO').setValue(
       ( Math.round((this.availableStockForm.get('totalO').value / total) * 100)));
@@ -935,24 +1036,40 @@ loadStockIssuedTo() {
     total = Number(value.rhPositiveWbOcompatibility) + Number(value.rhPositiveWbAcompatibility) +
      Number(value.rhPositiveWbBcompatibility) + Number(value.rhPositiveWbABcompatibility);
     this.availableStockForm.get('totalRhPositiveWbcompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalWbPositive').setValue(
+      this.availableStockForm.get('totalRhPositiveWbcompatibility').value +
+      this.availableStockForm.get('totalRhPositiveWb').value
+    );
   }
   comSumRhPositivePc(value) {
     let total = 0;
     total = Number(value.rhPositivePcOcompatibility) + Number(value.rhPositivePcAcompatibility) +
      Number(value.rhPositivePcBcompatibility) + Number(value.rhPositivePcABcompatibility);
     this.availableStockForm.get('totalRhPositivePccompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPcPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePccompatibility').value +
+      this.availableStockForm.get('totalRhPositivePc').value
+    );
   }
   comSumRhPositivePaedWb(value) {
     let total = 0;
     total = Number(value.rhPositivePaedWbOcompatibility) + Number(value.rhPositivePaedWbAcompatibility) +
      Number(value.rhPositivePaedWbBcompatibility) + Number(value.rhPositivePaedWbABcompatibility);
     this.availableStockForm.get('totalRhPositivePaedWbcompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPaedWbPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePaedWbcompatibility').value +
+      this.availableStockForm.get('totalRhPositivePaedWb').value
+    );
   }
   comSumRhPositivePaedPc(value) {
     let total = 0;
     total = Number(value.rhPositivePaedPcOcompatibility) + Number(value.rhPositivePaedPcAcompatibility) +
      Number(value.rhPositivePaedPcBcompatibility) + Number(value.rhPositivePaedPcABcompatibility);
     this.availableStockForm.get('totalRhPositivePaedPccompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPaedPcPositive').setValue(
+      this.availableStockForm.get('totalRhPositivePaedPccompatibility').value +
+      this.availableStockForm.get('totalRhPositivePaedPc').value
+    );
   }
 
   comSumRhNegativeWb(value) {
@@ -960,24 +1077,40 @@ loadStockIssuedTo() {
     total = Number(value.rhNegativeWbOcompatibility) + Number(value.rhNegativeWbAcompatibility) +
      Number(value.rhNegativeWbBcompatibility) + Number(value.rhNegativeWbABcompatibility);
     this.availableStockForm.get('totalRhNegativeWbcompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalWbNegative').setValue(
+      this.availableStockForm.get('totalRhNegativeWbcompatibility').value +
+      this.availableStockForm.get('totalRhNegativeWb').value
+    );
   }
   comSumRhNegativePc(value) {
     let total = 0;
     total = Number(value.rhNegativePcOcompatibility) + Number(value.rhNegativePcAcompatibility) +
      Number(value.rhNegativePcBcompatibility) + Number(value.rhNegativePcABcompatibility);
     this.availableStockForm.get('totalRhNegativePccompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPcNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePccompatibility').value +
+      this.availableStockForm.get('totalRhNegativePc').value
+    );
   }
   comSumRhNegativePaedWb(value) {
     let total = 0;
     total = Number(value.rhNegativePaedWbOcompatibility) + Number(value.rhNegativePaedWbAcompatibility) +
      Number(value.rhNegativePaedWbBcompatibility) + Number(value.rhNegativePaedWbABcompatibility);
     this.availableStockForm.get('totalRhNegativePaedWbcompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPaedWbNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePaedWbcompatibility').value +
+      this.availableStockForm.get('totalRhNegativePaedWb').value
+    );
   }
   comSumRhNegativePaedPc(value) {
     let total = 0;
     total = Number(value.rhNegativePaedPcOcompatibility) + Number(value.rhNegativePaedPcAcompatibility) +
      Number(value.rhNegativePaedPcBcompatibility) + Number(value.rhNegativePaedPcABcompatibility);
     this.availableStockForm.get('totalRhNegativePaedPccompatibility').setValue(total);
+    this.availableStockForm.get('grandTotalPaedPcNegative').setValue(
+      this.availableStockForm.get('totalRhNegativePaedPccompatibility').value +
+      this.availableStockForm.get('totalRhNegativePaedPc').value
+    );
   }
   comTotalVertical() {
     let total = 0;
@@ -987,6 +1120,10 @@ loadStockIssuedTo() {
     + Number(this.availableStockForm.get('totalABcompatibility').value);
     this.availableStockForm.get('totalTotalcompatibility').setValue(total);
     this.calcStockAvailable();
+
+    this.availableStockForm.get('grandTotal').setValue(
+      this.availableStockForm.get('totalTotal').value + this.availableStockForm.get('totalTotalcompatibility').value
+    );
 
     this.availableStockForm.get('percentageOfTotalOcompatibility').setValue(
       ( Math.round((this.availableStockForm.get('totalOcompatibility').value / total) * 100)));

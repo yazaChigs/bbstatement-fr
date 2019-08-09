@@ -17,9 +17,23 @@
 .grid-bg-a{
   background: rgb(233, 191, 191);
 }
+.grid-bg-c{
+  background: rgb(156, 155, 155);
+}
 .grid-bg-b{
   background: rgb(248, 236, 236);
 }
 .indicator {
   min-width: 30px;
+}
+.error_text{
+  color: rgb(255, 72, 0);
+  font-size: 10px;
+}
+.no-space {
+  margin: 0px;
+}
+.checke-by-font{
+  font-family:'Comic Sans MS', cursive, sans-serif;
+   color: grey;
 }

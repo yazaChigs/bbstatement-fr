@@ -3,7 +3,7 @@ import { Branch } from './admin/branch.model';
 import { StockReceivedFrom } from './stock-received-from.model';
 import { StockIssuedTo } from './stock-issued-to.model';
 
-export class StockAvailable extends BaseModel{
+export class StockAvailable extends BaseModel {
   // branch: Branch;
   todaysDate: Date;
   openingStock: number;
@@ -131,5 +131,7 @@ export class StockAvailable extends BaseModel{
   paedPacks: number;
   receivedFromAvailable: StockReceivedFrom[];
 issuedToAvailable: StockIssuedTo[];
+compliedBy: string;
+checkedBy: string;
 
 }

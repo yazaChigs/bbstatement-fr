@@ -6,5 +6,5 @@ export class BaseModel {
   createdByName: string;
   version: number;
   dateCreated: Date;
-  active: boolean;
+  // active: boolean;
 }

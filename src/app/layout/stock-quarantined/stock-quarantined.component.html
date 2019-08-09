@@ -41,21 +41,38 @@
       </p>
     </div>
     <mat-divider [vertical]="true"></mat-divider>
-    <div fxFlex="10%"></div>
-  <div fxFlex="15%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card">
-    Total Collections:<strong>{{ initCollections}}</strong>
-    <p>Collections:</p><h2 style="margin-top: -5px;">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</h2>
-  </mat-card></div>
-  <div fxFlex="15%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
-  <div fxFlex="15%"><mat-card class="info-card">
-    <p>Opening: <strong>{{initOpeningStock}} </strong></p>
-    <p>Receipts: <strong>{{initTotalReceipts}} </strong></p>
-  </mat-card>
+    <div fxFlex="75%">
+        <div class="container no-space" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="100%">
+        <div class="container no-space" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="100%">
+            <div fxFlex="22%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card">
+              Total Collections:<strong>{{ initCollections}}</strong>
+              <p>Collections:</p><h2 style="margin-top: -5px;">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</h2>
+            </mat-card></div>
+            <div fxFlex="22%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
+            <div fxFlex="22%"><mat-card class="info-card">
+              <p>Opening: <strong>{{initOpeningStock}} </strong></p>
+              <p>Receipts: <strong>{{initTotalReceipts}} </strong></p>
+            </mat-card>
+          </div>
+          <div fxFlex="22%"><mat-card class="info-card">
+            <p>Issues: <strong>{{initCollectionsValue()}} </strong></p>
+            <p> Discards: <strong>{{initTotalDiscards}} </strong></p>
+          </mat-card>
+        </div>
+        <!-- <div fxFlex="10%"></div> -->
 </div>
-<div fxFlex="15%"><mat-card class="info-card">
-  <p>Issues: <strong>{{initCollectionsValue()}} </strong></p>
-  <p> Discards: <strong>{{initTotalDiscards}} </strong></p>
-</mat-card>
+  </div>
+  <div class="container no-space" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div fxFlex="80%">
+        <p class="checke-by-font">Compiled By:<strong>{{stockQuarantined?.compliedBy}}</strong></p>
+        <p class="checke-by-font">Checked By: <strong>{{stockQuarantined?.checkedBy}}</strong></p>
+      </div>
+      <div fxFlex="20%"></div>
+    </div>
+</div>
+</div>
 </div>
 </div>
 
@@ -161,7 +178,7 @@
       </div>
       <mat-divider [inset]="true"></mat-divider>
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
-          <div fxFlex="45%"></div>
+          <div fxFlex="35%"></div>
               <div fxFlex="30%">
               <h1>
                 <mat-label class="full-width">Total Collections</mat-label>
@@ -172,7 +189,8 @@
                     <input matInput formControlName="totalCollections" [(ngModel)]="initCollections" type="number" placeholder="total"  readonly>
                   </mat-form-field>
             </div>
-          </div>
+        <div fxFlex="10%"><mat-card class="indicator" [style.background-color]="collectionsBgColor()" color="primary">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</mat-card></div>
+      </div>
     </mat-expansion-panel>
     <!-- end collections panel -->
 
@@ -205,6 +223,20 @@
         </div>
         </div>
       </div>
+      <mat-divider [inset]="true"></mat-divider>
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div fxFlex="35%"></div>
+              <div fxFlex="40%">
+              <h3>
+                <mat-label class="full-width">Total Receipts from branches</mat-label>
+              </h3>
+            </div>
+            <div fxFlex="15%">
+                <mat-form-field class="full-width" appearance="outline">
+                    <input matInput formControlName="totalReceiptsFromBranchesOnly" type="number" placeholder="total" readonly>
+                  </mat-form-field>
+            </div>
+          </div>
           <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="17%">
             <p>
@@ -224,12 +256,12 @@
               <div fxFlex="35%"></div>
                   <div fxFlex="40%">
                   <h1>
-                    <mat-label class="full-width">Total Receipts from branches</mat-label>
+                    <mat-label class="full-width">Total Receipts</mat-label>
                   </h1>
                 </div>
                 <div fxFlex="15%">
                     <mat-form-field class="full-width input-headline" appearance="outline">
-                        <input matInput formControlName="totalReceiptsFromBranches" [(ngModel)]="initTotalReceipts" type="number" placeholder="total" readonly>
+                        <input matInput formControlName="totalReceiptsFromBranches" type="number" placeholder="total" readonly>
                       </mat-form-field>
                 </div>
               </div>
@@ -478,7 +510,23 @@
         </div>
         </div>
       </div>
-      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <mat-divider [inset]="true"></mat-divider>
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="45%"></div>
+        <div fxFlex="17%">
+          <h3>
+            <mat-label class="full-width">Total blood transfer to other branches</mat-label>
+          </h3>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Total blood transfer to other branches</mat-label>
+                <input matInput formControlName="totalBloodTransferredToOtherBranches" type="number" readonly>
+              </mat-form-field>
+        </div>
+        </div>
+        <mat-divider [inset]="true"></mat-divider>
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="17%">
           <p>
             <mat-label class="full-width">Group mismatches to Ref Labs</mat-label>
@@ -497,7 +545,7 @@
               <div fxFlex="45%"></div>
                   <div fxFlex="30%">
                   <h1>
-                    <mat-label class="full-width">Total Issues To Branches</mat-label>
+                    <mat-label class="full-width">Total Issues</mat-label>
                   </h1>
                 </div>
                 <div fxFlex="15%">
@@ -506,6 +554,20 @@
                       </mat-form-field>
                 </div>
               </div>
+              <mat-divider [inset]="true"></mat-divider>
+              <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+                  <div fxFlex="45%"></div>
+                      <div fxFlex="30%">
+                      <h1>
+                        <mat-label class="full-width">Current stock in quarantine</mat-label>
+                      </h1>
+                    </div>
+                    <div fxFlex="15%">
+                        <mat-form-field class="full-width input-headline" appearance="outline">
+                            <input matInput formControlName="currentStockInQuarantine" type="number"  placeholder="total" readonly>
+                          </mat-form-field>
+                    </div>
+                  </div>
 
     </mat-expansion-panel>
     <!-- end issues panel -->

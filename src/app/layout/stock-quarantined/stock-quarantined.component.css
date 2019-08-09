@@ -19,3 +19,10 @@
   font-weight: 400;
   padding: 0px;
 }
+.no-space {
+  margin: 0px;
+}
+.checke-by-font{
+  font-family:'Comic Sans MS', cursive, sans-serif;
+   color: grey;
+}
