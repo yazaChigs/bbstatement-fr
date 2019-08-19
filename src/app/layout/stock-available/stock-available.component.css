@@ -1,7 +1,15 @@
 .right-align {
   text-align: right;
 }
-
+.primary-bg {
+  background: rgb(180, 157, 157);
+}
+.primary-bg :hover {
+  color: rgb(238, 6, 6);
+}
+mat-expansion-panel-header:hover {
+  background-color: rgb(122, 10, 10) !important;
+}
 .grid-top-space{
   margin-top: 10px;
 }

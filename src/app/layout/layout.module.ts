@@ -25,12 +25,13 @@ import { BloodGroupsDistributionsComponent } from './dashboard/charts/blood-grou
 import { DeemandVsSupplyComponent } from './dashboard/charts/deemand-vs-supply/deemand-vs-supply.component';
 import { StockesChartComponent } from './dashboard/charts/stockes-chart/stockes-chart.component';
 import { CollectionsChartComponent } from './dashboard/charts/collections-chart/collections-chart.component';
+import { MonthlyBranchAnalysisComponent } from './dashboard/charts/monthly-branch-analysis/monthly-branch-analysis.component';
 
 @NgModule({
   declarations: [
     MainComponent,
     SideNavComponent, DeemandVsSupplyComponent, StockesChartComponent, CollectionsChartComponent,
-    DashboardComponent, BranchContributionsComponent, BloodGroupsDistributionsComponent,
+    DashboardComponent, BranchContributionsComponent, BloodGroupsDistributionsComponent, MonthlyBranchAnalysisComponent,
     ChangePasswordDialogComponent, StockAvailableComponent, StockQuarantinedComponent, BloodGroupDaysSupplyComponent,
   ],
   imports: [

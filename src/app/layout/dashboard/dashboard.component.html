@@ -1,12 +1,3 @@
-<!-- <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
-    <div fxFlex="98%">
-      <mat-toolbar class="border border-radius" style="border-radius: 5px ; ">
-        <span>Dashboard</span>
-      </mat-toolbar>
-    </div>
-</div> -->
-<!-- <div class="image-container"></div> -->
-
 <form [formGroup]="dashForm">
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="10px" fxLayoutGap.xs="0">
   <div fxFlex="15%">
@@ -50,12 +41,12 @@
 <div style="margin-top: -35px; " class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
   <div fxFlex="12%">
     <mat-card [style.background-color]="bsmsBgColor()" class="info-card ">
-      <p>BSMS</p><h1>{{((branchesInfo?.bsms)*100).toFixed(0)}}%</h1>
+      <p>BSMS</p><h1>{{(branchesInfo?.bsms)>= 0 ? ((branchesInfo?.bsms)*100).toFixed(0):0}}%</h1>
     </mat-card>
   </div>
   <div fxFlex="12%">
     <mat-card  [style.background-color]="demandVsSupplyBgColor()" class="info-card">
-      DEMAND VS SUPPLY<h2>{{((branchesInfo.supplies / branchesInfo?.orders)*100).toFixed(2)}}%</h2>
+      DEMAND VS SUPPLY<h1>{{(branchesInfo.supplies / branchesInfo?.orders) >= 0 ? ((branchesInfo.supplies / branchesInfo?.orders)*100).toFixed(2): 0}}%</h1>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -73,7 +64,7 @@
     <mat-card [style.background-color]="collectionsBgColor()" class="info-card">
       <!-- <p>COLLECTIONS</p><h2>{{ ((branchesInfo?.collections/150)*100).toFixed(2)}}%</h2> -->
       No. OF COLLECTIONS: <strong>{{ numberOfCollections}}</strong>
-      COLLECTIONS:<h2>{{ collections}}%</h2>
+      COLLECTIONS:<h2>{{ collections >= 0 ? collections : 0}}%</h2>
     </mat-card>
   </div>
   <div fxFlex="12%">
@@ -94,8 +85,8 @@
   <mat-divider></mat-divider>
 
   <form [formGroup]="bloodStockManagementAnalysisForm">
-  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px" fxLayoutGap.xs="0">
-    <div fxFlex="80%">
+  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div fxFlex="75%">
       <mat-card class="border border_radius">
   <mat-grid-list cols="8" rowHeight="25px" >
     <mat-grid-tile class="grid-bg-a" [colspan]=8><h3> Blood Stocks Management Analysis</h3></mat-grid-tile>
@@ -252,6 +243,33 @@
   </mat-grid-list>
   </mat-card>
 </div>
+<div fxFlex="25%">
+  <mat-card style="padding: 0px;" class="border-radius">
+    <mat-card-header style="padding: 0px;" class="green-bg-a borders"><strong style="font-size: 15px; padding-top: 10px; padding-bottom: 10px;">Daily blood collections assessment</strong></mat-card-header>
+    <mat-grid-list cols="4" rowHeight="25px" >
+      <!-- <mat-grid-tile [colspan]=4 [rowspan]=2 class="green-bg-a border-radius"><h3>Daily blood collections assessment</h3></mat-grid-tile> -->
+      <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2><p>Total blood collections from all clinics</p></mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{ numberOfCollections}}</strong></mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2>Expected minimum capacity blood collections from all clinics</mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{expectedMinCap}}</strong></mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2>Blood collections performance (% of minimal capacity)</mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{collections >= 0 ? collections: 0}}</strong></mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2>Blood collections indicator code</mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{collectionsBgColor()}}</strong></mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+  <mat-card style="padding: 0px;" class="border-radius borders"><mat-grid-list cols="4" rowHeight="30px" >
+      <mat-grid-tile class="orange-bg-a" ><p>Quarantine</p></mat-grid-tile>
+      <mat-grid-tile class="orange-bg-b" ><strong>{{branchesInfo?.quarantineStock}}</strong></mat-grid-tile>
+      <mat-grid-tile class="orange-bg-a" >Expires</mat-grid-tile>
+      <mat-grid-tile class="orange-bg-b" ><strong>{{branchesInfo?.expired}}</strong></mat-grid-tile>
+      <mat-grid-tile class="orange-bg-a" ><p>Serum</p></mat-grid-tile>
+      <mat-grid-tile class="orange-bg-b" ><strong>{{branchesInfo?.serum}}</strong></mat-grid-tile>
+      <mat-grid-tile class="orange-bg-a" >Samples</mat-grid-tile>
+      <mat-grid-tile class="orange-bg-b" ><strong>{{branchesInfo?.samplesOnly}}</strong></mat-grid-tile>
+      </mat-grid-list>
+  </mat-card>
+</div>
 </div>
 </form>
 
@@ -284,4 +302,9 @@
     </div>
 
 </div>
+<div style="margin: 0px" class="container " fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="12px" fxLayoutGap.xs="0">
+  <div fxFlex="100%">
+      <app-monthly-branch-analysis *ngIf="branchInfoAvailable"></app-monthly-branch-analysis>
+    </div>
+    </div>
 <!-- {{dashForm.value | json}} -->

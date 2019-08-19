@@ -702,7 +702,7 @@ if (!this.compareAvailableTotals()) {
         this.stockAvailable = result.stockAvailable;
         console.log(this.stockAvailable);
         // console.log(result.message);
-        if (this.stockAvailable!== null) {
+        if (this.stockAvailable !== null) {
           this.editForm = result.active;
         }
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
@@ -824,7 +824,7 @@ loadStockIssuedTo() {
   }
 
   demandVsSupply(value): number {
-    if (this.overallOrders() === null && this.overallOrders() === undefined) {
+    if (this.overallOrders() === null && this.overallOrders() === undefined && this.overallOrders() === 0 ) {
       return 0;
     } else {
       return (Math.round((this.overallSupplies()  / this.overallOrders()) * 100));
@@ -832,14 +832,14 @@ loadStockIssuedTo() {
   }
 
   overallSupplies(): number {
-    let value = this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value;
+    const value = this.availableStockForm.get('hospitals').value + this.availableStockForm.get('compatsIssues').value;
     this.availableStockForm.get('overallSupplies').setValue(value);
     return value;
   }
 
   overallOrders(): number {
     // let total = 0;
-    let value = this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value;
+    const value = this.availableStockForm.get('totalHospitalOrders').value +  this.availableStockForm.get('compatsOrders').value;
     //  value.totalHospitalOrders + value.compatsOrders;
     this.availableStockForm.get('overallOrders').setValue(value);
     if (this.availableStockForm.get('overallSupplies').value) {

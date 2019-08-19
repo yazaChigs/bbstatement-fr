@@ -49,7 +49,7 @@
           <div fxFlex="100%">
             <div fxFlex="25%">
               <mat-card [style.background-color]="demandVsSupplyBgColor()" class="info-card" color="accent">Demand and Supply
-                <h2>{{demandVsSupply(availableStockForm.value)}} %</h2>
+                <h2>{{demandVsSupply(availableStockForm.value) >=0 ? demandVsSupply(availableStockForm.value): 0 }} %</h2>
               </mat-card>
             </div>
             <div fxFlex="25%">
@@ -79,7 +79,7 @@
 
       <mat-accordion [multi]="true">
           <!-- start Receipts panel -->
-          <mat-expansion-panel [expanded]="true" class="border">
+          <mat-expansion-panel [expanded]="true" class="border ">
             <mat-expansion-panel-header class="primary-bg">
               <mat-panel-title>
 
@@ -350,7 +350,7 @@
                           <mat-label class="full-width">% demand vs supply</mat-label>
                         </p>
                       </div>
-        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="demandVsSupplyBgPercentageColor()" >{{demandVsSupplyBgPercentage().toFixed(0)}}%</mat-card></div>
+        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="demandVsSupplyBgPercentageColor()" >{{demandVsSupply(availableStockForm.value) >=0 ? demandVsSupply(availableStockForm.value).toFixed(0): 0 }}%</mat-card></div>
       </div>
 
           <mat-divider [inset]="true"></mat-divider>

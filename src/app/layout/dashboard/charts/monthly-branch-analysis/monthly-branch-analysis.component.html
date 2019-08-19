@@ -1,0 +1,24 @@
+<div  class="item-container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div fxFlex="100%">
+    <mat-expansion-panel expanded>
+      <mat-expansion-panel-header>
+        <h2 class="color-primary"><span class="medical-icon-i-radiology" aria-hidden="true"></span>&nbsp;Last Month Analysis (BSMS)</h2>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent>
+<div>
+      <div style="display: block;">
+        <canvas baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
+      </canvas>
+      </div>
+    </div>
+</ng-template>
+</mat-expansion-panel>
+</div>
+</div>
+

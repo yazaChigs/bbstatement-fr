@@ -60,32 +60,6 @@ export class DeemandVsSupplyComponent implements OnInit {
       ],
     },
   };
-  // public lineChartColors: Color[] = [
-  //   { // grey
-  //     backgroundColor: 'rgba(148,159,177,0.2)',
-  //     borderColor: 'rgba(148,159,177,1)',
-  //     pointBackgroundColor: 'rgba(148,159,177,1)',
-  //     pointBorderColor: '#fff',
-  //     pointHoverBackgroundColor: '#fff',
-  //     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-  //   },
-  //   { // dark grey
-  //     backgroundColor: 'rgba(77,83,96,0.2)',
-  //     borderColor: 'rgba(77,83,96,1)',
-  //     pointBackgroundColor: 'rgba(77,83,96,1)',
-  //     pointBorderColor: '#fff',
-  //     pointHoverBackgroundColor: '#fff',
-  //     pointHoverBorderColor: 'rgba(77,83,96,1)'
-  //   },
-  //   { // red
-  //     backgroundColor: 'rgba(255,0,0,0.3)',
-  //     borderColor: 'red',
-  //     pointBackgroundColor: 'rgba(148,159,177,1)',
-  //     pointBorderColor: '#fff',
-  //     pointHoverBackgroundColor: '#fff',
-  //     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-  //   }
-  // ];
   public lineChartLegend = true;
   public lineChartType = 'line';
   // public lineChartPlugins = [pluginAnnotations];
@@ -95,7 +69,6 @@ export class DeemandVsSupplyComponent implements OnInit {
   constructor(private service: DashboardService) { }
 
   ngOnInit() {
-    console.log(this.lineChartData);
     this.getReport();
   }
 
@@ -111,7 +84,6 @@ export class DeemandVsSupplyComponent implements OnInit {
   public getReport() {
     this.service.getReport().subscribe(
       data => {
-        console.log(data);
         this.lineChartLabels = data[0].row;
         data.splice(0, 1);
         this.lineChartData = [];
