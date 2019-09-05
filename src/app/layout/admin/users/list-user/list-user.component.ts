@@ -30,7 +30,6 @@ export class ListUserComponent implements OnInit {
   this.userService.getAll().subscribe(
     data => {
     this.list = data;
-    console.log(this.list);
     },
   error => {
    console.log(error);

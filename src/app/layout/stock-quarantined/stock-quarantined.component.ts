@@ -11,6 +11,7 @@ import { StorageKey } from 'src/app/util/key';
 import { Snotify, SnotifyService } from 'ng-snotify';
 import { NotifyUtil } from 'src/app/util/notifyutil';
 import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
+import { isNumber } from 'util';
 
 @Component({
   selector: 'app-stock-quarantined',
@@ -29,10 +30,15 @@ export class StockQuarantinedComponent implements OnInit {
   stockQuarantined: StockQuarantined = new StockQuarantined();
   // branch: object;
   harareCbd = 0;
+  harareCbdNaChecked : boolean;
   staticHq = 0;
+  staticHqNaChecked : boolean;
   mobile02 = 0;
+  mobile02NaChecked : boolean;
   mobile04 = 0;
+  mobile04NaChecked : boolean;
   mobile06 = 0;
+  mobile06NaChecked : boolean;
   allBranches: Branch[];
   selected: Branch;
   branchId: number;
@@ -75,7 +81,6 @@ export class StockQuarantinedComponent implements OnInit {
     const yDate = new Date();
     yDate.setDate(yDate.getDate() - 1);
     this.yesterdayDate = yDate;
-    console.log(this.yesterdayDate);
   }
   collectionsBgColor() {
 
@@ -207,7 +212,6 @@ export class StockQuarantinedComponent implements OnInit {
   getBranchTotalMinCapacity() {
     this.dataManService.getBranchDailyMinimalCapacity().subscribe(
       result => {
-        console.log(result);
         this.branchTotalMinCapacity = result;
 
         if (this.branchTotalMinCapacity !== null && this.branchTotalMinCapacity !== undefined) {
@@ -273,10 +277,25 @@ export class StockQuarantinedComponent implements OnInit {
    return value;
   }
 
-  sumCollections(value): number {
+  sumCollections(): number {
     let total = 0;
-    total = Number(value.harareCbd03) + Number(value.staticHq01)
-     + Number(value.mobile04) + Number(value.mobile02) + Number(value.mobile06) ;
+    console.log('summing collections');
+    if (this.quarantinedStockForm.get('harareCbd03').value !== 'NA') {
+      total += Number(this.quarantinedStockForm.get('harareCbd03').value);
+    }
+    if (this.quarantinedStockForm.get('mobile02').value !== 'NA') {
+      total += Number(this.quarantinedStockForm.get('mobile02').value);
+    }
+    if (this.quarantinedStockForm.get('mobile04').value !== 'NA') {
+      total += Number(this.quarantinedStockForm.get('mobile04').value);
+    }
+    if (this.quarantinedStockForm.get('staticHq01').value !== 'NA') {
+      total += Number(this.quarantinedStockForm.get('staticHq01').value);
+    }
+    if (this.quarantinedStockForm.get('mobile06').value !== 'NA') {
+      total += Number(this.quarantinedStockForm.get('mobile06').value);
+    }
+    console.log(total);
     this.quarantinedStockForm.get('totalCollections').setValue(total);
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
       total + Number(this.quarantinedStockForm.get('openingStock').value)
@@ -373,6 +392,11 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   populateNewForm() {
+    this.mobile02NaChecked = false;
+    this.mobile06NaChecked = false;
+    this.mobile04NaChecked = false;
+    this.harareCbdNaChecked = false;
+    this.staticHqNaChecked = false;
     this.quarantinedStockForm.get('id').setValue('');
     this.quarantinedStockForm.get('dateCreated').setValue('');
     this.quarantinedStockForm.get('version').setValue('');
@@ -419,10 +443,35 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('version').setValue(item.version);
     this.quarantinedStockForm.get('createdById').setValue(item.createdById);
     this.quarantinedStockForm.get('openingStock').setValue(item.openingStock);
+    if (item.harareCbd03 === 'NA') {
+      this.harareCbdNaChecked = true;
+    } else {
+      this.harareCbdNaChecked = false;
+    }
     this.quarantinedStockForm.get('harareCbd03').setValue(item.harareCbd03);
+    if (item.staticHq01 === 'NA') {
+      this.staticHqNaChecked = true;
+    } else {
+      this.staticHqNaChecked = false;
+    }
     this.quarantinedStockForm.get('staticHq01').setValue(item.staticHq01);
+    if (item.mobile04 === 'NA') {
+      this.mobile04NaChecked = true;
+    } else {
+      this.mobile04NaChecked = false;
+    }
     this.quarantinedStockForm.get('mobile04').setValue(item.mobile04);
+    if (item.mobile02 === 'NA') {
+      this.mobile02NaChecked = true;
+    } else {
+      this.mobile02NaChecked = false;
+    }
     this.quarantinedStockForm.get('mobile02').setValue(item.mobile02);
+    if (item.mobile06 === 'NA') {
+      this.mobile06NaChecked = true;
+    } else {
+      this.mobile06NaChecked = false;
+    }
     this.quarantinedStockForm.get('mobile06').setValue(item.mobile06);
     this.quarantinedStockForm.get('totalCollections').setValue(item.totalCollections);
     this.quarantinedStockForm.get('referenceLaboratory').setValue(item.referenceLaboratory);
@@ -545,7 +594,6 @@ loadStockIssuedTo() {
    this.branchService.getAllForUser(id).subscribe(
      result => {
       this.branches = result;
-      console.log(this.branches);
      },
      error => {
        console.log(error.error);
@@ -560,7 +608,6 @@ loadStockIssuedTo() {
   this.branchService.getAll().subscribe(
     result => {
      this.allBranches = result;
-     console.log(this.allBranches);
     },
     error => {
       console.log(error.error);
@@ -601,7 +648,6 @@ getUserBranches() {
         this.editForm = true;
         this.populateNewForm();
       }
-      console.log(result);
     },
     error => {
        console.log(error.error);
@@ -610,7 +656,6 @@ getUserBranches() {
  }
 
  getByDate(value) {
-    console.log(value.todaysDate);
     value.todaysDate = this.quarantinedStockForm.get('todaysDate').value;
     this.qStockService.getAvailableStockByDate(value).subscribe(
     result => {
@@ -643,6 +688,52 @@ getUserBranches() {
 
  compareByValue(f1: any, f2: any) {
   return f1 && f2 && f1.id === f2.id;
+}
+staticHqNA(checked) {
+    this.staticHqNaChecked = checked.checked;
+    if (checked.checked) {
+      this.quarantinedStockForm.get('staticHq01').setValue('NA');
+      this.sumCollections();
+    } else {
+      this.quarantinedStockForm.get('staticHq01').setValue(0);
+      this.sumCollections();
+    }
+}
+HarareCbd03(checked) {
+  this.harareCbdNaChecked = checked.checked;
+  if (checked.checked) {
+    this.quarantinedStockForm.get('harareCbd03').setValue('NA');
+    this.sumCollections();
+  } else {
+    this.quarantinedStockForm.get('harareCbd03').setValue(0);
+  }
+}
+mobile02_(checked) {
+  this.mobile02NaChecked = checked.checked;
+  if (checked.checked) {
+    this.quarantinedStockForm.get('mobile02').setValue('NA');
+    this.sumCollections();
+  } else {
+    this.quarantinedStockForm.get('mobile02').setValue(0);
+  }
+}
+mobile04_(checked) {
+  this.mobile04NaChecked = checked.checked;
+  if (checked.checked) {
+    this.quarantinedStockForm.get('mobile04').setValue('NA');
+    this.sumCollections();
+  } else {
+    this.quarantinedStockForm.get('mobile04').setValue(0);
+  }
+}
+mobile06_(checked) {
+  this.mobile06NaChecked = checked.checked;
+  if (checked.checked) {
+    this.quarantinedStockForm.get('mobile06').setValue('NA');
+    this.sumCollections();
+  } else {
+    this.quarantinedStockForm.get('mobile06').setValue(0);
+  }
 }
 
 }

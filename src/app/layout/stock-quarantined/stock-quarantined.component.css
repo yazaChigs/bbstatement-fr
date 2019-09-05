@@ -35,3 +35,6 @@
 mat-expansion-panel-header:hover {
   background-color: rgb(122, 10, 10) !important;
 }
+.check-box-centre{
+  margin-top: 20px;
+}

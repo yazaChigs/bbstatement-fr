@@ -49,12 +49,10 @@ export class MonthlyBranchAnalysisComponent implements OnInit {
           lables.push(item.row[0]);
           const name = item.row[0];
           item.row.splice(0, 1);
-          console.log(item.row);
           const current = item.row;
           const record = { data: current,  label: name, backgroundColor: name };
           this.barChartData.push(record);
         });
-        console.log(this.barChartLabels);
       },
       error => console.log(error.error)
     );
