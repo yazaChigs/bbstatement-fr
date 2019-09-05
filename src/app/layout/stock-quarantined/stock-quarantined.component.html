@@ -98,7 +98,7 @@
       <div fxFlex="25%">
           <mat-form-field class="full-width" appearance="outline">
               <mat-label>Opening Stock</mat-label>
-              <input type="number" [(ngModel)]="initOpeningStock" matInput formControlName="openingStock" placeholder="Opening Stock" value="0" (keyup)="sumCollections(quarantinedStockForm.value)">
+              <input type="number" [(ngModel)]="initOpeningStock" matInput formControlName="openingStock" placeholder="Opening Stock" value="0" (keyup)="sumCollections()">
             </mat-form-field>
       </div>
       <div fxFlex="6%">
@@ -110,13 +110,17 @@
               <mat-label class="full-width">Static/HQ 01</mat-label>
             </p>
           </div>
+          <div fxFlex="5%" class="check-box-centre ">
+            <mat-checkbox [checked]="staticHqNaChecked" (change)="staticHqNA($event)">N/A</mat-checkbox>
+          </div>
           <div fxFlex="25%">
               <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Static/HQ 01</mat-label>
-                  <input matInput formControlName="staticHq01" type="number" placeholder="Static/HQ 01" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
+                  <input *ngIf="!staticHqNaChecked" matInput formControlName="staticHq01" type=number placeholder="Static/HQ 01" (keyup)="sumCollections()" (keyup)="staticPercentage()">
+                  <input *ngIf="staticHqNaChecked" matInput formControlName="staticHq01" type=text placeholder="Static/HQ 01" readonly>
                 </mat-form-field>
           </div>
-          <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="staticHqColor()" color="primary">{{staticHq}}%</mat-card></div>
+          <div *ngIf="!staticHqNaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="staticHqColor()" color="primary">{{staticHq}}%</mat-card></div>
           </div>
           <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
               <div fxFlex="17%">
@@ -124,13 +128,17 @@
                   <mat-label class="full-width">Mobile 02</mat-label>
                 </p>
               </div>
+              <div fxFlex="5%" class="check-box-centre ">
+                <mat-checkbox [checked]="mobile02NaChecked" (change)="mobile02_($event)">N/A</mat-checkbox>
+              </div>
               <div fxFlex="25%">
                   <mat-form-field class="full-width" appearance="outline">
                       <mat-label>Mobile 02</mat-label>
-                      <input matInput formControlName="mobile02" type="number" placeholder="Mobile 02" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
-                    </mat-form-field>
+                      <input *ngIf="!mobile02NaChecked" matInput formControlName="mobile02" type="number" placeholder="Mobile 02" (keyup)="sumCollections()"  (keyup)="mobPercentage()">
+                     <input *ngIf="mobile02NaChecked" matInput formControlName="mobile02" type=text placeholder="Static/HQ 01"  readonly>
+                </mat-form-field>
               </div>
-              <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile02Color()" color="primary">{{mobile02}}%</mat-card></div>
+              <div  *ngIf="!mobile02NaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile02Color()" color="primary">{{mobile02}}%</mat-card></div>
             </div>
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
       <div fxFlex="17%">
@@ -138,13 +146,17 @@
             <mat-label class="full-width">Harare CBD 03</mat-label>
           </p>
         </div>
+        <div fxFlex="5%" class="check-box-centre ">
+          <mat-checkbox [checked]="harareCbdNaChecked" (change)="HarareCbd03($event)">N/A</mat-checkbox>
+        </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Harare CBD 03</mat-label>
-                <input matInput formControlName="harareCbd03" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="staticPercentage()">
+                <input *ngIf="!harareCbdNaChecked" matInput formControlName="harareCbd03" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections()" (keyup)="staticPercentage()">
+                <input *ngIf="harareCbdNaChecked" matInput formControlName="harareCbd03" type=text placeholder="Static/HQ 01"  readonly>
               </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="harareCbdColor()" color="primary" >{{harareCbd}}%</mat-card></div>
+        <div *ngIf="!harareCbdNaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="harareCbdColor()" color="primary" >{{harareCbd}}%</mat-card></div>
       </div>
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="17%">
@@ -152,13 +164,17 @@
             <mat-label class="full-width">Mobile 04</mat-label>
           </p>
         </div>
+        <div fxFlex="5%" class="check-box-centre ">
+          <mat-checkbox [checked]="mobile04NaChecked" (change)="mobile04_($event)">N/A</mat-checkbox>
+        </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Mobile 04</mat-label>
-                <input matInput formControlName="mobile04" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)" (keyup)="mobPercentage()">
+                <input *ngIf="!mobile04NaChecked" matInput formControlName="mobile04" type="number" placeholder="Mobile 04" (keyup)="sumCollections()" (keyup)="mobPercentage()">
+                <input *ngIf="mobile04NaChecked" matInput formControlName="mobile04" type=text placeholder="Static/HQ 01"  readonly>
               </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile04Color()" color="primary">{{mobile04}}%</mat-card></div>
+        <div *ngIf="!mobile04NaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile04Color()" color="primary">{{mobile04}}%</mat-card></div>
       </div>
 
 
@@ -168,14 +184,19 @@
             <mat-label class="full-width">Mobile 06</mat-label>
           </p>
         </div>
+        <div fxFlex="5%" class="check-box-centre ">
+          <mat-checkbox [checked]="mobile06NaChecked" (change)="mobile06_($event)">N/A</mat-checkbox>
+        </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Mobile 06</mat-label>
-                <input matInput formControlName="mobile06" type="number" placeholder="Mobile 04" (keyup)="sumCollections(quarantinedStockForm.value)"  (keyup)="mobPercentage()">
-              </mat-form-field>
+                <input *ngIf="!mobile06NaChecked" matInput formControlName="mobile06" type="number" placeholder="Mobile 04" (keyup)="sumCollections()"  (keyup)="mobPercentage()">
+                     <input *ngIf="mobile06NaChecked" matInput formControlName="mobile06" type=text placeholder="Static/HQ 01"  readonly>
+                    </mat-form-field>
         </div>
-        <div fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile06Color()" color="primary">{{mobile06}}%</mat-card></div>
+        <div *ngIf="!mobile06NaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile06Color()" color="primary">{{mobile06}}%</mat-card></div>
       </div>
+      <P><strong><i>NB: if there was no bleed/cancelled write "NA" instead of "0"</i></strong></P>
       <mat-divider [inset]="true"></mat-divider>
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="35%"></div>

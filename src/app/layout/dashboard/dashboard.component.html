@@ -255,7 +255,7 @@
       <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2>Blood collections performance (% of minimal capacity)</mat-grid-tile>
       <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{collections >= 0 ? collections: 0}}</strong></mat-grid-tile>
       <mat-grid-tile class="green-bg-b" [colspan]=3 [rowspan]=2>Blood collections indicator code</mat-grid-tile>
-      <mat-grid-tile class="green-bg-b" [rowspan]=2><strong>{{collectionsBgColor()}}</strong></mat-grid-tile>
+      <mat-grid-tile class="green-bg-b" [rowspan]=2 style="border: 1px solid " [style.border-color]="collectionsBgColor()"><strong>{{collectionsBgColor()}}</strong></mat-grid-tile>
     </mat-grid-list>
   </mat-card>
   <mat-card style="padding: 0px;" class="border-radius borders"><mat-grid-list cols="4" rowHeight="30px" >

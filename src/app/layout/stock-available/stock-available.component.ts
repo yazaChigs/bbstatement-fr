@@ -63,7 +63,6 @@ export class StockAvailableComponent implements OnInit {
     const yDate = new Date();
     yDate.setDate(yDate.getDate() - 1);
     this.yesterdayDate = yDate;
-    console.log(this.yesterdayDate);
   }
 
   createForms() {
@@ -647,7 +646,6 @@ getByDate(value) {
     this.branchService.getAllForUser(id).subscribe(
       result => {
        this.branches = result;
-       console.log(this.branches);
       },
       error => {
         console.log(error.error);
@@ -686,7 +684,6 @@ getByDate(value) {
 
         this.populateNewForm();
       }
-      console.log(this.stockAvailable);
      },
      error => {
         console.log(error.error);
