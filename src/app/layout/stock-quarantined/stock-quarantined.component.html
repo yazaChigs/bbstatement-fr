@@ -18,11 +18,12 @@
   <input type="hidden" formControlName="createdById">
 
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
-    <div fxFlex="25%">
+  <div fxFlex="25%">
+      <span style="color: red" *ngIf="!quarantinedStockForm.valid"><i><strong>Please select Branch First</strong></i></span>
       <p>
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>Branch</mat-label>
-          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches">
+          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches" required>
               <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="reloadForBranch(branch.id)">
                 {{branch.branchName}}
               </mat-option>
@@ -48,7 +49,7 @@
           <div fxFlex="100%">
             <div fxFlex="22%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card">
               Total Collections:<strong>{{ initCollections}}</strong>
-              <p>Collections:</p><h2 style="margin-top: -5px;">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</h2>
+              <p>Collections:</p><h2 style="margin-top: -5px;">{{(totolCollectionsFromTeams * 100).toFixed(2)}}%</h2>
             </mat-card></div>
             <div fxFlex="22%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
             <div fxFlex="22%"><mat-card class="info-card">
@@ -66,7 +67,7 @@
   </div>
   <div class="container no-space" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
       <div fxFlex="80%">
-        <p class="checke-by-font">Compiled By:<strong>{{stockQuarantined?.compliedBy}}</strong></p>
+        <p class="checke-by-font">Compiled By:<strong>{{stockQuarantined?.compiledBy}}</strong></p>
         <p class="checke-by-font">Checked By: <strong>{{stockQuarantined?.checkedBy}}</strong></p>
       </div>
       <div fxFlex="20%"></div>
@@ -77,9 +78,9 @@
 </div>
 
 
-  <mat-accordion [multi]="true">
+  <mat-accordion [multi]="true" disabled="true">
     <!-- start collections panel -->
-    <mat-expansion-panel [expanded]="true" class="border">
+    <mat-expansion-panel [expanded]="true" class="border" >
       <mat-expansion-panel-header class="primary-bg">
         <mat-panel-title>
 
@@ -104,10 +105,10 @@
       <div fxFlex="6%">
       </div>
       </div>
-      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div *ngIf="userBranch?.staticFacility !== null" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="17%">
             <p>
-              <mat-label class="full-width">Static/HQ 01</mat-label>
+              <mat-label class="full-width">{{userBranch?.staticFacility}}</mat-label>
             </p>
           </div>
           <div fxFlex="5%" class="check-box-centre ">
@@ -115,17 +116,17 @@
           </div>
           <div fxFlex="25%">
               <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Static/HQ 01</mat-label>
-                  <input *ngIf="!staticHqNaChecked" matInput formControlName="staticHq01" type=number placeholder="Static/HQ 01" (keyup)="sumCollections()" (keyup)="staticPercentage()">
-                  <input *ngIf="staticHqNaChecked" matInput formControlName="staticHq01" type=text placeholder="Static/HQ 01" readonly>
+                  <mat-label>{{userBranch?.staticFacility}}</mat-label>
+                  <input *ngIf="!staticHqNaChecked" matInput formControlName="staticFacility" type=number placeholder="Static/HQ 01" (keyup)="sumCollections()" (keyup)="staticPercentage()">
+                  <input *ngIf="staticHqNaChecked" matInput formControlName="staticFacility" type=text placeholder="Static/HQ 01" readonly>
                 </mat-form-field>
           </div>
           <div *ngIf="!staticHqNaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="staticHqColor()" color="primary">{{staticHq}}%</mat-card></div>
           </div>
-          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+          <div  *ngIf="userBranch?.mob1 !== null "class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
               <div fxFlex="17%">
                 <p>
-                  <mat-label class="full-width">Mobile 02</mat-label>
+                  <mat-label class="full-width">{{userBranch?.mob1}}</mat-label>
                 </p>
               </div>
               <div fxFlex="5%" class="check-box-centre ">
@@ -133,35 +134,35 @@
               </div>
               <div fxFlex="25%">
                   <mat-form-field class="full-width" appearance="outline">
-                      <mat-label>Mobile 02</mat-label>
+                      <mat-label>{{userBranch?.mob1}}</mat-label>
                       <input *ngIf="!mobile02NaChecked" matInput formControlName="mobile02" type="number" placeholder="Mobile 02" (keyup)="sumCollections()"  (keyup)="mobPercentage()">
                      <input *ngIf="mobile02NaChecked" matInput formControlName="mobile02" type=text placeholder="Static/HQ 01"  readonly>
                 </mat-form-field>
               </div>
               <div  *ngIf="!mobile02NaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="mobile02Color()" color="primary">{{mobile02}}%</mat-card></div>
             </div>
-      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div *ngIf="userBranch?.cbd !== null" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
       <div fxFlex="17%">
           <p>
-            <mat-label class="full-width">Harare CBD 03</mat-label>
+            <mat-label class="full-width">{{userBranch?.cbd}}</mat-label>
           </p>
         </div>
         <div fxFlex="5%" class="check-box-centre ">
-          <mat-checkbox [checked]="harareCbdNaChecked" (change)="HarareCbd03($event)">N/A</mat-checkbox>
+          <mat-checkbox [checked]="harareCbdNaChecked" (change)="cbd($event)">N/A</mat-checkbox>
         </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Harare CBD 03</mat-label>
-                <input *ngIf="!harareCbdNaChecked" matInput formControlName="harareCbd03" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections()" (keyup)="staticPercentage()">
-                <input *ngIf="harareCbdNaChecked" matInput formControlName="harareCbd03" type=text placeholder="Static/HQ 01"  readonly>
+                <mat-label>{{userBranch?.cbd}}</mat-label>
+                <input *ngIf="!harareCbdNaChecked" matInput formControlName="cbd" type="number" placeholder="Harare CBD 03" (keyup)="sumCollections()" (keyup)="staticPercentage()">
+                <input *ngIf="harareCbdNaChecked" matInput formControlName="cbd" type=text placeholder="Static/HQ 01"  readonly>
               </mat-form-field>
         </div>
         <div *ngIf="!harareCbdNaChecked" fxFlex="6%"><mat-card class="indicator" [style.background-color]="harareCbdColor()" color="primary" >{{harareCbd}}%</mat-card></div>
       </div>
-      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+      <div *ngIf="userBranch?.mob2 !== null " class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="17%">
           <p>
-            <mat-label class="full-width">Mobile 04</mat-label>
+            <mat-label class="full-width">{{userBranch?.mob2}}</mat-label>
           </p>
         </div>
         <div fxFlex="5%" class="check-box-centre ">
@@ -169,7 +170,7 @@
         </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Mobile 04</mat-label>
+                <mat-label>{{userBranch?.mob2}}</mat-label>
                 <input *ngIf="!mobile04NaChecked" matInput formControlName="mobile04" type="number" placeholder="Mobile 04" (keyup)="sumCollections()" (keyup)="mobPercentage()">
                 <input *ngIf="mobile04NaChecked" matInput formControlName="mobile04" type=text placeholder="Static/HQ 01"  readonly>
               </mat-form-field>
@@ -178,10 +179,10 @@
       </div>
 
 
-    <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+    <div *ngIf="userBranch?.mob3 !== null " class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
       <div fxFlex="17%">
           <p>
-            <mat-label class="full-width">Mobile 06</mat-label>
+            <mat-label class="full-width">{{userBranch?.mob3}}</mat-label>
           </p>
         </div>
         <div fxFlex="5%" class="check-box-centre ">
@@ -189,7 +190,7 @@
         </div>
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Mobile 06</mat-label>
+                <mat-label>{{userBranch?.mob3}}</mat-label>
                 <input *ngIf="!mobile06NaChecked" matInput formControlName="mobile06" type="number" placeholder="Mobile 04" (keyup)="sumCollections()"  (keyup)="mobPercentage()">
                      <input *ngIf="mobile06NaChecked" matInput formControlName="mobile06" type=text placeholder="Static/HQ 01"  readonly>
                     </mat-form-field>
@@ -210,7 +211,7 @@
                     <input matInput formControlName="totalCollections" [(ngModel)]="initCollections" type="number" placeholder="total"  readonly>
                   </mat-form-field>
             </div>
-        <div fxFlex="10%"><mat-card class="indicator" [style.background-color]="collectionsBgColor()" color="primary">{{(calculateCollectionsPercentage()*100).toFixed(2)}}%</mat-card></div>
+        <div fxFlex="10%"><mat-card class="indicator" [style.background-color]="collectionsBgColor()" color="primary">{{(totolCollectionsFromTeams * 100).toFixed(0)}}%</mat-card></div>
       </div>
     </mat-expansion-panel>
     <!-- end collections panel -->
@@ -244,7 +245,21 @@
         </div>
         </div>
       </div>
-      <mat-divider [inset]="true"></mat-divider>
+      <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="17%">
+          <p>
+            <mat-label class="full-width">Reference Laboratory</mat-label>
+          </p>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Reference Laboratory</mat-label>
+                <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived()">
+              </mat-form-field>
+        </div>
+        <div fxFlex="17%"></div>
+        </div>
+        <mat-divider [inset]="true"></mat-divider>
       <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="35%"></div>
               <div fxFlex="40%">
@@ -258,26 +273,12 @@
                   </mat-form-field>
             </div>
           </div>
-          <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
-          <div fxFlex="17%">
-            <p>
-              <mat-label class="full-width">Reference Laboratory</mat-label>
-            </p>
-          </div>
-          <div fxFlex="25%">
-              <mat-form-field class="full-width" appearance="outline">
-                  <mat-label>Reference Laboratory</mat-label>
-                  <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived()">
-                </mat-form-field>
-          </div>
-          <div fxFlex="17%"></div>
-          </div>
-          <mat-divider [inset]="true"></mat-divider>
+         <mat-divider [inset]="true"></mat-divider>
           <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
               <div fxFlex="35%"></div>
                   <div fxFlex="40%">
                   <h1>
-                    <mat-label class="full-width">Total Receipts</mat-label>
+                    <mat-label class="full-width">Total Quarantine Stock</mat-label>
                   </h1>
                 </div>
                 <div fxFlex="15%">
@@ -531,22 +532,7 @@
         </div>
         </div>
       </div>
-        <mat-divider [inset]="true"></mat-divider>
-        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
-        <div fxFlex="45%"></div>
-        <div fxFlex="17%">
-          <h3>
-            <mat-label class="full-width">Total blood transfer to other branches</mat-label>
-          </h3>
-        </div>
-        <div fxFlex="25%">
-            <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Total blood transfer to other branches</mat-label>
-                <input matInput formControlName="totalBloodTransferredToOtherBranches" type="number" readonly>
-              </mat-form-field>
-        </div>
-        </div>
-        <mat-divider [inset]="true"></mat-divider>
+        <!-- <mat-divider [inset]="true"></mat-divider> -->
         <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="17%">
           <p>
@@ -561,6 +547,22 @@
         </div>
         <div fxFlex="17%"></div>
         </div>
+        <!-- <mat-divider [inset]="true"></mat-divider>
+        <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div fxFlex="45%"></div>
+        <div fxFlex="17%">
+          <h3>
+            <mat-label class="full-width">Total blood transfer to other branches</mat-label>
+          </h3>
+        </div>
+        <div fxFlex="25%">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Total blood transfer to other branches</mat-label>
+                <input matInput formControlName="totalBloodTransferredToOtherBranches" type="number" readonly>
+              </mat-form-field>
+        </div>
+        </div> -->
+
         <mat-divider [inset]="true"></mat-divider>
           <div class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
               <div fxFlex="45%"></div>
@@ -570,7 +572,7 @@
                   </h1>
                 </div>
                 <div fxFlex="15%">
-                    <mat-form-field class="full-width input-headline" appearance="outline">
+                    <mat-form-field class="full-width" appearance="outline">
                         <input matInput formControlName="totalIssues" type="number" [(ngModel)]="initTotalIssues" placeholder="total" readonly>
                       </mat-form-field>
                 </div>
@@ -665,11 +667,11 @@
   </mat-accordion>
   <div *ngIf="editForm" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
     <div fxFlex="12%">
-      <button mat-raised-button color="primary" class="save-btn" (click)="saveAQuarantinedStock(quarantinedStockForm.value)">Save</button>
+      <button  *ngIf="showSaveBtn" mat-raised-button color="primary" class="save-btn" (click)="saveAQuarantinedStock(quarantinedStockForm.value)">Save</button>
     </div>
     <div fxFlex="70%"></div>
     <div fxFlex="12%">
-      <button *ngIf="!editBranches" type="submit" mat-raised-button color="primary" (click)="submitStockQuarantined(quarantinedStockForm.value)">save and submit</button>
+      <button *ngIf="!showSaveBtn" type="submit" mat-raised-button color="primary" (click)="submitStockQuarantined(quarantinedStockForm.value)">save and submit</button>
     </div>
 </div>
 <div *ngIf="showEditBtn" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
@@ -682,3 +684,4 @@
 </form>
 
 </mat-card>
+{{quarantinedStockForm.value | json}}

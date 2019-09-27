@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { BloodGroupsDistributionsComponent } from './blood-groups-distributions.component';
+import { BloodGroupsDistributionsComponent } from "./BloodGroupsDistributionsComponent";
 
 describe('BloodGroupsDistributionsComponent', () => {
   let component: BloodGroupsDistributionsComponent;

@@ -8,8 +8,8 @@ export class StockQuarantined extends BaseModel {
   branch: Branch;
   todaysDate: number;
   openingStock: number;
-  harareCbd03: number;
-  staticHq01: number;
+  cbd: number;
+  staticFacility: number;
   mobile04: number;
   mobile02: number;
   mobile06: number;
@@ -39,6 +39,6 @@ export class StockQuarantined extends BaseModel {
   cryo: number;
   stockReceivedFrom: StockReceivedFrom[];
   issuedToQuarantines: StockIssuedTo[];
-  compliedBy: string;
+  compiledBy: string;
   checkedBy: string;
 }

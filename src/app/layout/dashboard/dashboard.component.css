@@ -21,6 +21,9 @@
 .grid-bg-b{
   background: rgb(248, 236, 236);
 }
+.gray-fields{
+  background: rgb(124, 122, 122);
+}
 .ob-card {
   margin: 0px;
 }

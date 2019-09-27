@@ -39,6 +39,16 @@ export class BranchComponent implements OnInit {
       email: new FormControl(),
       phoneNumber: new FormControl(),
       officePhone: new FormControl(),
+      staticFacility: new FormControl(),
+      cbd: new FormControl(),
+      mob1: new FormControl(),
+      mob2: new FormControl(),
+      mob3: new FormControl(),
+      minStatic: new FormControl(),
+      minCbd: new FormControl(),
+      minMob1: new FormControl(),
+      minMob2: new FormControl(),
+      minMob3: new FormControl(),
       });
     }
     populateForm(branchToEdit: Branch) {
@@ -51,6 +61,16 @@ export class BranchComponent implements OnInit {
       this.branchForm.get('email').setValue(this.branchToEdit.email);
       this.branchForm.get('phoneNumber').setValue(this.branchToEdit.phoneNumber);
       this.branchForm.get('officePhone').setValue(this.branchToEdit.officePhone);
+      this.branchForm.get('staticFacility').setValue(this.branchToEdit.staticFacility);
+      this.branchForm.get('cbd').setValue(this.branchToEdit.cbd);
+      this.branchForm.get('mob1').setValue(this.branchToEdit.mob1);
+      this.branchForm.get('mob2').setValue(this.branchToEdit.mob2);
+      this.branchForm.get('mob3').setValue(this.branchToEdit.mob3);
+      this.branchForm.get('minStatic').setValue(this.branchToEdit.minStatic);
+      this.branchForm.get('minCbd').setValue(this.branchToEdit.minCbd);
+      this.branchForm.get('minMob1').setValue(this.branchToEdit.minMob1);
+      this.branchForm.get('minMob2').setValue(this.branchToEdit.minMob2);
+      this.branchForm.get('minMob3').setValue(this.branchToEdit.minMob3);
   }
 
 getBranchToEdit() {
@@ -65,6 +85,11 @@ getBranchToEdit() {
 }
 
     submitValues(value) {
+      if (value.staticDacility === '') {value.staticDacility = null; }
+      if (value.cbd === '') {value.cbd = null; }
+      if (value.mob1 === '') {value.mob1 = null; }
+      if (value.mob2 === '') {value.mob2 = null; }
+      if (value.mob3 === '') {value.mob3 = null; }
       this.service.save(value).subscribe(
         result => {
           this.snotify.success(

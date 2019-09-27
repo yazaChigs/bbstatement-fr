@@ -8,7 +8,6 @@
 
   <div class="grid-container">
       <mat-grid-list cols={{column}} rowHeight="200px">
-  <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPERVISOR']">
       <mat-grid-tile  colspan="1" rowspan="1">
           <mat-card role="region" (click)="redirect('/admin/user/')"  class="dashboard-card">
             <div class="card-padding">
@@ -21,11 +20,7 @@
             </div>
           </mat-card>
         </mat-grid-tile>
-      </ng-template>
-      <!-- </mat-grid-list> -->
 
-      <!-- <mat-grid-list cols={{column}} rowHeight="200px"> -->
-          <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPERVISOR','ROLE_USER']">
               <mat-grid-tile  colspan="1" rowspan="1">
                   <mat-card role="region" (click)="redirect('/admin/data')"  class="dashboard-card">
                     <div class="card-padding">
@@ -38,11 +33,7 @@
                     </div>
                   </mat-card>
                 </mat-grid-tile>
-              </ng-template>
-              <!-- </mat-grid-list> -->
 
-              <!-- <mat-grid-list cols={{column}} rowHeight="200px"> -->
-                <ng-template [ngxPermissionsOnly]="['ROLE_GLOBAL', 'ROLE_SUPERVISOR']">
                     <mat-grid-tile  colspan="1" rowspan="1">
                         <mat-card role="region" (click)="redirect('/admin/branch')"  class="dashboard-card">
                           <div class="card-padding">
@@ -55,7 +46,6 @@
                           </div>
                         </mat-card>
                       </mat-grid-tile>
-                    </ng-template>
                     </mat-grid-list>
       </div>
 

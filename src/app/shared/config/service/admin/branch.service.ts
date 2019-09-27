@@ -13,6 +13,7 @@ export class BranchService {
   private saveUrl = this.global.baseUrl + '/api/admin/branch/save';
   private saveLogoUrl =  this.global.baseUrl + '/api/admin/branch/save-logo';
   private getAllUrl =  this.global.baseUrl + '/api/admin/branch/get-all';
+  private getCurrentUsernameUrl =  this.global.baseUrl + '/api/admin/branch/get-current-username';
   private getUserBranchUrl =  this.global.baseUrl + '/api/admin/branch/get-user-branch';
   private getAllForUserUrl =  this.global.baseUrl + '/api/admin/branch/get-all-for-user?branchId=';
   private getThemeUrl = this.global.baseUrl + '/api/admin/branch/get-theme';
@@ -24,6 +25,10 @@ export class BranchService {
 
   public save(item: Branch): Observable<any> {
     return this.httpClient.post<any>(this.saveUrl, item);
+  }
+
+  public getCurrentUsername(): Observable<any> {
+    return this.httpClient.get<any[]>(this.getCurrentUsernameUrl);
   }
 
   public getAll(): Observable<Branch[]> {

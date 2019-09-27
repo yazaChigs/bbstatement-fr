@@ -6,4 +6,14 @@ export class Branch extends BaseModel {
   email: string;
   phoneNumber: string;
   officePhone: string;
+  staticFacility: string;
+  cbd: string;
+  mob1: string;
+  mob2: string;
+  mob3: string;
+  minStatic: number;
+  minCbd: number;
+  minMob1: number;
+  minMob2: number;
+  minMob3: number;
 }

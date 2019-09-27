@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
   unsubmitedAvailable = 0;
   numberOfCollections: number;
   expectedMinCap = 0;
+  grayFields = true;
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
@@ -79,11 +80,11 @@ export class DashboardComponent implements OnInit {
     this.util = new NotifyUtil(this.snotify);
 
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_SUPERVISOR')) {
-      this.getUserBranch();
-    } else {
-      this.getAllBranches();
-  }
+  //   if (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_SUPERVISOR')) {
+  //     this.getUserBranch();
+  //   } else {
+    this.getAllBranches();
+  // }
   }
 
   createFormBloodStockManagementAnalysisForm() {
@@ -117,6 +118,14 @@ export class DashboardComponent implements OnInit {
       bdrStockedUnitsQuarantined: new FormControl(),
       daysSupplyStockedUnitsQuarantined: new FormControl(),
       weeksSupplyQuarantine: new FormControl(),
+      totalStockedUnitsAvailableRaw: new FormControl(),
+      totalStockedUnitsQuarantinedRaw: new FormControl(),
+      bdrAvailableStockTotalRaw: new FormControl(),
+      daysSupplyAvailableRaw: new FormControl(),
+      weeksSupplyAvailableRaw: new FormControl(),
+      bdrStockedUnitsQuarantinedRaw: new FormControl(),
+      daysSupplyStockedUnitsQuarantinedRaw: new FormControl(),
+      weeksSupplyQuarantineRaw: new FormControl(),
     });
   }
   createFilterDataForm() {
@@ -155,6 +164,11 @@ export class DashboardComponent implements OnInit {
     value.branches = this.selectedBranches;
     console.log(value);
     if (this.selectedBranches.length > 0) {
+      if (this.selectedBranches.length > 1) {
+        this.grayFields = true;
+      } else {
+        this.grayFields = false;
+      }
       this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
         this.branchesInfo = result;
@@ -192,6 +206,7 @@ export class DashboardComponent implements OnInit {
     let avarage = 0;
     let bloodnumber = 0;
     let x = 0;
+    this.expectedMinCap = 0;
 
     if (this.selectedBranches.length === 0) { this.selectedBranches = this.allBranches; this.firstRun = true; }
     this.selectedBranches.forEach(item => {
@@ -225,10 +240,16 @@ export class DashboardComponent implements OnInit {
       value.branches = this.allBranches;
     } else {
       value.branches = this.selectedBranches;
+      if (this.selectedBranches.length > 1) {
+        this.grayFields = true;
+      } else {
+        this.grayFields = false;
+      }
     }
     this.dashService.getBranchInfoByDate(value).subscribe(
       result => {
         this.branchesInfo = result;
+        console.log(result);
         this.overallCollections(this.branchesInfo);
         this.populateBranchDailyRequirements(this.branchesInfo);
         this.populateStockavailable(this.branchesInfo);
@@ -304,6 +325,18 @@ export class DashboardComponent implements OnInit {
     if (value > 2 && value < 5) {return 'orange'; }
     if (value >= 5) { return 'green'; }
   }
+  stockLevelColorCodeAvailableRaw(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('daysSupplyAvailableRaw').value;
+    if (value <= 2) {return 'red'; }
+    if (value > 2 && value < 5) {return 'orange'; }
+    if (value >= 5) { return 'green'; }
+  }
+  stockLevelColorCodeQuarantineRaw(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantinedRaw').value;
+    if (value <= 2) {return 'red'; }
+    if (value > 2 && value < 5) {return 'orange'; }
+    if (value >= 5) { return 'green'; }
+  }
 
   responsiveActionOplus(): string {
     const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyOplus').value;
@@ -329,6 +362,14 @@ export class DashboardComponent implements OnInit {
     const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantine').value;
     if (value <= 3) {return 'Collect / clear quarantine'; } else {return 'Stagger collections'; }
   }
+  responsiveActionAvailableRaw(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyAvailableRaw').value;
+    if (value <= 3) {return 'Collect / clear quarantine'; } else {return 'Stagger collections'; }
+  }
+  responsiveActionQuarantineRaw(): string {
+    const value = this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantineRaw').value;
+    if (value <= 3) {return 'Collect / clear quarantine'; } else {return 'Stagger collections'; }
+  }
 
   populateBranchDailyRequirements(item) {
     this.bloodStockManagementAnalysisForm.get('requirementsOplus').setValue(item.dailyReqOplus);
@@ -340,6 +381,18 @@ export class DashboardComponent implements OnInit {
     + this.bloodStockManagementAnalysisForm.get('requirementsOminus').value
     + this.bloodStockManagementAnalysisForm.get('requirementsAplus').value
     + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value) * 0.435)
+    );
+    this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotalRaw').setValue(
+      this.bloodStockManagementAnalysisForm.get('requirementsOplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsOminus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsAplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value
+    );
+    this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantinedRaw').setValue(
+      this.bloodStockManagementAnalysisForm.get('requirementsOplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsOminus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsAplus').value
+    + this.bloodStockManagementAnalysisForm.get('requirementsBplus').value
     );
   }
 
@@ -355,7 +408,14 @@ export class DashboardComponent implements OnInit {
       + (this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').value
       + this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').value) * 0.2);
 
+    this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailableRaw').setValue(
+        this.bloodStockManagementAnalysisForm.get('stockedUnitsOplus').value
+        + this.bloodStockManagementAnalysisForm.get('stockedUnitsOminus').value
+        + (this.bloodStockManagementAnalysisForm.get('stockedUnitsAplus').value
+        + this.bloodStockManagementAnalysisForm.get('stockedUnitsBplus').value));
+
     this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').setValue(item.quarantineStock * 0.42);
+    this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantinedRaw').setValue(item.quarantineStock);
 
     this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').setValue(
        (( this.bloodStockManagementAnalysisForm.get('requirementsOplus').value
@@ -398,12 +458,26 @@ export class DashboardComponent implements OnInit {
         (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailable').value
         / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotal').value).toFixed(2));
 
+    isNaN((this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailableRaw').value
+    / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotalRaw').value)) ?
+      this.bloodStockManagementAnalysisForm.get('daysSupplyAvailableRaw').setValue(0) :
+      this.bloodStockManagementAnalysisForm.get('daysSupplyAvailableRaw').setValue(
+      (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsAvailableRaw').value
+      / this.bloodStockManagementAnalysisForm.get('bdrAvailableStockTotalRaw').value).toFixed(2));
+
     isNaN((this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').value
         / this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantined').value)) ?
         this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').setValue(0) :
         this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').setValue(
         (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantined').value
             / this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantined').value).toFixed(2));
+
+    isNaN((this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantinedRaw').value
+    / this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantinedRaw').value)) ?
+    this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantinedRaw').setValue(0) :
+    this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantinedRaw').setValue(
+    (this.bloodStockManagementAnalysisForm.get('totalStockedUnitsQuarantinedRaw').value
+        / this.bloodStockManagementAnalysisForm.get('bdrStockedUnitsQuarantinedRaw').value).toFixed(2));
 
 
 
@@ -419,6 +493,10 @@ export class DashboardComponent implements OnInit {
       (this.bloodStockManagementAnalysisForm.get('daysSupplyAvailable').value / 7).toFixed(2));
     this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantine').setValue(
       (this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantined').value / 7).toFixed(2));
+    this.bloodStockManagementAnalysisForm.get('weeksSupplyAvailableRaw').setValue(
+      (this.bloodStockManagementAnalysisForm.get('daysSupplyAvailableRaw').value / 7).toFixed(2));
+    this.bloodStockManagementAnalysisForm.get('weeksSupplyQuarantineRaw').setValue(
+      (this.bloodStockManagementAnalysisForm.get('daysSupplyStockedUnitsQuarantinedRaw').value / 7).toFixed(2));
 
 
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 
@@ -7,9 +7,13 @@ import { Label } from 'ng2-charts';
   templateUrl: './blood-groups-distributions.component.html',
   styleUrls: ['./blood-groups-distributions.component.css']
 })
-export class BloodGroupsDistributionsComponent implements OnInit {
+export class BloodGroupsDistributionsComponent implements OnInit, OnChanges {
 
   showItems = true;
+  Olable = 0;
+  Alable = 0;
+  Blable = 0;
+  @Input() branchData: any = {};
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -26,9 +30,15 @@ export class BloodGroupsDistributionsComponent implements OnInit {
   };
   // public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
   public pieChartLabels: Label[] = ['O', 'A', 'B'];
-  public pieChartData: number[] = [60, 20, 20];
+  public pieChartData: number[] = [40, 20, 20];
+  // public pieChartData = [
+  //   {data: [this.Olable] , label: 'O'},
+  //   {data: [this.Alable], label: 'A'},
+  //   {data: [this.Blable], label: 'B'},
+  // ]
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
+
   // public pieChartPlugins = [pluginDataLabels];
   // public pieChartColors = [
   //   {
@@ -38,6 +48,22 @@ export class BloodGroupsDistributionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (this.branchData !== null ) {
+
+    }
+
+    // this.pieChartData = [
+    //   this.Olable,
+    //   this.Olable,
+    //   this.Blable
+    //   ];
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.Olable = 45;
+      this.Alable = 88;
+      this.Blable =  22;
+    console.log(this.branchData);
+    console.log(this.Olable + this.Alable + this.Blable);
+  }
 }

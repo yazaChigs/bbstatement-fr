@@ -20,10 +20,11 @@
 
       <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="25%">
-          <p>
+      <span  *ngIf="!availableStockForm.valid" style="color: red" ><i><strong>Please select Branch First</strong></i></span>
+      <p>
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Branch</mat-label>
-              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches">
+              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch"  required>
                   <mat-option *ngFor="let branch of AllBranches" [value]="branch" (click)="reloadForBranch(branch.id)" >
                     {{branch.branchName}}
                   </mat-option>
@@ -67,7 +68,7 @@
       </div>
       <div class="container no-space" fxLayout fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
         <div fxFlex="80%">
-          <p class="checke-by-font">Compiled By:<strong>{{stockAvailable?.compliedBy}}</strong></p>
+          <p class="checke-by-font">Compiled By:<strong>{{stockAvailable?.compiledBy}}</strong></p>
           <p class="checke-by-font">Checked By: <strong>{{stockAvailable?.checkedBy}}</strong></p>
         </div>
         <div fxFlex="20%"></div>
@@ -1059,20 +1060,20 @@
               <!-- start other available products panel -->
 
         </mat-accordion>
-        <div *ngIf="editForm" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
+        <div *ngIf="editForm && availableStockForm.valid" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="12%">
-            <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">Save</button>
+            <button *ngIf="showSaveBtn" type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">Save</button>
           </div>
           <div fxFlex="70%"></div>
           <div fxFlex="12%">
-            <button *ngIf="!editBranches" type="submit" mat-raised-button color="primary" (click)="submitStockAvailable(availableStockForm.value)">save and submit</button>
+            <button *ngIf="!showSaveBtn" type="submit" mat-raised-button color="primary" (click)="submitStockAvailable(availableStockForm.value)">save and submit</button>
           </div>
         </div>
         <div *ngIf="showEditBtn" class="container" fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="right" fxLayoutGap="12px" fxLayoutGap.xs="0">
           <div fxFlex="12%"> </div>
           <div fxFlex="70%"></div>
           <div fxFlex="12%">
-            <button type="submit" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">edit</button>
+            <button type="button" mat-raised-button color="primary" (click)="saveStockAvailable(availableStockForm.value)">edit</button>
           </div>
       </div>
       </form>

@@ -1,3 +1,4 @@
+import { BloodGroupsDistributionsComponent } from './dashboard/charts/blood-groups-distributions/blood-groups-distributions.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -21,7 +22,6 @@ import { BloodGroupDaysSupplyComponent } from './dashboard/charts/BloodGroup-Day
 import { ChartsModule } from 'ng2-charts';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BranchContributionsComponent } from './dashboard/charts/branch-contributions/branch-contributions.component';
-import { BloodGroupsDistributionsComponent } from './dashboard/charts/blood-groups-distributions/blood-groups-distributions.component';
 import { DeemandVsSupplyComponent } from './dashboard/charts/deemand-vs-supply/deemand-vs-supply.component';
 import { StockesChartComponent } from './dashboard/charts/stockes-chart/stockes-chart.component';
 import { CollectionsChartComponent } from './dashboard/charts/collections-chart/collections-chart.component';
@@ -31,7 +31,7 @@ import { MonthlyBranchAnalysisComponent } from './dashboard/charts/monthly-branc
   declarations: [
     MainComponent,
     SideNavComponent, DeemandVsSupplyComponent, StockesChartComponent, CollectionsChartComponent,
-    DashboardComponent, BranchContributionsComponent, BloodGroupsDistributionsComponent, MonthlyBranchAnalysisComponent,
+    DashboardComponent, BranchContributionsComponent, MonthlyBranchAnalysisComponent, BloodGroupsDistributionsComponent,
     ChangePasswordDialogComponent, StockAvailableComponent, StockQuarantinedComponent, BloodGroupDaysSupplyComponent,
   ],
   imports: [

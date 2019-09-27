@@ -131,7 +131,7 @@ export class StockAvailable extends BaseModel {
   paedPacks: number;
   receivedFromAvailable: StockReceivedFrom[];
 issuedToAvailable: StockIssuedTo[];
-compliedBy: string;
+compiledBy: string;
 checkedBy: string;
 
 }

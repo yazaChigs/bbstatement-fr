@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { StaticDataService } from 'src/app/shared/config/service/static.data.service';
 import { Branch } from 'src/app/shared/config/model/admin/branch.model';
 import { BranchService } from '../../../shared/config/service/admin/branch.service';
+import { resultMemoize } from '@ngrx/store';
 
 @Component({
   selector: 'app-side-nav',
@@ -39,6 +40,8 @@ export class SideNavComponent implements OnInit {
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches));
+  showAdmin = false;
+  currentUsername: any;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -58,6 +61,10 @@ export class SideNavComponent implements OnInit {
     // this.getModules();
     this.getRoles();
     this.permissionService.loadPermissions(this.roles);
+    if (this.roles.includes('ROLE_ADMIN')) {
+      this.showAdmin = true;
+    }
+    this.getUsername();
     if ( this.branch !== null) {
          this.branchName = this.branch.name;
          this.theme = 'mat_red';
@@ -82,6 +89,16 @@ export class SideNavComponent implements OnInit {
       this.showBranches = true;
       this.getBranches();
   }
+  }
+  getUsername() {
+    this.branchService.getCurrentUsername().subscribe(
+      result => {
+        this.currentUsername = result;
+      },
+      error => {
+        console.error(error.error);
+      }
+    );
   }
 
   getBranches() {
@@ -136,7 +153,8 @@ export class SideNavComponent implements OnInit {
 
   openChangePasswordDialog() {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
-      width: '36%',
+      width: '56%',
+      height: '65%',
       data: this.user
     });
     dialogRef.updatePosition({ top: '80px', right: '10px'});

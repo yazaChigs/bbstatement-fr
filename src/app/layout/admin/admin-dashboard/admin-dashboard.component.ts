@@ -55,8 +55,8 @@ export class AdminDashboardComponent extends BaseAdminComponent implements OnIni
     }
 
   ngOnInit() {
-    this.roles  = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    this.permissionsService.loadPermissions(this.roles);
+    // this.roles  = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
+    // this.permissionsService.loadPermissions(this.roles);
   }
   redirect(value) {
     this.router.navigate([value]);

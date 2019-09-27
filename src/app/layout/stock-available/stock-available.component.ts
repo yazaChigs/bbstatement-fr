@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AvailableStockService } from '../../shared/config/service/available-stock.service';
-import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Branch } from '../../shared/config/model/admin/branch.model';
 import { BranchService } from 'src/app/shared/config/service/admin/branch.service';
 import { StockAvailable } from 'src/app/shared/config/model/stock-available.model';
@@ -36,8 +36,10 @@ export class StockAvailableComponent implements OnInit {
   yesterdayDate: Date;
   editForm = true;
   showEditBtn = false;
+  showSaveBtn = true;
   percentDemandVsSupply = 0;
   user = localStorage.getItem('USER');
+  currentUser: any;
 
   constructor(private availableStockService: AvailableStockService, private fb: FormBuilder,
               private branchService: BranchService, private userService: UserService, private snotify: SnotifyService) {
@@ -50,11 +52,17 @@ export class StockAvailableComponent implements OnInit {
     this.createForms();
     this.loadBranches(this.branchId);
     this.getAllBranches();
-    this.getInitvalues(this.branchId);
+    this.getCurrentUser();
+    // console.log(this.availableStockForm.get('branch').value);
+    if (this.availableStockForm.get('branch').value !== null) {
+      this.getInitvalues(this.branchId);
+    } else {
+      this.editForm = false;
+    }
     this.util = new NotifyUtil(this.snotify);
 
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR')) {
+    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR') || this.roles.includes('ROLE_ADMIN')) {
       this.editBranches = false; }
 
   }
@@ -74,7 +82,11 @@ export class StockAvailableComponent implements OnInit {
       version: new FormControl(),
       createdById: new FormControl(),
       branch: new FormControl(
-        {disabled: this.editBranches}),
+        '', [
+          Validators.required,
+        ]
+        // {disabled: this.editBranches}
+      ),
       todaysDate: new FormControl(this.yesterdayDate),
       openingStock: new FormControl(),
       receivedFromQuarantine: new FormControl(),
@@ -377,6 +389,8 @@ compareAvailableTotals(): boolean {
     this.availableStockForm.get('plt2').setValue('');
     this.availableStockForm.get('cryo').setValue('');
     this.availableStockForm.get('paedPacks').setValue('');
+    this.availableStockForm.get('compiledBy').setValue('');
+    this.availableStockForm.get('checkedBy').setValue('');
     this.availableStockForm.get('receivedFromAvailable').reset();
     this.availableStockForm.get('issuedToAvailable').reset();
   }
@@ -521,6 +535,8 @@ compareAvailableTotals(): boolean {
     this.availableStockForm.get('plt2').setValue(item.plt2);
     this.availableStockForm.get('cryo').setValue(item.cryo);
     this.availableStockForm.get('paedPacks').setValue(item.paedPacks);
+    this.availableStockForm.get('compiledBy').setValue(item.compiledBy);
+    this.availableStockForm.get('checkedBy').setValue(item.checkedBy);
     // this.availableStockForm.get('branchName').setValue(item.brancName);
 
     if (item.receivedFromAvailable !== null && item.receivedFromAvailable !== undefined) {
@@ -619,7 +635,18 @@ getByDate(value) {
       this.populateForm(this.stockAvailable);
     }
     if (this.stockAvailable === null) {
+      const currentDay = new Date();
+      currentDay.setDate(currentDay.getDate() - 1);
+      currentDay.setHours(0 , 0, 0 , 0);
+
+    //   if ( value.todaysDate >= currentDay ) {
+    //     this.editForm = true;
+    //   } else {
+    //     this.editForm = false;
+    //  }
       this.populateNewForm();
+      this.editForm = true;
+      this.showSaveBtn = true;
     }
   }
 );
@@ -636,7 +663,9 @@ getByDate(value) {
        },
        () => {
         const toSelect = this.AllBranches.find(c => c.id === this.branchId);
-        this.availableStockForm.get('branch').setValue(toSelect);
+        if (!this.roles.includes('ROLE_ADMIN')) {
+          this.availableStockForm.get('branch').setValue(toSelect);
+        }
        }
       //  this.getInitvalues();
     );
@@ -661,7 +690,6 @@ getByDate(value) {
     this.branchService.getAllForUser(branchId).subscribe(
       result => {
        this.branches = result;
-       console.log(this.branches);
        this.getInitvalues(branchId);
       },
       error => {
@@ -671,23 +699,38 @@ getByDate(value) {
    }
 
   getInitvalues(branchId) {
+    this.showEditBtn = false;
     this.availableStockService.getAvailableStock(branchId).subscribe(
      result => {
       this.stockAvailable = result;
       if (this.stockAvailable !== null) {
+        if (this.stockAvailable.compiledBy === this.currentUser.firstName + this.currentUser.lastName) {
+          this.showSaveBtn = true;
+      } else if (this.stockAvailable.checkedBy === null) {
+          this.showSaveBtn = false;
+        } else {
+          this.showSaveBtn = false;
+        }
         this.editForm = result.active;
         this.populateForm(this.stockAvailable);
       }
       if (this.stockAvailable === null) {
+        this.showSaveBtn = true;
         this.showEditBtn = false; // console.log(result.message);
         this.editForm = true;
-
         this.populateNewForm();
       }
      },
      error => {
         console.log(error.error);
      },
+    );
+  }
+  getCurrentUser() {
+    this.branchService.getCurrentUsername().subscribe(
+      result => {
+        this.currentUser = result;
+      }
     );
   }
 
@@ -700,7 +743,14 @@ if (!this.compareAvailableTotals()) {
         console.log(this.stockAvailable);
         // console.log(result.message);
         if (this.stockAvailable !== null) {
-          this.editForm = result.active;
+          if (this.stockAvailable.compiledBy === this.currentUser.firstName + this.currentUser.lastName) {
+            this.showSaveBtn = true;
+        } else if (this.showEditBtn === true) {
+          this.showEditBtn = false;
+          this.showSaveBtn = false;
+        } else {
+          this.showSaveBtn = false;
+        }
         }
         this.snotify.success(result.message, 'Success', this.util.getNotifyConfig());
         this.populateForm(result.stockAvailable);
@@ -710,6 +760,7 @@ if (!this.compareAvailableTotals()) {
         // console.log(error.error);
       },
       () => {
+        window.scroll(0, 0);
       }
     );
   } else {
@@ -718,7 +769,8 @@ if (!this.compareAvailableTotals()) {
   }
 
   submitStockAvailable(value) {
-if (!this.compareAvailableTotals()) {
+    console.log(value);
+    if (!this.compareAvailableTotals()) {
 
     this.availableStockService.submit(value).subscribe(
       result => {
@@ -734,6 +786,7 @@ if (!this.compareAvailableTotals()) {
       },
       () => {
       //  this.populateNewForm();
+      window.scroll(0, 0);
       }
     );
      } else {
