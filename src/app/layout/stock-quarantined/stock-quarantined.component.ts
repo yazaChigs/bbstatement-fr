@@ -76,7 +76,6 @@ export class StockQuarantinedComponent implements OnInit {
     this.getAllBranches();
     this.getCurrentUser();
     this.getBranchTotalMinCapacity();
-    console.log(this.quarantinedStockForm.get('branch').value);
     if (this.quarantinedStockForm.get('branch').value !== null && this.quarantinedStockForm.get('branch').value !== '') {
       this.getInitvalues(this.branchId);
     } else {
@@ -88,7 +87,6 @@ export class StockQuarantinedComponent implements OnInit {
     this.user = localStorage.getItem('USER');
 
     this.util = new NotifyUtil(this.snotify);
-    console.log(this.quarantinedStockForm.get('branch').value);
   }
 
 
@@ -252,7 +250,6 @@ export class StockQuarantinedComponent implements OnInit {
     );
   }
   calculateCollections() {
-    console.log(this.stockQuarantined.branch.branchName);
     if (this.branchTotalMinCapacity !== null ) {
     if (this.stockQuarantined.branch.branchName === 'HARARE') {
       this.initCollectionsFromDb = this.branchTotalMinCapacity.harareTotalMinCapacity;
@@ -325,13 +322,21 @@ export class StockQuarantinedComponent implements OnInit {
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
       total + Number(this.quarantinedStockForm.get('openingStock').value)
        + Number(this.quarantinedStockForm.get('referenceLaboratory').value));
-    this.totolCollectionsFromTeams = total / ( Number(this.userBranch.minStatic) +  Number(this.userBranch.minCbd)
-     +  Number(this.userBranch.minMob1) +  Number(this.userBranch.minMob2) +  Number(this.userBranch.minMob3));
+    //    console.log(this.userBranch);
+    // this.totolCollectionsFromTeams = total / ( Number(this.userBranch.minStatic) +  Number(this.userBranch.minCbd)
+    //  +  Number(this.userBranch.minMob1) +  Number(this.userBranch.minMob2) +  Number(this.userBranch.minMob3));
     return total;
   }
+  // totolCollectionsOnly(): number {
+  //   return Number(this.quarantinedStockForm.get('totalCollections').value)
+  //   + Number(this.quarantinedStockForm.get('openingStock').value);
+  // }
+
   totolCollectionsOnly(): number {
-    return Number(this.quarantinedStockForm.get('totalCollections').value)
-    + Number(this.quarantinedStockForm.get('openingStock').value);
+    if (this.userBranch!== null && this.userBranch !== undefined) {
+      return this.sumCollections() / ( Number(this.userBranch.minStatic) +  Number(this.userBranch.minCbd)
+      +  Number(this.userBranch.minMob1) +  Number(this.userBranch.minMob2) +  Number(this.userBranch.minMob3));
+    } else { return 0; }
   }
 
   initCollectionsValue(): number {
@@ -664,9 +669,8 @@ loadStockIssuedTo() {
       if (!this.roles.includes('ROLE_ADMIN')) {
         this.quarantinedStockForm.get('branch').setValue(toSelect);
       }
-      console.log(this.quarantinedStockForm.get('branch').valid);
       if (this.quarantinedStockForm.get('branch').value !== null && this.quarantinedStockForm.get('branch').value !== '') {
-        this.getInitvalues(this.branchId);
+        this.getInitvalues(this.quarantinedStockForm.value);
     } else {
       this.editForm = false;
     }
@@ -685,15 +689,14 @@ getUserBranches() {
     }
   );
 }
- getInitvalues(branchId) {
+ getInitvalues(value) {
   this.showEditBtn = false;
-
-  this.qStockService.getAvailableStock(branchId).subscribe(
+  value.todaysDate = this.quarantinedStockForm.get('todaysDate').value;
+  this.qStockService.getAvailableStockByDate(value).subscribe(
      result => {
       this.stockQuarantined = result;
       if (this.stockQuarantined !== null) {
         this.userBranch = this.stockQuarantined.branch;
-        console.log(this.stockQuarantined);
         if (this.stockQuarantined.compiledBy === this.currentUser.firstName + this.currentUser.lastName) {
           this.showSaveBtn = true;
       } else if (this.stockQuarantined.checkedBy === null) {
@@ -745,6 +748,7 @@ getUserBranches() {
       if (this.stockQuarantined !== null) {
 
         this.editForm = result.active;
+        this.showSaveBtn = !result.active;
         this.populateForm(this.stockQuarantined);
         this.calculateCollections(); // supposed to be in ther above loop
       }
@@ -769,11 +773,11 @@ getUserBranches() {
 
 }
 
- reloadForBranch(branchId) {
+ reloadForBranch(branchId, value) {
   this.branchService.getAllForUser(branchId).subscribe(
     result => {
      this.branches = result;
-     this.getInitvalues(branchId);
+     this.getInitvalues(value);
     },
     error => {
       console.log(error.error);

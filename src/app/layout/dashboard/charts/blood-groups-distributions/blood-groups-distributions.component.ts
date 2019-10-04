@@ -63,7 +63,5 @@ export class BloodGroupsDistributionsComponent implements OnInit, OnChanges {
     this.Olable = 45;
       this.Alable = 88;
       this.Blable =  22;
-    console.log(this.branchData);
-    console.log(this.Olable + this.Alable + this.Blable);
   }
 }

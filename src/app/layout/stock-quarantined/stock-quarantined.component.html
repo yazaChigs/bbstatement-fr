@@ -24,7 +24,7 @@
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>Branch</mat-label>
           <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches" required>
-              <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="reloadForBranch(branch.id)">
+              <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="reloadForBranch(branch.id ,quarantinedStockForm.value)">
                 {{branch.branchName}}
               </mat-option>
             </mat-select>
@@ -49,7 +49,7 @@
           <div fxFlex="100%">
             <div fxFlex="22%"><mat-card [style.background-color]="collectionsBgColor()" class="info-card">
               Total Collections:<strong>{{ initCollections}}</strong>
-              <p>Collections:</p><h2 style="margin-top: -5px;">{{(totolCollectionsFromTeams * 100).toFixed(2)}}%</h2>
+              <p>Collections:</p><h2 style="margin-top: -5px;">{{(totolCollectionsOnly() * 100).toFixed(2)}}%</h2>
             </mat-card></div>
             <div fxFlex="22%"><mat-card class="info-card"><p>Quarantine Stock </p><h2>{{QuarantineStock()}}</h2></mat-card></div>
             <div fxFlex="22%"><mat-card class="info-card">
@@ -684,4 +684,4 @@
 </form>
 
 </mat-card>
-{{quarantinedStockForm.value | json}}
+<!-- {{quarantinedStockForm.value | json}} -->

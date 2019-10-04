@@ -47,15 +47,15 @@ export class StockAvailableComponent implements OnInit {
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
+    this.getCurrentUser();
     this.getUserBranch();
     this.setYesterdayDate();
     this.createForms();
     this.loadBranches(this.branchId);
     this.getAllBranches();
-    this.getCurrentUser();
     // console.log(this.availableStockForm.get('branch').value);
     if (this.availableStockForm.get('branch').value !== null) {
-      this.getInitvalues(this.branchId);
+      // this.getInitvalues(this.availableStockForm.value);
     } else {
       this.editForm = false;
     }
@@ -238,6 +238,10 @@ getUserBranch(): Branch {
   this.branchService.getItem(this.branchId).subscribe(
     result => {
       this.selected = result;
+      // console.log(this.availableStockForm.get('branch').value);
+      let value = this.availableStockForm.value;
+      value.branch = this.selected;
+      this.getInitvalues(value);
     }
   );
   return this.selected;
@@ -624,15 +628,14 @@ demandVsSupplyBgPercentage(): number {
 }
 
 getByDate(value) {
-  console.log(value);
   value.todaysDate = this.availableStockForm.get('todaysDate').value;
   this.availableStockService.getAvailableStockByDate(value).subscribe(
   result => {
-    console.log(result);
     this.stockAvailable = result;
     if (this.stockAvailable !== null) {
-      this.editForm = result.active;
-      this.populateForm(this.stockAvailable);
+        this.showSaveBtn = !result.active;
+        this.editForm = result.active;
+        this.populateForm(this.stockAvailable);
     }
     if (this.stockAvailable === null) {
       const currentDay = new Date();
@@ -690,7 +693,7 @@ getByDate(value) {
     this.branchService.getAllForUser(branchId).subscribe(
       result => {
        this.branches = result;
-       this.getInitvalues(branchId);
+       this.getInitvalues(this.availableStockForm.value);
       },
       error => {
         console.log(error.error);
@@ -698,9 +701,10 @@ getByDate(value) {
     );
    }
 
-  getInitvalues(branchId) {
+  getInitvalues(value) {
     this.showEditBtn = false;
-    this.availableStockService.getAvailableStock(branchId).subscribe(
+    value.todaysDate = this.availableStockForm.get('todaysDate').value;
+    this.availableStockService.getAvailableStockByDate(value).subscribe(
      result => {
       this.stockAvailable = result;
       if (this.stockAvailable !== null) {
