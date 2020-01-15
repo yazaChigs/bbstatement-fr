@@ -27,7 +27,7 @@
         <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" class="bb" ><mat-icon class="sidenav-icon" color="primary">dashboard</mat-icon>Dashboard</a>
         <a mat-list-item routerLink="/available" routerLinkActive="active-link" class="bb" ><mat-icon class="sidenav-icon" color="primary">all_inbox</mat-icon>Available Stock</a>
         <a mat-list-item routerLink="/quarantined" routerLinkActive="active-link" class="bb" ><mat-icon class="sidenav-icon" color="primary">bookmarks</mat-icon>Quarantined Stock</a>
-        <a *ngIf="roles.includes('ROLE_ADMIN')"  mat-list-item routerLink="/admin" routerLinkActive="active-link" class="bb"><mat-icon class="sidenav-icon" color="primary">chrome_reader_mode</mat-icon>Admin</a>
+        <a *ngIf="roles.includes('ROLE_ADMIN') || roles.includes('ROLE_GLOBAL')"  mat-list-item routerLink="/admin" routerLinkActive="active-link" class="bb"><mat-icon class="sidenav-icon" color="primary">chrome_reader_mode</mat-icon>Admin</a>
       <!-- <a mat-list-item *ngFor="let card of list" routerLink="{{card.link}}" routerLinkActive="active-link" ><mat-icon class="sidenav-icon" color="primary">{{card.icon}}</mat-icon>{{card.title}}</a> -->
       </mat-nav-list>
   </mat-sidenav>
@@ -45,11 +45,11 @@
        <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <div style="margin-left: 5%">
+        <div style="margin-left: 5%" fxShow="true" fxHide.lt-md>
           <a routerLink="/dashboard" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">dashboard</mat-icon>Dashboard</a>
           <a routerLink="/available" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">all_inbox</mat-icon>Available Stock</a>
           <a routerLink="/quarantined" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">bookmarks</mat-icon>Quarantined Stock</a>
-          <a *ngIf="roles.includes('ROLE_ADMIN')" routerLink="/admin" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">chrome_reader_mode</mat-icon>Admin</a>
+          <a *ngIf="roles.includes('ROLE_ADMIN') || roles.includes('ROLE_GLOBAL')" routerLink="/admin" routerLinkActive="active-link"  mat-stroked-button><mat-icon class="sidenav-icon">chrome_reader_mode</mat-icon>Admin</a>
         <!-- <a *ngFor="let card of modules" routerLink="{{card.link}}" routerLinkActive="active-link"  mat-stroked-button>
             <mat-icon *ngIf="card.title!=='Clinical'" >{{card.icon}}</mat-icon>
             <span *ngIf="card.title=='Clinical'" class="medical-icon-i-outpatient med-icon" aria-hidden="true" style="font-size: 25px;"></span>

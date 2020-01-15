@@ -43,6 +43,17 @@
                 {{row.branch.branchName | uppercase}}
             </ng-template>
         </ngx-datatable-column>
+        <ngx-datatable-column>
+          <ng-template let-column="column" ngx-datatable-header-template>
+             Roles
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.userRoles[0]?.name}}
+              {{row.userRoles[1]?.name}}
+              {{row.userRoles[2]?.name}}
+              {{row.userRoles[3]?.name}}
+          </ng-template>
+      </ngx-datatable-column>
           <ngx-datatable-column>
               <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
                   <div class="button-row">

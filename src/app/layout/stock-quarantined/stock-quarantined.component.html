@@ -23,7 +23,7 @@
       <p>
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>Branch</mat-label>
-          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches" required>
+          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="false" required>
               <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="reloadForBranch(branch.id ,quarantinedStockForm.value)">
                 {{branch.branchName}}
               </mat-option>
@@ -240,7 +240,7 @@
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label></mat-label>
-                <input matInput formControlName="receivedFrom" type="number" (keyup)="sumReceived()">
+                <input matInput formControlName="receivedFrom" type="number" (keyup)="sumReceived(quarantinedStockForm.value)">
               </mat-form-field>
         </div>
         </div>
@@ -254,7 +254,7 @@
         <div fxFlex="25%">
             <mat-form-field class="full-width" appearance="outline">
                 <mat-label>Reference Laboratory</mat-label>
-                <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived()">
+                <input matInput formControlName="referenceLaboratory" type="number" placeholder="Reference Laboratory" (keyup)="sumReceived(quarantinedStockForm.value)">
               </mat-form-field>
         </div>
         <div fxFlex="17%"></div>

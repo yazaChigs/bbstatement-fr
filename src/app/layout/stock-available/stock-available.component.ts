@@ -704,9 +704,11 @@ getByDate(value) {
   getInitvalues(value) {
     this.showEditBtn = false;
     value.todaysDate = this.availableStockForm.get('todaysDate').value;
+    console.log(value);
     this.availableStockService.getAvailableStockByDate(value).subscribe(
      result => {
-      this.stockAvailable = result;
+    console.log(result);
+    this.stockAvailable = result;
       if (this.stockAvailable !== null) {
         if (this.stockAvailable.compiledBy === this.currentUser.firstName + this.currentUser.lastName) {
           this.showSaveBtn = true;

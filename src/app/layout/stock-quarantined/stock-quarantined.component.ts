@@ -13,6 +13,7 @@ import { NotifyUtil } from 'src/app/util/notifyutil';
 import { DashboardService } from 'src/app/shared/config/service/dashboard.service';
 import { isNumber } from 'util';
 import { User } from '../../shared/config/model/admin/user.model';
+import { AvailableStockService } from '../../shared/config/service/available-stock.service';
 
 @Component({
   selector: 'app-stock-quarantined',
@@ -65,7 +66,8 @@ export class StockQuarantinedComponent implements OnInit {
   totolCollectionsFromTeams = 0;
 
   constructor(private branchService: BranchService, private dataManService: DataManagementService, private dashService: DashboardService,
-              private qStockService: QuarantinedStockService, private fb: FormBuilder, private snotify: SnotifyService) { }
+              private qStockService: QuarantinedStockService, private availableStockService: AvailableStockService,
+               private fb: FormBuilder, private snotify: SnotifyService) { }
 
   ngOnInit() {
     this.branchId = Number(localStorage.getItem('BRANCH_ID'));
@@ -365,17 +367,22 @@ export class StockQuarantinedComponent implements OnInit {
     return total;
   }
 
-  sumReceived(): number {
+  sumReceived(value): number {
     let total = 0;
-    // total = Number(this.quarantinedStockForm.get('referenceLaboratory').value);
-    this.StockReceivedFromArray.controls.forEach((item, index) => {
-      const valueTotal = Number(this.getStockReceivedFromControls()[index].value.receivedFrom);
-      total += valueTotal;
+    value.receivedFromQuarantineds.forEach(item => {
+      total += Number(item.receivedFrom);
     });
+    // total = Number(this.quarantinedStockForm.get('referenceLaboratory').value);
+    // this.StockReceivedFromArray.controls.forEach((item, index) => {
+    //   const valueTotal = Number(this.getStockReceivedFromControls()[index].value.receivedFrom);
+    //   total += valueTotal;
+    // });
     this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').setValue(total
       +  Number(this.quarantinedStockForm.get('referenceLaboratory').value));
+      console.log(this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').value);
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
-      total + Number(this.quarantinedStockForm.get('referenceLaboratory').value)
+      // Number(total) + Number(this.quarantinedStockForm.get('referenceLaboratory').value)
+      + Number(this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').value)
       + Number(this.quarantinedStockForm.get('openingStock').value)
       + Number(this.quarantinedStockForm.get('totalCollections').value));
     return total +  Number(this.quarantinedStockForm.get('referenceLaboratory').value);
@@ -407,6 +414,7 @@ export class StockQuarantinedComponent implements OnInit {
       // this.editForm = this.stockQuarantined.active;
       this.populateForm(this.stockQuarantined);
       window.scroll(0, 0);
+
       }
     );
   }
@@ -427,7 +435,8 @@ export class StockQuarantinedComponent implements OnInit {
       },
       () => {
         window.scroll(0, 0);
-      //  this.populateNewForm();
+        // this.availableStockService.submit()
+        this.populateNewForm();
       }
     );
   }
