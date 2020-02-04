@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 
@@ -8,9 +8,17 @@ import { Label } from 'ng2-charts';
   templateUrl: './branch-contributions.component.html',
   styleUrls: ['./branch-contributions.component.css']
 })
-export class BranchContributionsComponent implements OnInit {
+export class BranchContributionsComponent implements OnInit, OnChanges {
+
 
   showItems = true;
+  @Input() branchData: any = {};
+  harareContr = 0;
+  bulawayoContr = 0;
+  gweruContr = 0;
+  mutareContr = 0;
+  masvingoContr = 0;
+
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -39,6 +47,30 @@ export class BranchContributionsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.fillChart(this.branchData)
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.fillChart(this.branchData)
+  }
+
+  fillChart(branchData: any) {
+    if (branchData !== null ) {
+      this.harareContr = this.branchData.harareStocks;
+      this.bulawayoContr = this.branchData.bulawayoStocks;
+      this.gweruContr =  this.branchData.gweruStocks;
+      this.mutareContr =  this.branchData.mutareStocks;
+      this.masvingoContr =  this.branchData.masvingoStocks;
+    }
+    this.pieChartData = [this.harareContr,
+      this.bulawayoContr,
+      this.gweruContr,
+      this.mutareContr,
+      this.masvingoContr];
+    if (this.branchData !== null) {
+        this.showItems = true;
+      } else {
+        this.showItems = false;
+      }
   }
 
 }

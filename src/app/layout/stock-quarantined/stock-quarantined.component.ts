@@ -53,7 +53,7 @@ export class StockQuarantinedComponent implements OnInit {
   collectionsIndicator = 0;
   initCollectionsFromDb = 0;
   branchTotalMinCapacity: BranchDailyMinimalCapacity = new BranchDailyMinimalCapacity();
-  editBranches = true;
+  editBranches = false;
   roles: string[];
   util;
   yesterdayDate: any;
@@ -84,8 +84,10 @@ export class StockQuarantinedComponent implements OnInit {
       this.editForm = false;
     }
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR') || this.roles.includes('ROLE_ADMIN')) {
-      this.editBranches = false; }
+    if (!this.roles.includes('ROLE_ADMIN')) {
+      this.editBranches = true; } else {
+        this.editBranches = false;
+      }
     this.user = localStorage.getItem('USER');
 
     this.util = new NotifyUtil(this.snotify);
@@ -342,6 +344,8 @@ export class StockQuarantinedComponent implements OnInit {
   }
 
   initCollectionsValue(): number {
+    this.initTotalReceipts =  Number(this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').value) +
+      Number(this.quarantinedStockForm.get('totalCollections').value);
     return this.quarantinedStockForm.get('totalIssues').value
     + this.quarantinedStockForm.get('availableStock').value;
   }
@@ -379,7 +383,8 @@ export class StockQuarantinedComponent implements OnInit {
     // });
     this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').setValue(total
       +  Number(this.quarantinedStockForm.get('referenceLaboratory').value));
-      console.log(this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').value);
+    this.initTotalReceipts = total + Number(this.quarantinedStockForm.get('referenceLaboratory').value) +
+      Number(this.quarantinedStockForm.get('totalCollections').value);
     this.quarantinedStockForm.get('totalReceiptsFromBranches').setValue(
       // Number(total) + Number(this.quarantinedStockForm.get('referenceLaboratory').value)
       + Number(this.quarantinedStockForm.get('totalReceiptsFromBranchesOnly').value)
@@ -675,9 +680,9 @@ loadStockIssuedTo() {
     },
     () => {
       const toSelect = this.allBranches.find(c => c.id === this.branchId);
-      if (!this.roles.includes('ROLE_ADMIN')) {
+      // if (!this.roles.includes('ROLE_ADMIN')) {
         this.quarantinedStockForm.get('branch').setValue(toSelect);
-      }
+      // }
       if (this.quarantinedStockForm.get('branch').value !== null && this.quarantinedStockForm.get('branch').value !== '') {
         this.getInitvalues(this.quarantinedStockForm.value);
     } else {
@@ -797,6 +802,8 @@ getUserBranches() {
           this.userBranch = result;
         }
         );
+          window.scroll(0, 0);
+
       }
       );
     }

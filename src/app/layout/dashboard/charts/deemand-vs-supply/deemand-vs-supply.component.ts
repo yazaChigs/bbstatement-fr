@@ -84,6 +84,7 @@ export class DeemandVsSupplyComponent implements OnInit {
   public getReport() {
     this.service.getReport().subscribe(
       data => {
+        console.log(data)
         this.lineChartLabels = data[0].row;
         data.splice(0, 1);
         this.lineChartData = [];

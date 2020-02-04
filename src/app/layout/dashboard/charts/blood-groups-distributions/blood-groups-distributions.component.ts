@@ -28,40 +28,34 @@ export class BloodGroupsDistributionsComponent implements OnInit, OnChanges {
       },
     }
   };
-  // public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
   public pieChartLabels: Label[] = ['O', 'A', 'B'];
-  public pieChartData: number[] = [40, 20, 20];
-  // public pieChartData = [
-  //   {data: [this.Olable] , label: 'O'},
-  //   {data: [this.Alable], label: 'A'},
-  //   {data: [this.Blable], label: 'B'},
-  // ]
+  public pieChartData: number[] = [40, 20, 30];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
-
-  // public pieChartPlugins = [pluginDataLabels];
-  // public pieChartColors = [
-  //   {
-  //     backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
-  //   },
-  // ];
   constructor() { }
 
   ngOnInit() {
     if (this.branchData !== null ) {
-
+      this.fillChart(this.branchData);
     }
-
-    // this.pieChartData = [
-    //   this.Olable,
-    //   this.Olable,
-    //   this.Blable
-    //   ];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.Olable = 45;
-      this.Alable = 88;
-      this.Blable =  22;
+    console.log(this.branchData)
+    this.fillChart(this.branchData);
+  }
+
+  fillChart(branchData: any) {
+    if (branchData !== null ) {
+      this.Olable = this.branchData.stockedOplus + this.branchData.stockedOplus;
+      this.Alable = this.branchData.stockedAplus;
+      this.Blable =  this.branchData.stockedBplus;
+    }
+    this.pieChartData = [this.Olable, this.Alable, this.Blable ];
+    if (this.branchData !== null) {
+        this.showItems = true;
+      } else {
+        this.showItems = false;
+      }
   }
 }

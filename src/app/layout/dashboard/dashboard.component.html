@@ -14,7 +14,7 @@
           <mat-grid-tile class=" ob-card"  *ngFor="let branch of allBranches | filterBy: formFilter index as i;" [colspan]="1" [rowspan]="1">
       <mat-card class="ob-card border_accent">
         <mat-card-content >
-                <mat-checkbox [checked]="branch.selected" (change)="toggleForm(branch,i)">{{ branch.branchName }}</mat-checkbox>
+                <mat-checkbox [checked]="selectedCheckBox.includes(branch.branchName)" (change)="toggleForm(branch,i)">{{ branch.branchName }}</mat-checkbox>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
@@ -333,10 +333,10 @@
 <app-BloodGroup-DaysSupply *ngIf="branchInfoAvailable" [branchData]="branchesInfo"></app-BloodGroup-DaysSupply>
 </div>
 <div fxFlex="35%">
-    <app-branch-contributions></app-branch-contributions>
+    <app-branch-contributions [branchData]="branchesInfo"></app-branch-contributions>
 </div>
 <div fxFlex="35%">
-        <app-blood-groups-distributions [branchData]="stockAvailable"></app-blood-groups-distributions>
+        <app-blood-groups-distributions [branchData]="branchesInfo"></app-blood-groups-distributions>
     </div>
 </div>
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="12px" fxLayoutGap.xs="0">

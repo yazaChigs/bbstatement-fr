@@ -233,8 +233,9 @@
       </div>
     </div>
     <div class="div-small" fxLayout="row row-reverse" fxLayoutAlign="start center" fxLayoutGap="0.5em" *ngFor="let role of roles">
-      <mat-checkbox  [checked]="role.selected" [disabled]="role.selected"  (change)="onChange($event)" [value]="role">{{ role.printName }}</mat-checkbox>
+      <mat-checkbox  [checked]="role.selected" (change)="onChange($event)" [value]="role">{{ role.printName }}</mat-checkbox>
     </div>
+    <!--  removed [disabled]="role.selected" -->
     <div class="container" formGroupName="matching_passwords" fxLayout fxLayout.xs="column" fxLayoutAlign="right"
       fxLayoutGap="12px" fxLayoutGap.xs="0">
       <div fxFlex="12%">

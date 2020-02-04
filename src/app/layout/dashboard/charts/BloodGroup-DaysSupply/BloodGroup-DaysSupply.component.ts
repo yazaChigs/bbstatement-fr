@@ -48,7 +48,7 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
     {data: [this.minusO], label: 'O-'},
     {data: [this.plusA], label: 'A+'},
     {data: [this.plusB], label: 'B+'},
-    {data: [this.availableStockTotal], label: 'Available stock total'},
+    {data: [this.availableStockTotal], label: 'total'},
   ];
 
   ngOnInit() {
@@ -76,7 +76,7 @@ export class BloodGroupDaysSupplyComponent implements OnInit, OnChanges {
         {data: [this.minusO], label: 'O-'},
         {data: [this.plusA], label: 'A+'},
         {data: [this.plusB], label: 'B+'},
-        {data: [this.availableStockTotal], label: 'Available stock total'},
+        {data: [this.availableStockTotal], label: 'total'},
         // {data: [this.selfImage], label: 'selfImage'},
         // {data: [temp], label: 'Total'}
       ];

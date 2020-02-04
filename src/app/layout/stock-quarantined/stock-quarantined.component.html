@@ -23,7 +23,7 @@
       <p>
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>Branch</mat-label>
-          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="false" required>
+          <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches" required>
               <mat-option *ngFor="let branch of allBranches" [value]="branch" (click)="reloadForBranch(branch.id ,quarantinedStockForm.value)">
                 {{branch.branchName}}
               </mat-option>

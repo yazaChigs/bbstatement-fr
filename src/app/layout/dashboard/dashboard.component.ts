@@ -20,6 +20,8 @@ import { DashboardService } from 'src/app/shared/config/service/dashboard.servic
 import { MatDatepickerInputEvent } from '@angular/material';
 import { SnotifyService } from 'ng-snotify';
 import { NotifyUtil } from 'src/app/util/notifyutil';
+import { BloodGroupsDistributionsComponent } from './charts/blood-groups-distributions/blood-groups-distributions.component';
+import { constructor } from 'jspdf';
 
 @Component({
   selector: 'app-dashboard',
@@ -56,6 +58,8 @@ export class DashboardComponent implements OnInit {
   numberOfCollections: number;
   expectedMinCap = 0;
   grayFields = true;
+  selectedCheckBox = [];
+  bloodGroupContributions: BloodGroupsDistributionsComponent = new BloodGroupsDistributionsComponent();
 
 
   constructor(private breakpointObserver: BreakpointObserver, private router: Router, private dataManService: DataManagementService,
@@ -250,6 +254,10 @@ export class DashboardComponent implements OnInit {
       result => {
         this.branchesInfo = result;
         console.log(result);
+        result.branchesWithData.forEach(element => {
+          this.selectedCheckBox.push(element.branchName)
+        });
+        this.bloodGroupContributions.fillChart(this.branchesInfo);
         this.overallCollections(this.branchesInfo);
         this.populateBranchDailyRequirements(this.branchesInfo);
         this.populateStockavailable(this.branchesInfo);

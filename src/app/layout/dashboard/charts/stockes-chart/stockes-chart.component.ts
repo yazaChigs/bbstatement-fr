@@ -34,10 +34,12 @@ export class StockesChartComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.branchData)
     this.fillChart(this.branchData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.branchData)
     this.fillChart(this.branchData);
   }
 

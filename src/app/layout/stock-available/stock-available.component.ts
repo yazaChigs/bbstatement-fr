@@ -62,8 +62,10 @@ export class StockAvailableComponent implements OnInit {
     this.util = new NotifyUtil(this.snotify);
 
     this.roles = JSON.parse(sessionStorage.getItem(StorageKey.GRANTED_AUTHORITIES));
-    if (this.roles.includes('ROLE_GLOBAL') || this.roles.includes('ROLE_SUPERVISOR') || this.roles.includes('ROLE_ADMIN')) {
-      this.editBranches = false; }
+    if (!this.roles.includes('ROLE_ADMIN')) {
+      this.editBranches = true; } else {
+        this.editBranches = false;
+      }
 
   }
 
@@ -666,10 +668,10 @@ getByDate(value) {
        },
        () => {
         const toSelect = this.AllBranches.find(c => c.id === this.branchId);
-        if (!this.roles.includes('ROLE_ADMIN')) {
+        // if (!this.roles.includes('ROLE_ADMIN')) {
           this.availableStockForm.get('branch').setValue(toSelect);
         }
-       }
+      //  }
       //  this.getInitvalues();
     );
   }

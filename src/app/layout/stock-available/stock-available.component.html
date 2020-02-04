@@ -24,7 +24,7 @@
       <p>
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Branch</mat-label>
-              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch"  required>
+              <mat-select [(value)]="selected" [compareWith]="compareFn" formControlName="branch" [disabled]="editBranches"  required>
                   <mat-option *ngFor="let branch of AllBranches" [value]="branch" (click)="reloadForBranch(branch.id)" >
                     {{branch.branchName}}
                   </mat-option>
@@ -1079,3 +1079,5 @@
       </form>
 
 </mat-card>
+
+{{availableStockForm.value | json}}
